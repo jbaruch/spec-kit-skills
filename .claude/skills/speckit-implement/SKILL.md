@@ -93,9 +93,9 @@ Before ANY action, load and internalize the project constitution:
 - **IF EXISTS**: Read `research.md` for technical decisions
 - **IF EXISTS**: Read `quickstart.md` for integration scenarios
 
-### 2. Tessl Initialization (Optional but Recommended)
+### 2. Tessl Detection (Optional but Recommended)
 
-Initialize Tessl to provide library context during implementation.
+Check if Tessl is available for later use.
 
 **Why Tessl:** AI agents often drift, misuse APIs, or fall back on outdated patterns when working with libraries. Tessl provides 10,000+ "tiles" of agent-optimized documentation that keeps implementation aligned with current best practices and prevents spinning on obscure library usage.
 
@@ -104,29 +104,7 @@ Initialize Tessl to provide library context during implementation.
    command -v tessl >/dev/null 2>&1 && echo "TESSL_AVAILABLE" || echo "TESSL_NOT_FOUND"
    ```
 
-2. **If Tessl is available:**
-
-   a. Initialize Tessl for the project:
-   ```bash
-   tessl init --agent claude-code
-   ```
-
-   b. After project dependencies are installed (package.json, requirements.txt, etc.), auto-install matching tiles:
-   ```bash
-   tessl install --project-dependencies --yes
-   ```
-
-   This scans your installed dependencies and installs corresponding tiles automatically.
-
-   c. Report status:
-   ```
-   Tessl initialized. Installed tiles for: click, sqlite3, pytest
-   Library documentation now available via MCP.
-   ```
-
-3. **If Tessl is NOT available:**
-
-   Display a gentle recommendation:
+2. **If Tessl is NOT available**, display a gentle recommendation:
    ```
    ╭──────────────────────────────────────────────────────────────────╮
    │  Tessl not detected                                              │
@@ -142,11 +120,11 @@ Initialize Tessl to provide library context during implementation.
    │  Learn more: https://tessl.io                                   │
    │  Quick install: npm install -g tessl                            │
    ╰──────────────────────────────────────────────────────────────────╯
-
-   Proceeding without Tessl...
    ```
 
-   Then continue with implementation.
+3. **Store TESSL_AVAILABLE status** for use after Setup phase.
+
+**Note:** Tessl initialization happens AFTER Setup phase - see step 5.1 below.
 
 **Skip if:** User passes `--no-tessl` flag.
 
@@ -190,8 +168,35 @@ Extract:
 - Follow TDD approach: Execute test tasks before implementation tasks
 - Validation checkpoints: Verify each phase completion before proceeding
 
+#### 5.1 Phase 1: Setup
+
+Execute Setup phase tasks:
+- Initialize project structure
+- Create configuration files (package.json, pyproject.toml, etc.)
+- Install dependencies (`npm install`, `pip install`, etc.)
+
+**After Setup phase completes and dependencies are installed**, initialize Tessl:
+
+```bash
+# If TESSL_AVAILABLE (from step 2)
+tessl init --agent claude-code
+tessl install --project-dependencies --yes
+```
+
+Report installed tiles:
+```
+Tessl initialized. Installed tiles for: click, sqlite3, pytest
+Library documentation now available via MCP.
+```
+
+#### 5.2 Remaining Phases
+
+Continue with remaining phases:
+- **Phase 2: Foundational** - blocking prerequisites
+- **Phase 3+: User Stories** - in priority order (P1, P2, P3...)
+- **Final Phase: Polish** - cross-cutting concerns
+
 **Implementation execution rules**:
-- Setup first: Initialize project structure, dependencies, configuration
 - Tests before code: If tests requested, write them first and verify they fail
 - Core development: Implement models, services, CLI commands, endpoints
 - Integration work: Database connections, middleware, logging, external services
