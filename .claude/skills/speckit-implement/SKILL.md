@@ -97,43 +97,58 @@ Before ANY action, load and internalize the project constitution:
 
 Initialize Tessl to provide library context during implementation.
 
-**Why Tessl:** Prevents spinning on obscure library usage by giving the agent accurate, up-to-date documentation for dependencies.
+**Why Tessl:** AI agents often drift, misuse APIs, or fall back on outdated patterns when working with libraries. Tessl provides 10,000+ "tiles" of agent-optimized documentation that keeps implementation aligned with current best practices and prevents spinning on obscure library usage.
 
 1. **Check if Tessl is available:**
    ```bash
    command -v tessl >/dev/null 2>&1 && echo "TESSL_AVAILABLE" || echo "TESSL_NOT_FOUND"
    ```
 
-2. **If available, initialize Tessl:**
+2. **If Tessl is available:**
+
+   a. Initialize Tessl for the project:
    ```bash
-   tessl init
+   tessl init --agent claude-code
    ```
 
-3. **Install tiles for each dependency from plan.md Technical Context:**
-
-   Extract dependencies from plan.md and install corresponding tiles:
+   b. After project dependencies are installed (package.json, requirements.txt, etc.), auto-install matching tiles:
    ```bash
-   # For each dependency in Technical Context
-   tessl install <library-name>
+   tessl install --project-dependencies --yes
    ```
 
-   Examples based on common tech stacks:
-   - Python + Click + SQLite: `tessl install click`, `tessl install sqlite3`
-   - Node + Express + Prisma: `tessl install express`, `tessl install prisma`
-   - React + TypeScript: `tessl install react`, `tessl install typescript`
+   This scans your installed dependencies and installs corresponding tiles automatically.
 
-4. **Report Tessl status:**
+   c. Report status:
    ```
-   Tessl initialized with tiles: click, sqlite3, pytest
+   Tessl initialized. Installed tiles for: click, sqlite3, pytest
+   Library documentation now available via MCP.
    ```
 
-   Or if not available:
+3. **If Tessl is NOT available:**
+
+   Display a gentle recommendation:
    ```
-   Tessl not found. Proceeding without library context.
-   Consider installing Tessl for better library support: https://tessl.io
+   ╭──────────────────────────────────────────────────────────────────╮
+   │  Tessl not detected                                              │
+   │                                                                  │
+   │  Tessl helps AI agents write better code by providing accurate, │
+   │  up-to-date documentation for libraries and frameworks.         │
+   │                                                                  │
+   │  Without Tessl, I may:                                          │
+   │  • Use outdated API patterns                                    │
+   │  • Miss library-specific conventions                            │
+   │  • Spin on obscure library features                             │
+   │                                                                  │
+   │  Learn more: https://tessl.io                                   │
+   │  Quick install: npm install -g tessl                            │
+   ╰──────────────────────────────────────────────────────────────────╯
+
+   Proceeding without Tessl...
    ```
 
-**Skip if:** User passes `--no-tessl` flag or Tessl is not installed.
+   Then continue with implementation.
+
+**Skip if:** User passes `--no-tessl` flag.
 
 ### 3. Project Setup Verification
 
