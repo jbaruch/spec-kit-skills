@@ -183,8 +183,18 @@ Before writing ANY file:
 ## Next Steps
 
 After implementation:
-- Run tests to verify functionality
-- Run `/speckit-taskstoissues` to create GitHub issues for any remaining work
-- Commit and push changes
 
-Note: This command assumes a complete task breakdown exists in tasks.md. If tasks are incomplete or missing, suggest running `/speckit-tasks` first to regenerate the task list.
+1. **Required**: Run tests to verify functionality
+2. **Required**: Commit and push changes
+3. **Optional**: Run `/speckit-taskstoissues` to create GitHub Issues
+   - Exports remaining tasks to GitHub for project tracking
+   - Useful for team collaboration and sprint planning
+   - Creates issues with labels, assignments, and cross-references
+
+Suggest to user:
+```
+Implementation complete! Next steps:
+- Run tests to verify functionality
+- Commit and push changes
+- /speckit-taskstoissues - (Optional) Export remaining tasks to GitHub Issues
+```

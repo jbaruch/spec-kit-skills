@@ -203,7 +203,17 @@ Success criteria must be:
 ## Next Steps
 
 After completing the specification:
-- Run `/speckit-clarify` if any `[NEEDS CLARIFICATION]` markers exist
-- Run `/speckit-plan` to create the technical implementation plan
 
-These skills will validate that this spec exists before proceeding.
+1. **Recommended**: Run `/speckit-clarify` to resolve ambiguities
+   - Identifies underspecified areas you may have missed
+   - Asks targeted questions (max 5) to improve spec quality
+   - Especially valuable for complex features
+
+2. **Required**: Run `/speckit-plan` to create the technical implementation plan
+
+Suggest to user:
+```
+Specification complete! Next steps:
+- /speckit-clarify - (Recommended) Resolve any ambiguities and improve spec quality
+- /speckit-plan - Create technical implementation plan
+```

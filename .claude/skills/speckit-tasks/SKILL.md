@@ -152,7 +152,19 @@ Output:
 ## Next Steps
 
 After generating tasks:
-- Run `/speckit-analyze` to validate cross-artifact consistency
-- Run `/speckit-implement` to execute the implementation
 
-These skills will validate that tasks.md exists before proceeding.
+1. **Recommended**: Run `/speckit-analyze` to validate cross-artifact consistency
+   - Checks all user stories have corresponding tasks
+   - Verifies all tasks trace back to requirements
+   - Detects orphaned artifacts and constitution violations
+   - Catches issues before implementation begins
+
+2. **Required**: Run `/speckit-implement` to execute the implementation
+   - Note: Requires all checklists to be 100% complete
+
+Suggest to user:
+```
+Tasks generated! Next steps:
+- /speckit-analyze - (Recommended) Validate consistency between spec, plan, and tasks
+- /speckit-implement - Execute implementation (requires 100% checklist completion)
+```

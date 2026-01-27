@@ -167,7 +167,17 @@ Output:
 ## Next Steps
 
 After completing the plan:
-- Run `/speckit-checklist` to create domain-specific quality checklists
-- Run `/speckit-tasks` to generate the task breakdown
 
-These skills will validate that the plan exists before proceeding.
+1. **Recommended**: Run `/speckit-checklist` to create domain-specific quality checklists
+   - Generates "unit tests for English" to validate requirements quality
+   - Helps catch requirement gaps before implementation
+   - Required to reach 100% before `/speckit-implement`
+
+2. **Required**: Run `/speckit-tasks` to generate the task breakdown
+
+Suggest to user:
+```
+Plan complete! Next steps:
+- /speckit-checklist - (Recommended) Generate quality checklists for requirements validation
+- /speckit-tasks - Generate task breakdown from plan
+```
