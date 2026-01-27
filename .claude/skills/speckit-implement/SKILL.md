@@ -53,34 +53,31 @@ Before ANY action, load and internalize the project constitution:
 
 ## Checklist Gating (CRITICAL)
 
-**Before implementation begins**, check checklists status:
+**Before implementation begins**, check checklists status.
 
-1. Scan all checklist files in `FEATURE_DIR/checklists/`
+**Use this approach** (do NOT write custom bash for counting):
 
-2. For each checklist, count:
-   - Total items: All lines matching `- [ ]` or `- [X]` or `- [x]`
-   - Completed items: Lines matching `- [X]` or `- [x]`
-   - Incomplete items: Lines matching `- [ ]`
+1. **Read each checklist file** in `FEATURE_DIR/checklists/` using the Read tool
+2. **Count manually** by scanning the content:
+   - Incomplete: lines starting with `- [ ]`
+   - Complete: lines starting with `- [x]` or `- [X]`
+3. **Build status table** from the counts
 
-3. Create status table:
+Example output:
 
-   | Checklist | Total | Completed | Incomplete | Status |
-   |-----------|-------|-----------|------------|--------|
-   | ux.md     | 12    | 12        | 0          | PASS   |
-   | test.md   | 8     | 5         | 3          | FAIL   |
+| Checklist | Total | Completed | Incomplete | Status |
+|-----------|-------|-----------|------------|--------|
+| ux.md     | 12    | 12        | 0          | PASS   |
+| test.md   | 8     | 5         | 3          | FAIL   |
 
-4. Calculate overall status:
-   - **PASS**: All checklists have 0 incomplete items
-   - **FAIL**: One or more checklists have incomplete items
-
-5. **If any checklist is incomplete**:
-   - Display the table with incomplete item counts
-   - **STOP** and ask: "Some checklists are incomplete. Do you want to proceed with implementation anyway? (yes/no)"
-   - Wait for user response before continuing
-   - If user says "no" or "wait" or "stop", halt execution
-   - If user says "yes" or "proceed" or "continue", proceed to next step
-
-6. **If all checklists are complete**: Automatically proceed
+**Decision logic:**
+- **PASS**: All checklists have 0 incomplete items → proceed automatically
+- **FAIL**: Any checklist has incomplete items → ask user:
+  ```
+  Some checklists are incomplete. Do you want to proceed with implementation anyway? (yes/no)
+  ```
+  - If "no"/"wait"/"stop": halt execution
+  - If "yes"/"proceed"/"continue": proceed to next step
 
 ## Execution Flow
 
