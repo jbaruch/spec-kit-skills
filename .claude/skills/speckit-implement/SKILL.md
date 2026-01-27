@@ -93,7 +93,49 @@ Before ANY action, load and internalize the project constitution:
 - **IF EXISTS**: Read `research.md` for technical decisions
 - **IF EXISTS**: Read `quickstart.md` for integration scenarios
 
-### 2. Project Setup Verification
+### 2. Tessl Initialization (Optional but Recommended)
+
+Initialize Tessl to provide library context during implementation.
+
+**Why Tessl:** Prevents spinning on obscure library usage by giving the agent accurate, up-to-date documentation for dependencies.
+
+1. **Check if Tessl is available:**
+   ```bash
+   command -v tessl >/dev/null 2>&1 && echo "TESSL_AVAILABLE" || echo "TESSL_NOT_FOUND"
+   ```
+
+2. **If available, initialize Tessl:**
+   ```bash
+   tessl init
+   ```
+
+3. **Install tiles for each dependency from plan.md Technical Context:**
+
+   Extract dependencies from plan.md and install corresponding tiles:
+   ```bash
+   # For each dependency in Technical Context
+   tessl install <library-name>
+   ```
+
+   Examples based on common tech stacks:
+   - Python + Click + SQLite: `tessl install click`, `tessl install sqlite3`
+   - Node + Express + Prisma: `tessl install express`, `tessl install prisma`
+   - React + TypeScript: `tessl install react`, `tessl install typescript`
+
+4. **Report Tessl status:**
+   ```
+   Tessl initialized with tiles: click, sqlite3, pytest
+   ```
+
+   Or if not available:
+   ```
+   Tessl not found. Proceeding without library context.
+   Consider installing Tessl for better library support: https://tessl.io
+   ```
+
+**Skip if:** User passes `--no-tessl` flag or Tessl is not installed.
+
+### 3. Project Setup Verification
 
 **Create/verify ignore files based on actual project setup:**
 
@@ -116,7 +158,7 @@ Before ANY action, load and internalize the project constitution:
 - **Rust**: `target/`, `debug/`, `release/`, `*.rs.bk`
 - **Universal**: `.DS_Store`, `Thumbs.db`, `*.tmp`, `*.swp`, `.vscode/`, `.idea/`
 
-### 3. Parse tasks.md
+### 4. Parse tasks.md
 
 Extract:
 - Task phases: Setup, Tests, Core, Integration, Polish
@@ -124,7 +166,7 @@ Extract:
 - Task details: ID, description, file paths, parallel markers [P]
 - Execution flow: Order and dependency requirements
 
-### 4. Execute Implementation
+### 5. Execute Implementation
 
 **Phase-by-phase execution**:
 - Complete each phase before moving to the next
@@ -140,7 +182,7 @@ Extract:
 - Integration work: Database connections, middleware, logging, external services
 - Polish and validation: Unit tests, performance optimization, documentation
 
-### 5. Output Validation (REQUIRED)
+### 6. Output Validation (REQUIRED)
 
 Before writing ANY file:
 
@@ -153,7 +195,7 @@ Before writing ANY file:
    - DO NOT proceed with "best effort" or workarounds
 3. If compliant, proceed with file write
 
-### 6. Progress Tracking
+### 7. Progress Tracking
 
 - Report progress after each completed task
 - Halt execution if any non-parallel task fails
@@ -162,7 +204,7 @@ Before writing ANY file:
 - Suggest next steps if implementation cannot proceed
 - **IMPORTANT**: For completed tasks, mark the task as [X] in the tasks file
 
-### 7. Completion Validation
+### 8. Completion Validation
 
 - Verify all required tasks are completed
 - Check that implemented features match the original specification
