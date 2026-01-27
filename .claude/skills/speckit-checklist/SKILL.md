@@ -167,11 +167,65 @@ Use template structure:
 - Items are numbered sequentially (CHK001, CHK002, etc.)
 ```
 
-### 5. Report
+### 5. Gap Resolution (Interactive)
+
+If checklist contains `[Gap]` items, guide the user through resolving them one by one:
+
+1. **Count gaps**: Identify all items marked with `[Gap]`
+
+2. **For each gap**, present:
+
+   ```markdown
+   ────────────────────────────────────────────────────────────────
+   Gap 1 of N: [CHK00X]
+   ────────────────────────────────────────────────────────────────
+
+   **Missing Requirement:**
+   [Quote the checklist item]
+
+   **Why This Matters:**
+   [Brief explanation of risk if left unspecified]
+
+   **Suggested Options:**
+
+   | Option | Description | Implications |
+   |--------|-------------|--------------|
+   | A | [First reasonable default] | [Trade-offs] |
+   | B | [Alternative approach] | [Trade-offs] |
+   | C | [Another option] | [Trade-offs] |
+   | Skip | Leave unspecified for now | Will remain as [Gap] |
+
+   **Your choice (A/B/C/Skip/Custom):** _
+   ```
+
+3. **Process user response:**
+   - If A/B/C: Update `spec.md` with the new requirement
+   - If Skip: Leave as `[Gap]`, continue to next
+   - If Custom: Add user's custom text to `spec.md`
+
+4. **After each resolved gap:**
+   - Mark the checklist item as `[x]` (complete)
+   - Show confirmation of what was added to spec
+   - Move to next gap
+
+5. **Summary after all gaps processed:**
+   ```
+   Gap Resolution Complete:
+   - Resolved: X items (added to spec.md)
+   - Skipped: Y items (remain as [Gap])
+   - Total gaps: Z
+
+   Spec updated at: specs/NNN-feature/spec.md
+   ```
+
+**Skip gap resolution if:** User passes `--no-interactive` flag or there are no `[Gap]` items.
+
+### 6. Report
 
 Output:
 - Full path to created checklist
 - Item count
+- Gap resolution summary (if applicable)
 - Summary:
   - Focus areas selected
   - Depth level
@@ -197,8 +251,21 @@ Output:
 
 ## Next Steps
 
-After creating checklists:
-- Run `/speckit-tasks` to generate the task breakdown
-- Checklists must be completed BEFORE `/speckit-implement` can proceed
+After creating and resolving checklists:
 
-The implement skill will check all checklists and prompt if any are incomplete.
+1. **If gaps remain**: Run `/speckit-checklist` again to continue gap resolution
+2. **When all gaps resolved**: Run `/speckit-tasks` to generate the task breakdown
+
+Suggest to user:
+```
+Checklist complete!
+
+Gaps resolved: X (added to spec)
+Gaps remaining: Y
+
+Next steps:
+- /speckit-checklist - (If gaps remain) Continue resolving requirement gaps
+- /speckit-tasks - Generate task breakdown from plan
+```
+
+**Note:** `/speckit-implement` requires all checklists to be 100% complete (no `[ ]` items).
