@@ -1,0 +1,41 @@
+# Test directories (regenerate using TEST-GUIDE.md)
+test-vanilla-*/
+test-skills-*/
+test-vanilla/
+test-skills/
+
+# Spec-kit templates (reference only, not part of bundle)
+spec-kit-templates/
+
+# Old comparison reports (consolidated into TEST-REPORT.md)
+COMPARISON-REPORT.md
+COMPARISON-REPORT-V2.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+ENV/
+
+# Node (if used in testing)
+node_modules/
+
+# Logs
+*.log
