@@ -17,6 +17,7 @@ Spec-Kit Skills provides specification-driven development directly in Claude Cod
 1. Copy the skills bundle to your project:
 
 ```bash
+mkdir -p your-project/.claude/skills
 cp -r .claude/skills/speckit-* your-project/.claude/skills/
 cp -r .specify your-project/
 ```
