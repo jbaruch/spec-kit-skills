@@ -1,5 +1,5 @@
 ---
-name: speckit-specify
+name: speckit-01-specify
 description: Create feature specification from natural language description
 ---
 
@@ -28,14 +28,14 @@ Before ANY action, load and internalize the project constitution:
    ```
    WARNING: Project constitution not found at .specify/memory/constitution.md
 
-   Proceeding without constitution. Consider running /speckit-constitution first.
+   Proceeding without constitution. Consider running /speckit-00-constitution first.
    ```
 
 3. If exists, parse all principles, constraints, and governance rules.
 
 ## Execution Flow
 
-The text the user typed after `/speckit-specify` **is** the feature description.
+The text the user typed after `/speckit-01-specify` **is** the feature description.
 
 ### 1. Generate Branch Name
 
@@ -139,7 +139,7 @@ Generate a checklist file at `FEATURE_DIR/checklists/requirements.md`:
 
 ## Notes
 
-- Items marked incomplete require spec updates before `/speckit-clarify` or `/speckit-plan`
+- Items marked incomplete require spec updates before `/speckit-02-clarify` or `/speckit-03-plan`
 ```
 
 ### 7. Handle Clarifications
@@ -173,7 +173,7 @@ Output:
 - Branch name
 - Spec file path
 - Checklist results
-- Readiness for next phase (`/speckit-clarify` or `/speckit-plan`)
+- Readiness for next phase (`/speckit-02-clarify` or `/speckit-03-plan`)
 
 ## Guidelines
 
@@ -204,16 +204,16 @@ Success criteria must be:
 
 After completing the specification:
 
-1. **Recommended**: Run `/speckit-clarify` to resolve ambiguities
+1. **Recommended**: Run `/speckit-02-clarify` to resolve ambiguities
    - Identifies underspecified areas you may have missed
    - Asks targeted questions (max 5) to improve spec quality
    - Especially valuable for complex features
 
-2. **Required**: Run `/speckit-plan` to create the technical implementation plan
+2. **Required**: Run `/speckit-03-plan` to create the technical implementation plan
 
 Suggest to user:
 ```
 Specification complete! Next steps:
-- /speckit-clarify - (Recommended) Resolve any ambiguities and improve spec quality
-- /speckit-plan - Create technical implementation plan
+- /speckit-02-clarify - (Recommended) Resolve any ambiguities and improve spec quality
+- /speckit-03-plan - Create technical implementation plan
 ```

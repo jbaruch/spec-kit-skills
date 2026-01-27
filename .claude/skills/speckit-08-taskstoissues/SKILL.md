@@ -1,5 +1,5 @@
 ---
-name: speckit-taskstoissues
+name: speckit-08-taskstoissues
 description: Convert tasks to GitHub Issues for project tracking
 ---
 
@@ -100,7 +100,7 @@ Create User model in src/models/user.py
 
 ---
 
-*Generated from tasks.md by /speckit-taskstoissues*
+*Generated from tasks.md by /speckit-05-taskstoissues*
 *Feature: [###-feature-name]*
 ```
 

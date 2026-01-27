@@ -1,5 +1,5 @@
 ---
-name: speckit-clarify
+name: speckit-02-clarify
 description: Identify underspecified areas and ask targeted clarification questions
 ---
 
@@ -37,13 +37,13 @@ Before ANY action, load and internalize the project constitution:
    - `FEATURE_DIR`
    - `FEATURE_SPEC`
 
-3. If JSON parsing fails, abort and instruct user to run `/speckit-specify` first.
+3. If JSON parsing fails, abort and instruct user to run `/speckit-01-specify` first.
 
 ## Goal
 
 Detect and reduce ambiguity or missing decision points in the active feature specification and record the clarifications directly in the spec file.
 
-**Note**: This clarification workflow should run BEFORE invoking `/speckit-plan`. If the user explicitly states they are skipping clarification, proceed but warn that downstream rework risk increases.
+**Note**: This clarification workflow should run BEFORE invoking `/speckit-03-plan`. If the user explicitly states they are skipping clarification, proceed but warn that downstream rework risk increases.
 
 ## Execution Steps
 
@@ -188,12 +188,12 @@ Output:
 | [Category] | Resolved / Deferred / Clear / Outstanding |
 
 - If Outstanding or Deferred remain, recommend next steps
-- Suggested next command (`/speckit-plan`)
+- Suggested next command (`/speckit-03-plan`)
 
 ## Behavior Rules
 
 - If no meaningful ambiguities found, respond: "No critical ambiguities detected worth formal clarification." and suggest proceeding
-- If spec file missing, instruct user to run `/speckit-specify` first
+- If spec file missing, instruct user to run `/speckit-01-specify` first
 - Never exceed 5 total asked questions
 - Avoid speculative tech stack questions unless absence blocks functional clarity
 - Respect user early termination signals ("stop", "done", "proceed")
@@ -201,6 +201,6 @@ Output:
 ## Next Steps
 
 After completing clarification:
-- Run `/speckit-plan` to create the technical implementation plan
+- Run `/speckit-03-plan` to create the technical implementation plan
 
 The plan skill will validate that the spec exists before proceeding.

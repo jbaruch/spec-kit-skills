@@ -1,5 +1,5 @@
 ---
-name: speckit-constitution
+name: speckit-00-constitution
 description: Create or update project governance principles and constitution
 ---
 
@@ -17,10 +17,10 @@ Create or update the project constitution at `.specify/memory/constitution.md`. 
 - Compliance review expectations
 
 **MUST NOT contain:**
-- Technology stack (languages, frameworks, databases) - belongs in `/speckit-plan`
-- Implementation details - belongs in `/speckit-plan`
-- Specific tools or versions - belongs in `/speckit-plan`
-- API designs or data models - belongs in `/speckit-plan`
+- Technology stack (languages, frameworks, databases) - belongs in `/speckit-03-plan`
+- Implementation details - belongs in `/speckit-03-plan`
+- Specific tools or versions - belongs in `/speckit-03-plan`
+- API designs or data models - belongs in `/speckit-03-plan`
 
 The constitution defines the "laws" of the project. The plan defines how to implement features within those laws.
 
@@ -101,6 +101,6 @@ You **MUST** consider the user input before proceeding (if not empty).
 ## Next Steps
 
 After creating the constitution, you can:
-- Run `/speckit-specify` to create a feature specification
+- Run `/speckit-01-specify` to create a feature specification
 
 The constitution will be loaded and validated by all other speckit skills.

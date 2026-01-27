@@ -1,5 +1,5 @@
 ---
-name: speckit-analyze
+name: speckit-06-analyze
 description: Validate cross-artifact consistency between spec, plan, and tasks
 ---
 
@@ -35,7 +35,7 @@ Before ANY action, load the project constitution:
    ERROR: Project constitution not found at .specify/memory/constitution.md
 
    STOP - Cannot proceed without constitution.
-   Run /speckit-constitution first to define project principles.
+   Run /speckit-00-constitution first to define project principles.
    ```
 
 3. Extract principle names and MUST/SHOULD normative statements.
@@ -163,7 +163,7 @@ Output a Markdown report (no file writes):
 
 At end of report, output a concise Next Actions block:
 
-- If CRITICAL issues exist: Recommend resolving before `/speckit-implement`
+- If CRITICAL issues exist: Recommend resolving before `/speckit-07-implement`
 - If only LOW/MEDIUM: User may proceed, but provide improvement suggestions
 - Provide explicit command suggestions
 
@@ -189,7 +189,7 @@ Ask the user: "Would you like me to suggest concrete remediation edits for the t
 ## Next Steps
 
 After analysis:
-- If CRITICAL issues: Resolve them first, then re-run `/speckit-analyze`
-- If no CRITICAL issues: Run `/speckit-implement` to execute the implementation
+- If CRITICAL issues: Resolve them first, then re-run `/speckit-06-analyze`
+- If no CRITICAL issues: Run `/speckit-07-implement` to execute the implementation
 
 The implement skill will perform its own prerequisite checks before proceeding.

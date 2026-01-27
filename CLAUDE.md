@@ -10,15 +10,15 @@ This project contains a Claude Code skills bundle that replicates GitHub Spec-Ki
 
 This project uses specification-driven development. The phases are:
 
-1. `/speckit-constitution` - Define project governance principles
-2. `/speckit-specify` - Create feature specification from natural language
-3. `/speckit-clarify` - Resolve ambiguities (max 5 questions)
-4. `/speckit-plan` - Create technical implementation plan
-5. `/speckit-checklist` - Generate domain-specific quality checklists
-6. `/speckit-tasks` - Generate task breakdown
-7. `/speckit-analyze` - Validate cross-artifact consistency
-8. `/speckit-implement` - Execute implementation
-9. `/speckit-taskstoissues` - Export tasks to GitHub Issues
+1. `/speckit-00-constitution` - Define project governance principles
+2. `/speckit-01-specify` - Create feature specification from natural language
+3. `/speckit-02-clarify` - Resolve ambiguities (max 5 questions)
+4. `/speckit-03-plan` - Create technical implementation plan
+5. `/speckit-04-checklist` - Generate domain-specific quality checklists
+6. `/speckit-05-tasks` - Generate task breakdown
+7. `/speckit-06-analyze` - Validate cross-artifact consistency
+8. `/speckit-07-implement` - Execute implementation
+9. `/speckit-05-taskstoissues` - Export tasks to GitHub Issues
 
 **Never skip phases.** Each `/speckit-*` command validates its prerequisites.
 
@@ -29,19 +29,19 @@ Read `.specify/memory/constitution.md` for this project's governing principles.
 ```text
 .claude/
   skills/
-    speckit-constitution/   # Governance principles skill
-    speckit-specify/        # Feature specification skill
-    speckit-clarify/        # Clarification skill
-    speckit-plan/           # Technical planning skill
-    speckit-checklist/      # Quality checklist skill
-    speckit-tasks/          # Task generation skill
-    speckit-analyze/        # Consistency analysis skill
-    speckit-implement/      # Implementation execution skill
-    speckit-taskstoissues/  # GitHub Issues export skill
+    speckit-00-constitution/   # Governance principles skill
+    speckit-01-specify/        # Feature specification skill
+    speckit-02-clarify/        # Clarification skill
+    speckit-03-plan/           # Technical planning skill
+    speckit-04-checklist/      # Quality checklist skill
+    speckit-05-tasks/          # Task generation skill
+    speckit-06-analyze/        # Consistency analysis skill
+    speckit-07-implement/      # Implementation execution skill
+    speckit-08-taskstoissues/  # GitHub Issues export skill
 
 .specify/
   memory/
-    constitution.md         # Project constitution (created by /speckit-constitution)
+    constitution.md         # Project constitution (created by /speckit-00-constitution)
   scripts/bash/
     common.sh               # Shared functions
     check-prerequisites.sh  # Validation script
@@ -84,15 +84,15 @@ chmod +x .specify/scripts/bash/*.sh
 
 | Skill | Command | Description |
 |-------|---------|-------------|
-| Constitution | `/speckit-constitution` | Create project governance principles |
-| Specify | `/speckit-specify` | Create feature spec from description |
-| Clarify | `/speckit-clarify` | Resolve spec ambiguities |
-| Plan | `/speckit-plan` | Create technical implementation plan |
-| Checklist | `/speckit-checklist` | Generate quality checklists |
-| Tasks | `/speckit-tasks` | Generate task breakdown |
-| Analyze | `/speckit-analyze` | Validate cross-artifact consistency |
-| Implement | `/speckit-implement` | Execute implementation |
-| Tasks to Issues | `/speckit-taskstoissues` | Export tasks to GitHub Issues |
+| Constitution | `/speckit-00-constitution` | Create project governance principles |
+| Specify | `/speckit-01-specify` | Create feature spec from description |
+| Clarify | `/speckit-02-clarify` | Resolve spec ambiguities |
+| Plan | `/speckit-03-plan` | Create technical implementation plan |
+| Checklist | `/speckit-04-checklist` | Generate quality checklists |
+| Tasks | `/speckit-05-tasks` | Generate task breakdown |
+| Analyze | `/speckit-06-analyze` | Validate cross-artifact consistency |
+| Implement | `/speckit-07-implement` | Execute implementation |
+| Tasks to Issues | `/speckit-05-taskstoissues` | Export tasks to GitHub Issues |
 
 ## Key Concepts
 
@@ -117,5 +117,5 @@ The `.specify/context.json` file persists state between skill invocations:
 Checklists are "unit tests for English" - they validate REQUIREMENTS quality, not implementation. The implement skill gates on checklist completion.
 
 <!-- SPEC-KIT-TECH-START -->
-<!-- Tech stack will be inserted here by /speckit-plan -->
+<!-- Tech stack will be inserted here by /speckit-03-plan -->
 <!-- SPEC-KIT-TECH-END -->

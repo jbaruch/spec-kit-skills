@@ -1,5 +1,5 @@
 ---
-name: speckit-implement
+name: speckit-07-implement
 description: Execute implementation plan by processing all tasks in tasks.md
 ---
 
@@ -29,7 +29,7 @@ Before ANY action, load and internalize the project constitution:
    ERROR: Project constitution not found at .specify/memory/constitution.md
 
    STOP - Cannot proceed without constitution.
-   Run /speckit-constitution first to define project principles.
+   Run /speckit-00-constitution first to define project principles.
    ```
 
 3. Parse all principles, constraints, and governance rules.
@@ -48,7 +48,7 @@ Before ANY action, load and internalize the project constitution:
 3. If error or missing `tasks.md`:
    ```
    ERROR: tasks.md not found in feature directory.
-   Run /speckit-tasks first to create the task list.
+   Run /speckit-05-tasks first to create the task list.
    ```
 
 ## Checklist Gating (CRITICAL)
@@ -233,8 +233,8 @@ Before writing ANY file:
 
 | Condition | Detection | Response |
 |-----------|-----------|----------|
-| Tasks file missing | File not found | STOP with "Run /speckit-tasks first" |
-| Plan file missing | File not found | STOP with "Run /speckit-plan first" |
+| Tasks file missing | File not found | STOP with "Run /speckit-05-tasks first" |
+| Plan file missing | File not found | STOP with "Run /speckit-03-plan first" |
 | Constitution violation | Principle check fails | STOP, explain violation, suggest alternative |
 | Checklist incomplete | User says "no" | STOP gracefully with instructions |
 | Task fails | Non-zero exit or error | Report error, halt sequential tasks |
@@ -245,7 +245,7 @@ After implementation:
 
 1. **Required**: Run tests to verify functionality
 2. **Required**: Commit and push changes
-3. **Optional**: Run `/speckit-taskstoissues` to create GitHub Issues
+3. **Optional**: Run `/speckit-05-taskstoissues` to create GitHub Issues
    - Exports remaining tasks to GitHub for project tracking
    - Useful for team collaboration and sprint planning
    - Creates issues with labels, assignments, and cross-references
@@ -255,5 +255,5 @@ Suggest to user:
 Implementation complete! Next steps:
 - Run tests to verify functionality
 - Commit and push changes
-- /speckit-taskstoissues - (Optional) Export remaining tasks to GitHub Issues
+- /speckit-05-taskstoissues - (Optional) Export remaining tasks to GitHub Issues
 ```

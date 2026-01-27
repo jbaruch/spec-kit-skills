@@ -47,15 +47,15 @@ cd ..
 
 | Vanilla Spec-Kit | Skills-Based |
 |-----------------|--------------|
-| `/speckit.constitution` | `/speckit-constitution` |
-| `/speckit.specify` | `/speckit-specify` |
-| `/speckit.clarify` | `/speckit-clarify` |
-| `/speckit.plan` | `/speckit-plan` |
-| `/speckit.checklist` | `/speckit-checklist` |
-| `/speckit.tasks` | `/speckit-tasks` |
-| `/speckit.analyze` | `/speckit-analyze` |
-| `/speckit.implement` | `/speckit-implement` |
-| `/speckit.taskstoissues` | `/speckit-taskstoissues` |
+| `/speckit-00-constitution` | `/speckit-00-constitution` |
+| `/speckit-01-specify` | `/speckit-01-specify` |
+| `/speckit-02-clarify` | `/speckit-02-clarify` |
+| `/speckit-03-plan` | `/speckit-03-plan` |
+| `/speckit-04-checklist` | `/speckit-04-checklist` |
+| `/speckit-05-tasks` | `/speckit-05-tasks` |
+| `/speckit-06-analyze` | `/speckit-06-analyze` |
+| `/speckit-07-implement` | `/speckit-07-implement` |
+| `/speckit-05-taskstoissues` | `/speckit-05-taskstoissues` |
 
 Skills use hyphens (`-`) because Claude Code skills naming doesn't allow dots (`.`).
 
@@ -66,7 +66,7 @@ Run these prompts in sequence in both test directories. Compare behavior at each
 ### Phase 1: Constitution
 
 ```
-/speckit-constitution
+/speckit-00-constitution
 
 Create a constitution for a simple task management CLI app with these principles:
 1. Simplicity First - Keep the code simple and readable
@@ -82,7 +82,7 @@ Create a constitution for a simple task management CLI app with these principles
 ### Phase 2: Specify
 
 ```
-/speckit-specify I want to build a simple task management CLI that lets users
+/speckit-01-specify I want to build a simple task management CLI that lets users
 add tasks, list tasks, and mark tasks as complete. Tasks should have a title,
 optional description, and status (pending/done).
 ```
@@ -96,7 +96,7 @@ optional description, and status (pending/done).
 ### Phase 3: Plan
 
 ```
-/speckit-plan I'm building with Python 3.11 using Click for CLI and SQLite for storage
+/speckit-03-plan I'm building with Python 3.11 using Click for CLI and SQLite for storage
 ```
 
 **Verify:**
@@ -108,7 +108,7 @@ optional description, and status (pending/done).
 ### Phase 4: Tasks
 
 ```
-/speckit-tasks
+/speckit-05-tasks
 ```
 
 **Verify:**
@@ -124,7 +124,7 @@ Test workflow enforcement and abuse prevention.
 
 Without running specify first:
 ```
-/speckit-plan Python 3.11, Click, SQLite
+/speckit-03-plan Python 3.11, Click, SQLite
 ```
 
 **Expected:** BLOCKED - missing prerequisite
@@ -133,7 +133,7 @@ Without running specify first:
 
 On main branch (not feature branch):
 ```
-/speckit-tasks
+/speckit-05-tasks
 ```
 
 **Expected:** BLOCKED - invalid branch
@@ -145,7 +145,7 @@ git checkout -b invalid-no-number
 ```
 
 ```
-/speckit-specify test
+/speckit-01-specify test
 ```
 
 **Expected:** BLOCKED - invalid branch format
@@ -153,7 +153,7 @@ git checkout -b invalid-no-number
 ### Test: Path Traversal (Should Block)
 
 ```
-/speckit-specify ../../../etc/passwd
+/speckit-01-specify ../../../etc/passwd
 ```
 
 **Expected:** BLOCKED - invalid characters
@@ -161,7 +161,7 @@ git checkout -b invalid-no-number
 ### Test: Empty Input (Partially Handled)
 
 ```
-/speckit-specify
+/speckit-01-specify
 ```
 
 **Expected:** Should prompt for description or block

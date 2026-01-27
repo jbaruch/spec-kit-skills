@@ -1,5 +1,5 @@
 ---
-name: speckit-plan
+name: speckit-03-plan
 description: Create technical implementation plan from feature specification
 ---
 
@@ -29,7 +29,7 @@ Before ANY action, load and internalize the project constitution:
    ERROR: Project constitution not found at .specify/memory/constitution.md
 
    STOP - Cannot proceed without constitution.
-   Run /speckit-constitution first to define project principles.
+   Run /speckit-00-constitution first to define project principles.
    ```
 
 3. Parse all principles, constraints, and governance rules.
@@ -52,7 +52,7 @@ Before ANY action, load and internalize the project constitution:
 3. If error or missing spec.md:
    ```
    ERROR: spec.md not found in feature directory.
-   Run /speckit-specify first to create the feature specification.
+   Run /speckit-01-specify first to create the feature specification.
    ```
 
 ## Execution Flow
@@ -168,16 +168,16 @@ Output:
 
 After completing the plan:
 
-1. **Recommended**: Run `/speckit-checklist` to create domain-specific quality checklists
+1. **Recommended**: Run `/speckit-04-checklist` to create domain-specific quality checklists
    - Generates "unit tests for English" to validate requirements quality
    - Helps catch requirement gaps before implementation
-   - Required to reach 100% before `/speckit-implement`
+   - Required to reach 100% before `/speckit-07-implement`
 
-2. **Required**: Run `/speckit-tasks` to generate the task breakdown
+2. **Required**: Run `/speckit-05-tasks` to generate the task breakdown
 
 Suggest to user:
 ```
 Plan complete! Next steps:
-- /speckit-checklist - (Recommended) Generate quality checklists for requirements validation
-- /speckit-tasks - Generate task breakdown from plan
+- /speckit-04-checklist - (Recommended) Generate quality checklists for requirements validation
+- /speckit-05-tasks - Generate task breakdown from plan
 ```

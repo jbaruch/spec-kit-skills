@@ -1,5 +1,5 @@
 ---
-name: speckit-tasks
+name: speckit-05-tasks
 description: Generate actionable task breakdown from plan and specification
 ---
 
@@ -38,7 +38,7 @@ Before ANY action, load and internalize the project constitution:
 3. If error or missing `plan.md`:
    ```
    ERROR: plan.md not found in feature directory.
-   Run /speckit-plan first to create the implementation plan.
+   Run /speckit-03-plan first to create the implementation plan.
    ```
 
 ## Execution Flow
@@ -153,18 +153,18 @@ Output:
 
 After generating tasks:
 
-1. **Recommended**: Run `/speckit-analyze` to validate cross-artifact consistency
+1. **Recommended**: Run `/speckit-06-analyze` to validate cross-artifact consistency
    - Checks all user stories have corresponding tasks
    - Verifies all tasks trace back to requirements
    - Detects orphaned artifacts and constitution violations
    - Catches issues before implementation begins
 
-2. **Required**: Run `/speckit-implement` to execute the implementation
+2. **Required**: Run `/speckit-07-implement` to execute the implementation
    - Note: Requires all checklists to be 100% complete
 
 Suggest to user:
 ```
 Tasks generated! Next steps:
-- /speckit-analyze - (Recommended) Validate consistency between spec, plan, and tasks
-- /speckit-implement - Execute implementation (requires 100% checklist completion)
+- /speckit-06-analyze - (Recommended) Validate consistency between spec, plan, and tasks
+- /speckit-07-implement - Execute implementation (requires 100% checklist completion)
 ```

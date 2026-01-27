@@ -31,7 +31,7 @@ chmod +x your-project/.specify/scripts/bash/*.sh
 3. Start using skills in Claude Code:
 
 ```
-/speckit-constitution
+/speckit-00-constitution
 ```
 
 ### Workflow Overview
@@ -40,15 +40,15 @@ The workflow follows strict phase ordering. Each phase builds on the previous:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│  1. /speckit-constitution  →  Define project governance principles  │
-│  2. /speckit-specify       →  Create feature specification          │
-│  3. /speckit-clarify       →  Resolve ambiguities (optional)        │
-│  4. /speckit-plan          →  Create technical implementation plan  │
-│  5. /speckit-checklist     →  Generate quality checklists           │
-│  6. /speckit-tasks         →  Generate task breakdown               │
-│  7. /speckit-analyze       →  Validate cross-artifact consistency   │
-│  8. /speckit-implement     →  Execute implementation                │
-│  9. /speckit-taskstoissues →  Export tasks to GitHub Issues         │
+│  1. /speckit-00-constitution  →  Define project governance principles  │
+│  2. /speckit-01-specify       →  Create feature specification          │
+│  3. /speckit-02-clarify       →  Resolve ambiguities (optional)        │
+│  4. /speckit-03-plan          →  Create technical implementation plan  │
+│  5. /speckit-04-checklist     →  Generate quality checklists           │
+│  6. /speckit-05-tasks         →  Generate task breakdown               │
+│  7. /speckit-06-analyze       →  Validate cross-artifact consistency   │
+│  8. /speckit-07-implement     →  Execute implementation                │
+│  9. /speckit-08-taskstoissues →  Export tasks to GitHub Issues         │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -75,7 +75,7 @@ Understanding what belongs in each phase is critical:
 
 ## Skills Reference
 
-### /speckit-constitution
+### /speckit-00-constitution
 
 Creates project governance principles in `.specify/memory/constitution.md`.
 
@@ -94,7 +94,7 @@ Creates project governance principles in `.specify/memory/constitution.md`.
 
 ---
 
-### /speckit-specify
+### /speckit-01-specify
 
 Creates a feature specification from natural language description.
 
@@ -109,12 +109,12 @@ Creates a feature specification from natural language description.
 
 **Example:**
 ```
-/speckit-specify Build a CLI task manager with add, list, and complete commands
+/speckit-01-specify Build a CLI task manager with add, list, and complete commands
 ```
 
 ---
 
-### /speckit-clarify
+### /speckit-02-clarify
 
 Identifies underspecified areas and asks targeted clarification questions.
 
@@ -127,7 +127,7 @@ Identifies underspecified areas and asks targeted clarification questions.
 
 ---
 
-### /speckit-plan
+### /speckit-03-plan
 
 Creates technical implementation plan with technology decisions.
 
@@ -148,7 +148,7 @@ Creates technical implementation plan with technology decisions.
 
 ---
 
-### /speckit-checklist
+### /speckit-04-checklist
 
 Generates domain-specific quality checklists for requirements validation.
 
@@ -161,7 +161,7 @@ Generates domain-specific quality checklists for requirements validation.
 
 ---
 
-### /speckit-tasks
+### /speckit-05-tasks
 
 Generates actionable task breakdown from plan and specification.
 
@@ -183,7 +183,7 @@ Where:
 
 ---
 
-### /speckit-analyze
+### /speckit-06-analyze
 
 Validates cross-artifact consistency between spec, plan, and tasks.
 
@@ -197,7 +197,7 @@ Validates cross-artifact consistency between spec, plan, and tasks.
 
 ---
 
-### /speckit-implement
+### /speckit-07-implement
 
 Executes implementation plan by processing tasks in order.
 
@@ -213,7 +213,7 @@ Executes implementation plan by processing tasks in order.
 
 ---
 
-### /speckit-taskstoissues
+### /speckit-05-taskstoissues
 
 Exports tasks to GitHub Issues for project tracking.
 
@@ -229,15 +229,15 @@ After running the full workflow:
 your-project/
 ├── .claude/
 │   └── skills/
-│       ├── speckit-constitution/
-│       ├── speckit-specify/
-│       ├── speckit-clarify/
-│       ├── speckit-plan/
-│       ├── speckit-checklist/
-│       ├── speckit-tasks/
-│       ├── speckit-analyze/
-│       ├── speckit-implement/
-│       └── speckit-taskstoissues/
+│       ├── speckit-00-constitution/
+│       ├── speckit-01-specify/
+│       ├── speckit-02-clarify/
+│       ├── speckit-03-plan/
+│       ├── speckit-04-checklist/
+│       ├── speckit-05-tasks/
+│       ├── speckit-06-analyze/
+│       ├── speckit-07-implement/
+│       └── speckit-08-taskstoissues/
 ├── .specify/
 │   ├── memory/
 │   │   └── constitution.md      # Project governance
@@ -270,12 +270,12 @@ The skills use bash scripts to enforce proper workflow:
 
 ### Prerequisite Checking
 
-Skills automatically validate prerequisites. If you try to run `/speckit-plan` without a specification:
+Skills automatically validate prerequisites. If you try to run `/speckit-03-plan` without a specification:
 
 ```
 BLOCKED: Missing prerequisite
 - Required: specs/NNN-feature-name/spec.md
-- Run /speckit-specify first
+- Run /speckit-01-specify first
 ```
 
 ### Branch Validation
@@ -290,7 +290,7 @@ The workflow requires proper Git branch naming:
 | Aspect | Vanilla Spec-Kit | Spec-Kit Skills |
 |--------|------------------|-----------------|
 | Installation | `uv tool install specify-cli` | Copy directories |
-| Commands | `/speckit.constitution` | `/speckit-constitution` |
+| Commands | `/speckit.constitution` | `/speckit-00-constitution` |
 | Prerequisites | Bash scripts | Same bash scripts |
 | Workflow enforcement | Identical | Identical |
 | Phase separation | Identical | Identical |
@@ -326,7 +326,7 @@ Check the current feature context:
 
 ### Constitution has tech stack
 
-If your constitution contains technology choices (languages, frameworks, databases), this violates phase separation. Tech stack belongs ONLY in `/speckit-plan`. Re-run `/speckit-constitution` to fix.
+If your constitution contains technology choices (languages, frameworks, databases), this violates phase separation. Tech stack belongs ONLY in `/speckit-03-plan`. Re-run `/speckit-00-constitution` to fix.
 
 ## Example: Task Management CLI
 
@@ -334,34 +334,34 @@ Here's a complete workflow example:
 
 ```bash
 # 1. Initialize governance
-/speckit-constitution
+/speckit-00-constitution
 # Answer questions about project principles
 
 # 2. Create feature specification
-/speckit-specify Build a CLI task manager that lets users add tasks with
+/speckit-01-specify Build a CLI task manager that lets users add tasks with
 title and description, list all tasks, and mark tasks as complete.
 Use SQLite for storage.
 
 # 3. Clarify requirements (optional but recommended)
-/speckit-clarify
+/speckit-02-clarify
 
 # 4. Create technical plan
-/speckit-plan
+/speckit-03-plan
 
 # 5. Generate quality checklists
-/speckit-checklist
+/speckit-04-checklist
 
 # 6. Generate task breakdown
-/speckit-tasks
+/speckit-05-tasks
 
 # 7. Validate consistency
-/speckit-analyze
+/speckit-06-analyze
 
 # 8. Implement (requires 100% checklist completion)
-/speckit-implement
+/speckit-07-implement
 
 # 9. Export to GitHub Issues (optional)
-/speckit-taskstoissues
+/speckit-05-taskstoissues
 ```
 
 ## Upstream Relationship

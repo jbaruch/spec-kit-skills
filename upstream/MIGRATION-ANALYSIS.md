@@ -8,7 +8,7 @@ Research analysis for migrating GitHub spec-kit agents to Claude skills while pr
 
 Migration is **FEASIBLE** with straightforward architecture. Claude skills are an open standard supported by Claude Code, OpenAI Codex CLI, and Gemini CLI.
 
-**Core insight:** Constitution is a PROJECT ARTIFACT (like `spec.md`), not framework rules. The `/speckit-constitution` skill creates it; all other skills load and validate against it.
+**Core insight:** Constitution is a PROJECT ARTIFACT (like `spec.md`), not framework rules. The `/speckit-00-constitution` skill creates it; all other skills load and validate against it.
 
 **Success criteria:**
 
@@ -50,15 +50,15 @@ Migration is **FEASIBLE** with straightforward architecture. Claude skills are a
 Spec_Kit_Template_v0_0_90/
 ├── .github/
 │   ├── agents/                    # Agent files (9 total)
-│   │   ├── speckit.constitution.agent.md
-│   │   ├── speckit.specify.agent.md
-│   │   ├── speckit.clarify.agent.md
-│   │   ├── speckit.plan.agent.md
-│   │   ├── speckit.checklist.agent.md
-│   │   ├── speckit.tasks.agent.md
-│   │   ├── speckit.analyze.agent.md
-│   │   ├── speckit.implement.agent.md
-│   │   └── speckit.taskstoissues.agent.md
+│   │   ├── speckit-00-constitution.agent.md
+│   │   ├── speckit-01-specify.agent.md
+│   │   ├── speckit-02-clarify.agent.md
+│   │   ├── speckit-03-plan.agent.md
+│   │   ├── speckit-04-checklist.agent.md
+│   │   ├── speckit-05-tasks.agent.md
+│   │   ├── speckit-06-analyze.agent.md
+│   │   ├── speckit-07-implement.agent.md
+│   │   └── speckit-05-taskstoissues.agent.md
 │   └── prompts/                   # Prompt stubs (trigger only, ~30 bytes each)
 │       └── speckit.*.prompt.md
 ├── .specify/
@@ -90,30 +90,30 @@ Implements Constitution → Specify → Clarify → Plan → Tasks → Analyze �
 
 | Agent | Size | Purpose | Key Output |
 |-------|------|---------|------------|
-| speckit.constitution | 5.2KB | Create project governance principles | `.specify/memory/constitution.md` |
-| speckit.specify | 12.8KB | Feature specs from natural language | `spec.md`, branches, validation checklist |
-| speckit.clarify | 11.3KB | Structured questioning (max 5: 3 initial + 2 follow-up) | Clarification answers in spec |
-| speckit.plan | 3.1KB | Technical architecture decisions | `plan.md`, `research.md`, `data-model.md`, `contracts/` |
-| speckit.checklist | 16.8KB | "Unit Tests for English"—validates REQUIREMENTS quality, not implementation | `checklists/*.md` |
-| speckit.tasks | 6.3KB | Executable work unit breakdown | `tasks.md` with phases |
-| speckit.analyze | 7.2KB | Cross-artifact consistency validation | Validation report |
-| speckit.implement | 7.5KB | TDD workflow + ignore file generation | Code + tests + .gitignore/.dockerignore |
-| speckit.taskstoissues | 1.1KB | Export tasks to GitHub Issues | GitHub Issues |
+| speckit-00-constitution | 5.2KB | Create project governance principles | `.specify/memory/constitution.md` |
+| speckit-01-specify | 12.8KB | Feature specs from natural language | `spec.md`, branches, validation checklist |
+| speckit-02-clarify | 11.3KB | Structured questioning (max 5: 3 initial + 2 follow-up) | Clarification answers in spec |
+| speckit-03-plan | 3.1KB | Technical architecture decisions | `plan.md`, `research.md`, `data-model.md`, `contracts/` |
+| speckit-04-checklist | 16.8KB | "Unit Tests for English"—validates REQUIREMENTS quality, not implementation | `checklists/*.md` |
+| speckit-05-tasks | 6.3KB | Executable work unit breakdown | `tasks.md` with phases |
+| speckit-06-analyze | 7.2KB | Cross-artifact consistency validation | Validation report |
+| speckit-07-implement | 7.5KB | TDD workflow + ignore file generation | Code + tests + .gitignore/.dockerignore |
+| speckit-05-taskstoissues | 1.1KB | Export tasks to GitHub Issues | GitHub Issues |
 
 ### Key Mechanisms
 
 **Handoffs via YAML frontmatter:**
 
 ```yaml
-# From speckit.specify.agent.md
+# From speckit-01-specify.agent.md
 ---
 description: Create or update the feature specification...
 handoffs: 
   - label: Build Technical Plan
-    agent: speckit.plan
+    agent: speckit-03-plan
     prompt: Create a plan for the spec. I am building with...
   - label: Clarify Spec Requirements
-    agent: speckit.clarify
+    agent: speckit-02-clarify
     prompt: Clarify specification requirements
     send: true
 ---
@@ -230,7 +230,7 @@ Hooks exist at two levels: global (in `settings.json`) and agent-scoped (in skil
 
 | Spec-Kit | Claude Skills |
 |----------|---------------|
-| `/speckit.specify` | `name: speckit-specify` |
+| `/speckit-01-specify` | `name: speckit-specify` |
 | `.github/prompts/*.prompt.md` | `.claude/skills/*/SKILL.md` |
 | `.specify/scripts/` | `scripts/` + Bash tool |
 | `$ARGUMENTS` | `$ARGUMENTS` (same), plus `$1`, `$2` for positional |
@@ -341,7 +341,7 @@ project/
 │       └── checklists/
 └── .specify/
     ├── memory/
-    │   └── constitution.md        # PROJECT ARTIFACT: created by /speckit-constitution
+    │   └── constitution.md        # PROJECT ARTIFACT: created by /speckit-00-constitution
     ├── scripts/bash/              # KEEP HERE for portability
     │   ├── common.sh
     │   ├── check-prerequisites.sh
@@ -354,7 +354,7 @@ project/
 
 ### Constitution Enforcement
 
-**The constitution is a PROJECT ARTIFACT, not framework rules.** Spec-kit provides a template with placeholders. Users run `/speckit-constitution` to create their project's specific governance principles.
+**The constitution is a PROJECT ARTIFACT, not framework rules.** Spec-kit provides a template with placeholders. Users run `/speckit-00-constitution` to create their project's specific governance principles.
 
 **Enforcement hierarchy:**
 
@@ -400,7 +400,7 @@ cat .specify/context.json | jq -r '.artifacts.spec // empty'
 **Recommendation:** Check context.json first for speed; fall back to script if context.json missing or stale.
 
 ```yaml
-# .claude/skills/speckit-plan/SKILL.md
+# .claude/skills/speckit-03-plan/SKILL.md
 ---
 name: speckit-plan
 description: Create technical architecture from specification
@@ -422,7 +422,7 @@ disable-model-invocation: true
    ```
 
 3. If no spec.md found, STOP and tell user:
-   "No specification found. Run /speckit-specify first."
+   "No specification found. Run /speckit-01-specify first."
 
 ## Then proceed with planning...
 ```
@@ -448,7 +448,7 @@ Never skip phases. Each /speckit-* command validates its prerequisites.
 Read .specify/memory/constitution.md for this project's governing principles.
 
 <!-- SPEC-KIT-TECH-START -->
-<!-- Tech stack will be inserted here by /speckit-plan -->
+<!-- Tech stack will be inserted here by /speckit-03-plan -->
 <!-- SPEC-KIT-TECH-END -->
 ```
 
@@ -584,10 +584,10 @@ This project uses:
 - Preserves manual additions outside markers
 - Adds new technologies from current plan without duplicating
 
-**Called by:** `/speckit.plan` after Phase 1 (Design & Contracts)
+**Called by:** `/speckit-03-plan` after Phase 1 (Design & Contracts)
 
 ```bash
-# From speckit.plan.agent.md
+# From speckit-03-plan.agent.md
 .specify/scripts/bash/update-agent-context.sh copilot
 ```
 
@@ -656,13 +656,13 @@ Every skill must handle these error conditions gracefully:
 | Condition | Detection | Response |
 |-----------|-----------|----------|
 | Git unavailable | `git rev-parse 2>/dev/null` fails | Check `SPECIFY_FEATURE` env var; if unset, prompt user to set it |
-| Constitution missing | File not found at `.specify/memory/constitution.md` | STOP with "Run /speckit-constitution first" |
+| Constitution missing | File not found at `.specify/memory/constitution.md` | STOP with "Run /speckit-00-constitution first" |
 | Constitution malformed | Missing required sections (Principles, Constraints) | STOP with specific parsing error, suggest manual fix |
 | context.json missing | File not found | Create with defaults (speckit-specify) or STOP with prerequisite error (other skills) |
 | context.json corrupted | JSON parse fails | Backup corrupted file, recreate from filesystem scan |
-| Feature directory missing | `specs/NNN-*` not found | STOP with "Run /speckit-specify first" |
-| User declines checklist bypass | Response is "no" or empty | STOP gracefully: "Implementation paused. Complete checklists and re-run /speckit-implement" |
-| Spec has `[NEEDS CLARIFICATION]` | Grep finds markers | Warn user, suggest `/speckit-clarify` before proceeding |
+| Feature directory missing | `specs/NNN-*` not found | STOP with "Run /speckit-01-specify first" |
+| User declines checklist bypass | Response is "no" or empty | STOP gracefully: "Implementation paused. Complete checklists and re-run /speckit-07-implement" |
+| Spec has `[NEEDS CLARIFICATION]` | Grep finds markers | Warn user, suggest `/speckit-02-clarify` before proceeding |
 
 **Recovery script:** Skills can call `check-prerequisites.sh --repair` to attempt automatic recovery:
 - Rebuilds context.json from filesystem
@@ -677,16 +677,16 @@ Every skill must handle these error conditions gracefully:
 
 | Source (spec-kit) | Target (Claude Skills) |
 |-------------------|------------------------|
-| `.github/agents/speckit.constitution.agent.md` | `.claude/skills/speckit-constitution/SKILL.md` |
-| `.github/agents/speckit.specify.agent.md` | `.claude/skills/speckit-specify/SKILL.md` |
-| `.github/agents/speckit.clarify.agent.md` | `.claude/skills/speckit-clarify/SKILL.md` |
-| `.github/agents/speckit.plan.agent.md` | `.claude/skills/speckit-plan/SKILL.md` |
-| `.github/agents/speckit.checklist.agent.md` | `.claude/skills/speckit-checklist/SKILL.md` |
-| `.github/agents/speckit.tasks.agent.md` | `.claude/skills/speckit-tasks/SKILL.md` |
-| `.github/agents/speckit.analyze.agent.md` | `.claude/skills/speckit-analyze/SKILL.md` |
-| `.github/agents/speckit.implement.agent.md` | `.claude/skills/speckit-implement/SKILL.md` |
-| `.github/agents/speckit.taskstoissues.agent.md` | `.claude/skills/speckit-taskstoissues/SKILL.md` |
-| `.specify/memory/constitution.md` | `.claude/skills/speckit-constitution/references/constitution-template.md` |
+| `.github/agents/speckit-00-constitution.agent.md` | `.claude/skills/speckit-00-constitution/SKILL.md` |
+| `.github/agents/speckit-01-specify.agent.md` | `.claude/skills/speckit-01-specify/SKILL.md` |
+| `.github/agents/speckit-02-clarify.agent.md` | `.claude/skills/speckit-02-clarify/SKILL.md` |
+| `.github/agents/speckit-03-plan.agent.md` | `.claude/skills/speckit-03-plan/SKILL.md` |
+| `.github/agents/speckit-04-checklist.agent.md` | `.claude/skills/speckit-04-checklist/SKILL.md` |
+| `.github/agents/speckit-05-tasks.agent.md` | `.claude/skills/speckit-05-tasks/SKILL.md` |
+| `.github/agents/speckit-06-analyze.agent.md` | `.claude/skills/speckit-06-analyze/SKILL.md` |
+| `.github/agents/speckit-07-implement.agent.md` | `.claude/skills/speckit-07-implement/SKILL.md` |
+| `.github/agents/speckit-05-taskstoissues.agent.md` | `.claude/skills/speckit-05-taskstoissues/SKILL.md` |
+| `.specify/memory/constitution.md` | `.claude/skills/speckit-00-constitution/references/constitution-template.md` |
 | `.specify/templates/*.md` | `.claude/skills/*/references/` |
 | `.specify/scripts/bash/*.sh` | Keep in `.specify/scripts/bash/` (portability) |
 
@@ -703,12 +703,12 @@ Every skill must handle these error conditions gracefully:
 - Error handling utilities in `check-prerequisites.sh`
 
 **Acceptance criteria:**
-- [ ] `/speckit-constitution` creates valid constitution from template
+- [ ] `/speckit-00-constitution` creates valid constitution from template
 - [ ] Agent files include `SPEC-KIT-TECH-START/END` markers
 - [ ] PreToolUse hook validates constitution exists
 - [ ] context.json schema documented with all fields
 
-**Key distinction:** The TEMPLATE (with `[PRINCIPLE_1_NAME]` placeholders) goes into skill references. The PROJECT's actual constitution is created when user runs `/speckit-constitution`.
+**Key distinction:** The TEMPLATE (with `[PRINCIPLE_1_NAME]` placeholders) goes into skill references. The PROJECT's actual constitution is created when user runs `/speckit-00-constitution`.
 
 ### Phase 2: Specification & Clarification (Weeks 2-3)
 
@@ -722,8 +722,8 @@ Every skill must handle these error conditions gracefully:
 **Git integration:** Branch creation, automatic feature numbering, prefix-based feature lookup, `SPECIFY_FEATURE` env var support
 
 **Acceptance criteria:**
-- [ ] `/speckit-specify` creates feature branch, spec.md, and context.json
-- [ ] `/speckit-clarify` respects 5-question limit across sessions
+- [ ] `/speckit-01-specify` creates feature branch, spec.md, and context.json
+- [ ] `/speckit-02-clarify` respects 5-question limit across sessions
 - [ ] Both skills load and validate constitution
 
 ### Phase 3: Planning & Tasks (Week 4)
@@ -737,9 +737,9 @@ Every skill must handle these error conditions gracefully:
 3. **speckit-tasks** (6.3KB) — User story phases, task ID format (`T001 [P] [US1]`), parallel markers
 
 **Acceptance criteria:**
-- [ ] `/speckit-plan` updates CLAUDE.md/AGENTS.md/GEMINI.md via update-agent-context.sh
-- [ ] `/speckit-checklist` creates domain-specific checklists, updates context.json
-- [ ] `/speckit-tasks` generates correctly formatted task IDs
+- [ ] `/speckit-03-plan` updates CLAUDE.md/AGENTS.md/GEMINI.md via update-agent-context.sh
+- [ ] `/speckit-04-checklist` creates domain-specific checklists, updates context.json
+- [ ] `/speckit-05-tasks` generates correctly formatted task IDs
 
 ### Phase 4: Analysis & Implementation (Week 5)
 
@@ -752,10 +752,10 @@ Every skill must handle these error conditions gracefully:
 3. **speckit-taskstoissues** (1.1KB) — GitHub Issues export
 
 **Acceptance criteria:**
-- [ ] `/speckit-analyze` detects spec↔plan↔tasks inconsistencies
-- [ ] `/speckit-implement` halts on incomplete checklists (prompts user)
-- [ ] `/speckit-implement` generates appropriate ignore files
-- [ ] `/speckit-taskstoissues` creates properly formatted GitHub issues
+- [ ] `/speckit-06-analyze` detects spec↔plan↔tasks inconsistencies
+- [ ] `/speckit-07-implement` halts on incomplete checklists (prompts user)
+- [ ] `/speckit-07-implement` generates appropriate ignore files
+- [ ] `/speckit-05-taskstoissues` creates properly formatted GitHub issues
 
 ### Phase 5: Integration & Polish (Week 5-6)
 
@@ -779,8 +779,8 @@ Every skill must handle these error conditions gracefully:
 ## Next Steps
 
 After completing the specification, you can:
-- Run `/speckit-clarify` if any `[NEEDS CLARIFICATION]` markers exist
-- Run `/speckit-plan` to create the technical implementation plan
+- Run `/speckit-02-clarify` if any `[NEEDS CLARIFICATION]` markers exist
+- Run `/speckit-03-plan` to create the technical implementation plan
 
 These skills will validate that this spec exists before proceeding.
 ```
@@ -893,7 +893,7 @@ Before ANY action, load and internalize the project constitution:
    ERROR: Project constitution not found at .specify/memory/constitution.md
    
    STOP - Cannot proceed without constitution.
-   Run /speckit-constitution first to define project principles.
+   Run /speckit-00-constitution first to define project principles.
    ```
 
 3. Parse all principles, constraints, and governance rules.
@@ -907,7 +907,7 @@ Before ANY action, load and internalize the project constitution:
 3. If error or missing `spec.md`:
    ```
    ERROR: spec.md not found in feature directory.
-   Run /speckit-specify first to create the feature specification.
+   Run /speckit-01-specify first to create the feature specification.
    ```
 
 ## Instructions
@@ -932,7 +932,7 @@ Before writing ANY artifact:
 
 ### Task Format Pattern
 
-From `speckit.tasks.agent.md`:
+From `speckit-05-tasks.agent.md`:
 
 ```markdown
 - [ ] T001 Create project structure per implementation plan
@@ -1008,7 +1008,7 @@ You can reply with the option letter (e.g., "A"), accept the recommendation by s
 **Question limits:**
 - Initial questions: Up to 3 (skip if already clear from $ARGUMENTS)
 - Follow-up questions: Up to 2 more (only if ≥2 scenario classes remain unclear)
-- Total cap: 5 questions per `/speckit.clarify` session
+- Total cap: 5 questions per `/speckit-02-clarify` session
 
 ### Implement Checklist Gating
 
@@ -1037,7 +1037,7 @@ CONSTITUTION=".specify/memory/constitution.md"
 
 if [[ ! -f "$CONSTITUTION" ]]; then
   echo "ERROR: No project constitution found at $CONSTITUTION"
-  echo "Run /speckit-constitution first to define project principles."
+  echo "Run /speckit-00-constitution first to define project principles."
   exit 1
 fi
 

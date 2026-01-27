@@ -96,8 +96,8 @@ Testing workflow enforcement and abuse prevention. Both implementations share th
 
 | Test Case | Description | Vanilla | Skills | Expected |
 |-----------|-------------|:-------:|:------:|----------|
-| Skip to plan | Run `/speckit-plan` without spec | BLOCKED | BLOCKED | BLOCKED |
-| Skip to tasks | Run `/speckit-tasks` without plan | BLOCKED | BLOCKED | BLOCKED |
+| Skip to plan | Run `/speckit-03-plan` without spec | BLOCKED | BLOCKED | BLOCKED |
+| Skip to tasks | Run `/speckit-05-tasks` without plan | BLOCKED | BLOCKED | BLOCKED |
 | Wrong branch | Run skills on `main` instead of feature branch | BLOCKED | BLOCKED | BLOCKED |
 | Invalid branch number | Use `abc-feature` instead of `001-feature` | BLOCKED | BLOCKED | BLOCKED |
 | Path traversal | Try `../../../etc/passwd` in feature name | BLOCKED | BLOCKED | BLOCKED |
@@ -114,7 +114,7 @@ Testing workflow enforcement and abuse prevention. Both implementations share th
 ```
 BLOCKED: Missing prerequisite
 - Required: specs/NNN-feature/spec.md
-- Run /speckit-specify first
+- Run /speckit-01-specify first
 ```
 
 **Wrong Branch**
@@ -159,7 +159,7 @@ No security vulnerabilities found in either implementation.
 | Aspect | Vanilla Spec-Kit | Spec-Kit Skills |
 |--------|:----------------:|:---------------:|
 | Installation | CLI tool required | Copy directories only |
-| Command naming | `/speckit.constitution` | `/speckit-constitution` |
+| Command naming | `/speckit-00-constitution` | `/speckit-00-constitution` |
 | Phase separation | Correct | Correct |
 | Prerequisite checking | Bash scripts | Same bash scripts |
 | Branch validation | Yes | Yes |

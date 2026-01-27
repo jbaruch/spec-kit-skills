@@ -11,7 +11,7 @@ Constitution → Specify → Plan → Tasks → Implement
 
 ---
 
-## 1. Constitution (`/speckit-constitution`)
+## 1. Constitution (`/speckit-00-constitution`)
 
 **Purpose**: Define project governance principles and development guidelines.
 
@@ -59,7 +59,7 @@ All features must have comprehensive test coverage before being considered compl
 
 ---
 
-## 2. Specify (`/speckit-specify`)
+## 2. Specify (`/speckit-01-specify`)
 
 **Purpose**: Define WHAT users need and WHY (requirements, not implementation).
 
@@ -96,7 +96,7 @@ All features must have comprehensive test coverage before being considered compl
 
 ---
 
-## 3. Plan (`/speckit-plan`)
+## 3. Plan (`/speckit-03-plan`)
 
 **Purpose**: Define HOW to implement (technology choices, architecture).
 
@@ -125,7 +125,7 @@ All features must have comprehensive test coverage before being considered compl
 
 ---
 
-## 4. Tasks (`/speckit-tasks`)
+## 4. Tasks (`/speckit-05-tasks`)
 
 **Purpose**: Break down the plan into actionable work items.
 

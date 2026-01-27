@@ -1,5 +1,5 @@
 ---
-name: speckit-checklist
+name: speckit-04-checklist
 description: Generate domain-specific quality checklists for requirements validation
 ---
 
@@ -253,8 +253,8 @@ Output:
 
 After creating and resolving checklists:
 
-1. **If gaps remain**: Run `/speckit-checklist` again to continue gap resolution
-2. **When all gaps resolved**: Run `/speckit-tasks` to generate the task breakdown
+1. **If gaps remain**: Run `/speckit-04-checklist` again to continue gap resolution
+2. **When all gaps resolved**: Run `/speckit-05-tasks` to generate the task breakdown
 
 Suggest to user:
 ```
@@ -264,8 +264,8 @@ Gaps resolved: X (added to spec)
 Gaps remaining: Y
 
 Next steps:
-- /speckit-checklist - (If gaps remain) Continue resolving requirement gaps
-- /speckit-tasks - Generate task breakdown from plan
+- /speckit-04-checklist - (If gaps remain) Continue resolving requirement gaps
+- /speckit-05-tasks - Generate task breakdown from plan
 ```
 
-**Note:** `/speckit-implement` requires all checklists to be 100% complete (no `[ ]` items).
+**Note:** `/speckit-07-implement` requires all checklists to be 100% complete (no `[ ]` items).
