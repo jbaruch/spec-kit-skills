@@ -90,9 +90,9 @@ Example output:
 - **IF EXISTS**: Read `research.md` for technical decisions
 - **IF EXISTS**: Read `quickstart.md` for integration scenarios
 
-### 2. Tessl Detection (Optional but Recommended)
+### 2. Tessl Initialization (Optional but Recommended)
 
-Check if Tessl is available for later use.
+Initialize Tessl and install tiles for the planned tech stack BEFORE any implementation begins.
 
 **Why Tessl:** AI agents often drift, misuse APIs, or fall back on outdated patterns when working with libraries. Tessl provides 10,000+ "tiles" of agent-optimized documentation that keeps implementation aligned with current best practices and prevents spinning on obscure library usage.
 
@@ -118,10 +118,50 @@ Check if Tessl is available for later use.
    │  Quick install: npm install -g tessl                            │
    ╰──────────────────────────────────────────────────────────────────╯
    ```
+   Then proceed without Tessl.
 
-3. **Store TESSL_AVAILABLE status** for use after Setup phase.
+3. **If Tessl IS available**, initialize and install tiles from plan.md:
 
-**Note:** Tessl initialization happens AFTER Setup phase - see step 5.1 below.
+   a. Initialize Tessl:
+   ```bash
+   tessl init --agent claude-code
+   ```
+
+   b. Extract technologies from plan.md **Technical Context** section:
+   - Language/Version (e.g., Python, Node.js, TypeScript)
+   - Primary Dependencies (e.g., Click, Express, React)
+   - Storage (e.g., SQLite, PostgreSQL, MongoDB)
+   - Testing (e.g., pytest, Jest, Vitest)
+   - Any other frameworks/libraries mentioned
+
+   c. For each technology, search for available tiles and install:
+   ```bash
+   # Search for tile
+   tessl search <technology>
+
+   # If tile found, install it
+   tessl install tessl/<tile-name>
+   ```
+
+   Example for Python + Click + SQLite + pytest stack:
+   ```bash
+   tessl search python      # → install tessl/python if found
+   tessl search click       # → install tessl/click if found
+   tessl search sqlite      # → install tessl/sqlite3 if found
+   tessl search pytest      # → install tessl/pytest if found
+   ```
+
+   d. Report installed tiles:
+   ```
+   Tessl initialized with tiles:
+   ✓ tessl/python
+   ✓ tessl/click
+   ✓ tessl/sqlite3
+   ✓ tessl/pytest
+   ✗ tessl/somelib (not found in registry)
+
+   Library documentation now available via MCP.
+   ```
 
 **Skip if:** User passes `--no-tessl` flag.
 
@@ -172,19 +212,7 @@ Execute Setup phase tasks:
 - Create configuration files (package.json, pyproject.toml, etc.)
 - Install dependencies (`npm install`, `pip install`, etc.)
 
-**After Setup phase completes and dependencies are installed**, initialize Tessl:
-
-```bash
-# If TESSL_AVAILABLE (from step 2)
-tessl init --agent claude-code
-tessl install --project-dependencies --yes
-```
-
-Report installed tiles:
-```
-Tessl initialized. Installed tiles for: click, sqlite3, pytest
-Library documentation now available via MCP.
-```
+**Note:** Tessl was already initialized in step 2 with tiles for the planned tech stack.
 
 #### 5.2 Remaining Phases
 
