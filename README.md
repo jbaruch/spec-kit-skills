@@ -39,17 +39,17 @@ chmod +x your-project/.specify/scripts/bash/*.sh
 The workflow follows strict phase ordering. Each phase builds on the previous:
 
 ```
-┌────────────────────────────────────────────────────────────────────────────┐
-│  1. /speckit-00-constitution  →  Define project governance principles      │
-│  2. /speckit-01-specify       →  Create feature specification             │
-│  3. /speckit-02-clarify       →  Resolve ambiguities (optional)           │
-│  4. /speckit-03-plan          →  Create technical implementation plan     │
-│  5. /speckit-04-checklist     →  Generate quality checklists              │
-│  6. /speckit-05-tasks         →  Generate task breakdown                  │
-│  7. /speckit-06-analyze       →  Validate cross-artifact consistency      │
-│  8. /speckit-07-implement     →  Execute implementation                   │
-│  9. /speckit-08-taskstoissues →  Export tasks to GitHub Issues            │
-└────────────────────────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────────────┐
+│  1. /speckit-00-constitution  →  Define project governance principles │
+│  2. /speckit-01-specify       →  Create feature specification         │
+│  3. /speckit-02-clarify       →  Resolve ambiguities (optional)       │
+│  4. /speckit-03-plan          →  Create technical implementation plan │
+│  5. /speckit-04-checklist     →  Generate quality checklists          │
+│  6. /speckit-05-tasks         →  Generate task breakdown              │
+│  7. /speckit-06-analyze       →  Validate cross-artifact consistency  │
+│  8. /speckit-07-implement     →  Execute implementation               │
+│  9. /speckit-08-taskstoissues →  Export tasks to GitHub Issues        │
+└───────────────────────────────────────────────────────────────────────┘
 ```
 
 **Never skip phases.** Each skill validates its prerequisites before executing.
