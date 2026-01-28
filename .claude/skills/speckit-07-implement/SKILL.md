@@ -163,6 +163,27 @@ Initialize Tessl and install tiles for the planned tech stack BEFORE any impleme
    Library documentation now available via MCP.
    ```
 
+4. **Using Tessl during implementation (IMPORTANT):**
+
+   After tiles are installed, **actively use the Tessl MCP tool** to get library documentation when implementing features:
+
+   ```
+   mcp__tessl__get_library_docs(library="click", topic="commands")
+   mcp__tessl__get_library_docs(library="sqlite3", topic="connections")
+   mcp__tessl__get_library_docs(library="pytest", topic="fixtures")
+   ```
+
+   **When to query Tessl:**
+   - Before using any API from an installed tile's library
+   - When unsure about correct patterns or conventions
+   - When implementing non-trivial features with the library
+   - When encountering errors related to library usage
+
+   **Query pattern:**
+   - Be specific with the `topic` parameter (e.g., "decorators", "async", "error handling")
+   - Query once per distinct feature/pattern, cache mentally for the session
+   - If no useful result, proceed with best knowledge
+
 **Skip if:** User passes `--no-tessl` flag.
 
 ### 3. Project Setup Verification
