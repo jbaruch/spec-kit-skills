@@ -393,9 +393,22 @@ Copy-Item AGENTS.md CLAUDE.md
 Copy-Item AGENTS.md GEMINI.md
 ```
 
-### Constitution has tech stack
+### Phase Separation Violations
 
-If your constitution contains technology choices (languages, frameworks, databases), this violates phase separation. Tech stack belongs ONLY in `/speckit-03-plan`. Re-run `/speckit-00-constitution` to fix.
+Each artifact type has specific content. Mixing them causes problems:
+
+| If you see... | In... | It belongs in... | Fix |
+|---------------|-------|------------------|-----|
+| Languages, frameworks, databases | Constitution | Plan | Re-run `/speckit-00-constitution` |
+| Technology choices, libraries | Spec | Plan | Re-run `/speckit-01-specify` |
+| Architecture decisions, data models | Spec | Plan | Re-run `/speckit-01-specify` |
+| Governance principles, quality standards | Plan | Constitution | Re-run `/speckit-03-plan` |
+| Development workflow rules | Spec or Plan | Constitution | Re-run the affected phase |
+
+**Why this matters:**
+- Constitution should be technology-agnostic (survives tech stack changes)
+- Spec defines *what*, not *how* (implementation-independent)
+- Plan defines *how* (all technical decisions in one place)
 
 ## Example: Task Management CLI
 
