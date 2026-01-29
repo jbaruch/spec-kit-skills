@@ -219,6 +219,49 @@ Re-evaluate the Constitution Check after design phase:
   - Suggest compliant alternative approach
   - DO NOT proceed with "best effort" or workarounds
 
+### 6. Phase Separation Validation (REQUIRED)
+
+Before finalizing, scan the draft plan for governance content that belongs in `/speckit-00-constitution`:
+
+**Check for violations - plan MUST NOT contain:**
+- Project governance principles or "laws"
+- Non-negotiable development rules (e.g., "always use TDD", "code review required")
+- Quality standards that apply project-wide (e.g., "100% test coverage")
+- Amendment procedures or versioning policies
+- Compliance or audit requirements
+- Team workflow rules (e.g., "PRs must be approved by 2 reviewers")
+- Coding standards that aren't technology-specific
+
+**Plan SHOULD contain** (these are appropriate here):
+- Technology stack decisions (languages, frameworks, databases)
+- Architecture patterns for THIS feature
+- Implementation approach and rationale
+- Data models and API contracts
+- Performance targets for THIS feature
+- Technology-specific best practices
+
+**If violations found:**
+```
+╭─────────────────────────────────────────────────────────────────╮
+│  PHASE SEPARATION VIOLATION DETECTED                           │
+├─────────────────────────────────────────────────────────────────┤
+│  Plan contains governance content:                             │
+│  - [list each violation]                                       │
+│                                                                 │
+│  Governance principles belong in /speckit-00-constitution.     │
+│  Plan defines HOW to implement THIS feature, not project laws. │
+├─────────────────────────────────────────────────────────────────┤
+│  ACTION: Moving governance content to constitution reference...│
+╰─────────────────────────────────────────────────────────────────╯
+```
+
+**Auto-fix:** Replace governance statements with constitution references:
+- "Always use TDD" → "Per constitution: [reference TDD principle]"
+- "Code must have 100% coverage" → "Coverage target per constitution"
+- "All PRs require review" → (remove - this is workflow, not implementation)
+
+Re-validate after fixes until no violations remain.
+
 ## Output Validation (REQUIRED)
 
 Before writing ANY artifact:

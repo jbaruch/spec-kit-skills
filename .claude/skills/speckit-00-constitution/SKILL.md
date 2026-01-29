@@ -84,9 +84,46 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Dates in ISO format YYYY-MM-DD
    - Principles are declarative, testable, and free of vague language
 
-7. **Write the completed constitution** back to `.specify/memory/constitution.md`
+7. **Phase Separation Validation (REQUIRED)**:
 
-8. **Output final summary** to the user with:
+   Before writing, scan the draft constitution for technology-specific content that belongs in `/speckit-03-plan`:
+
+   **Check for violations - constitution MUST NOT mention:**
+   - Programming languages (Python, JavaScript, TypeScript, Go, Rust, Java, C#, etc.)
+   - Frameworks (React, Django, Express, Spring, Rails, FastAPI, etc.)
+   - Databases (PostgreSQL, MySQL, MongoDB, SQLite, Redis, etc.)
+   - Infrastructure (Docker, Kubernetes, AWS, GCP, Azure, etc.)
+   - Specific libraries or packages
+   - Version numbers of tools
+   - File extensions tied to languages (.py, .js, .ts, etc.)
+   - API specifications (REST, GraphQL, gRPC)
+
+   **If violations found:**
+   ```
+   ╭─────────────────────────────────────────────────────────────────╮
+   │  PHASE SEPARATION VIOLATION DETECTED                           │
+   ├─────────────────────────────────────────────────────────────────┤
+   │  Constitution contains technology-specific content:            │
+   │  - [list each violation]                                       │
+   │                                                                 │
+   │  Technology decisions belong in /speckit-03-plan, not here.    │
+   │  Constitution must be technology-agnostic to survive tech      │
+   │  stack changes.                                                 │
+   ├─────────────────────────────────────────────────────────────────┤
+   │  ACTION: Removing technology references and generalizing...    │
+   ╰─────────────────────────────────────────────────────────────────╯
+   ```
+
+   **Auto-fix:** Rewrite the violating sections to be technology-agnostic:
+   - "Use Python" → "Use appropriate language for the domain"
+   - "Store in PostgreSQL" → "Use persistent storage"
+   - "Deploy with Docker" → "Use containerization when appropriate"
+
+   Re-validate after fixes until no violations remain.
+
+8. **Write the completed constitution** back to `.specify/memory/constitution.md`
+
+9. **Output final summary** to the user with:
    - New version and bump rationale
    - Any files flagged for manual follow-up
    - Suggested commit message

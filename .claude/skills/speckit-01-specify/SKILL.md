@@ -108,7 +108,51 @@ Follow this execution flow:
 
 Write to `SPEC_FILE` using the template structure.
 
-### 6. Create Spec Quality Checklist
+### 6. Phase Separation Validation (REQUIRED)
+
+Before finalizing, scan the draft specification for implementation details that belong in `/speckit-03-plan`:
+
+**Check for violations - specification MUST NOT mention:**
+- Programming languages (Python, JavaScript, TypeScript, Go, Rust, Java, C#, etc.)
+- Frameworks (React, Django, Express, Spring, Rails, FastAPI, Next.js, etc.)
+- Databases (PostgreSQL, MySQL, MongoDB, SQLite, Redis, DynamoDB, etc.)
+- Infrastructure (Docker, Kubernetes, AWS, GCP, Azure, Terraform, etc.)
+- Specific libraries or packages (lodash, pandas, axios, etc.)
+- API implementation details (REST endpoints, GraphQL schemas, gRPC)
+- File structures or code organization
+- Data schemas or table definitions
+- Architecture patterns (microservices, monolith, serverless)
+
+**Allowed technical terms** (these describe WHAT, not HOW):
+- Domain concepts (authentication, authorization, encryption)
+- User-facing features (search, filter, export, import)
+- Data concepts (user profile, order, transaction)
+- Performance requirements (response time, throughput) - but not implementation
+
+**If violations found:**
+```
+╭─────────────────────────────────────────────────────────────────╮
+│  PHASE SEPARATION VIOLATION DETECTED                           │
+├─────────────────────────────────────────────────────────────────┤
+│  Specification contains implementation details:                │
+│  - [list each violation]                                       │
+│                                                                 │
+│  Implementation decisions belong in /speckit-03-plan.          │
+│  Specification defines WHAT users need, not HOW to build it.   │
+├─────────────────────────────────────────────────────────────────┤
+│  ACTION: Removing implementation details...                    │
+╰─────────────────────────────────────────────────────────────────╯
+```
+
+**Auto-fix:** Rewrite violating sections to be implementation-agnostic:
+- "Store in PostgreSQL database" → "Persist data reliably"
+- "Build REST API endpoints" → "Expose functionality to external systems"
+- "Use React for the frontend" → "Provide web-based user interface"
+- "Response time under 200ms" → "Users experience responsive interactions"
+
+Re-validate after fixes until no violations remain.
+
+### 7. Create Spec Quality Checklist
 
 Generate a checklist file at `FEATURE_DIR/checklists/requirements.md`:
 
@@ -149,7 +193,7 @@ Generate a checklist file at `FEATURE_DIR/checklists/requirements.md`:
 - Items marked incomplete require spec updates before `/speckit-02-clarify` or `/speckit-03-plan`
 ```
 
-### 7. Handle Clarifications
+### 8. Handle Clarifications
 
 If `[NEEDS CLARIFICATION]` markers remain (max 3):
 
@@ -174,7 +218,7 @@ Present each question in this format:
 **Your choice**: _[Wait for user response]_
 ```
 
-### 8. Report Completion
+### 9. Report Completion
 
 Output:
 - Branch name

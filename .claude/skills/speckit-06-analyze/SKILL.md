@@ -112,12 +112,42 @@ Focus on high-signal findings. Limit to 50 findings total.
 - Any requirement or plan element conflicting with a MUST principle
 - Missing mandated sections or quality gates from constitution
 
-#### E. Coverage Gaps
+#### E. Phase Separation Violations (CRITICAL)
+
+Check each artifact for content that belongs elsewhere:
+
+**Constitution violations (tech in governance):**
+- Programming languages, frameworks, databases mentioned
+- Specific tools or versions
+- Infrastructure or deployment details
+
+**Spec violations (implementation in requirements):**
+- Framework or library references
+- API implementation details (REST endpoints, GraphQL schemas)
+- Database schemas or table structures
+- Architecture patterns (microservices, serverless)
+- Code organization or file structures
+
+**Plan violations (governance in technical):**
+- Project-wide principles or "laws" (should reference constitution)
+- Non-negotiable rules that apply beyond this feature
+- Team workflow or process requirements
+- Quality standards not specific to this implementation
+
+**Report format:**
+```
+PHASE SEPARATION VIOLATIONS:
+- [CRITICAL] constitution.md line 45: "Use Python 3.11" (tech in governance)
+- [CRITICAL] spec.md line 120: "REST API endpoint /users" (impl in spec)
+- [HIGH] plan.md line 30: "All code must have tests" (governance in plan)
+```
+
+#### G. Coverage Gaps
 - Requirements with zero associated tasks
 - Tasks with no mapped requirement/story
 - Non-functional requirements not reflected in tasks
 
-#### F. Inconsistency
+#### H. Inconsistency
 - Terminology drift (same concept named differently across files)
 - Data entities referenced in plan but absent in spec (or vice versa)
 - Task ordering contradictions
@@ -125,7 +155,7 @@ Focus on high-signal findings. Limit to 50 findings total.
 
 ### 4. Severity Assignment
 
-- **CRITICAL**: Violates constitution MUST, missing core spec artifact, or requirement with zero coverage that blocks baseline functionality
+- **CRITICAL**: Violates constitution MUST, phase separation violation, missing core spec artifact, or requirement with zero coverage that blocks baseline functionality
 - **HIGH**: Duplicate or conflicting requirement, ambiguous security/performance attribute, untestable acceptance criterion
 - **MEDIUM**: Terminology drift, missing non-functional task coverage, underspecified edge case
 - **LOW**: Style/wording improvements, minor redundancy
@@ -145,6 +175,10 @@ Output a Markdown report (no file writes):
 
 | Requirement Key | Has Task? | Task IDs | Notes |
 |-----------------|-----------|----------|-------|
+
+**Phase Separation Violations:** (if any)
+| Artifact | Line | Violation | Severity |
+|----------|------|-----------|----------|
 
 **Constitution Alignment Issues:** (if any)
 
