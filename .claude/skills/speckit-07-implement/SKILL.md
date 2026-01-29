@@ -34,13 +34,42 @@ Before ANY action, load and internalize the project constitution:
 
 3. Parse all principles, constraints, and governance rules.
 
-4. **Validation commitment:** Before writing ANY file, validate against each principle.
+4. **Extract Enforcement Rules** (Skills Advantage - Hard Gate):
+   - Find all lines containing "MUST", "MUST NOT", "SHALL", "SHALL NOT", "REQUIRED", "NON-NEGOTIABLE"
+   - Build enforcement checklist:
+     ```
+     CONSTITUTION ENFORCEMENT RULES:
+     [MUST] ...
+     [MUST NOT] ...
+     [REQUIRED] ...
+     ```
+   - These rules will be checked BEFORE EVERY FILE WRITE
+
+5. **Validation commitment:** Before writing ANY file, validate against each principle.
+
+6. **Hard Gate Declaration**: State explicitly:
+   ```
+   ╭─────────────────────────────────────────────────────╮
+   │  CONSTITUTION ENFORCEMENT GATE ACTIVE               │
+   ├─────────────────────────────────────────────────────┤
+   │  Extracted: X enforcement rules                     │
+   │  Mode: STRICT - violations HALT implementation      │
+   │  Checked: Before EVERY file write                   │
+   ╰─────────────────────────────────────────────────────╯
+   ```
 
 ## Prerequisites Check
 
-1. Run prerequisites check:
+1. Run prerequisites check (choose based on platform):
+
+   **Unix/macOS/Linux:**
    ```bash
    .specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
+   ```
+
+   **Windows (PowerShell):**
+   ```powershell
+   pwsh .specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks
    ```
 
 2. Parse JSON for `FEATURE_DIR` and `AVAILABLE_DOCS`.
@@ -50,6 +79,63 @@ Before ANY action, load and internalize the project constitution:
    ERROR: tasks.md not found in feature directory.
    Run /speckit-05-tasks first to create the task list.
    ```
+
+## Comprehensive Pre-Implementation Validation (Skills Advantage)
+
+**BEFORE any implementation, perform complete validation sweep:**
+
+### 1. Artifact Completeness Check
+
+Verify all required artifacts exist and are complete:
+
+| Artifact | Required | Check |
+|----------|----------|-------|
+| constitution.md | YES | Has principles section |
+| spec.md | YES | Has Requirements + Success Criteria |
+| plan.md | YES | Has Technical Context defined |
+| tasks.md | YES | Has at least one task |
+| research.md | NO | Warn if missing |
+| data-model.md | NO | Warn if missing |
+| checklists/*.md | YES | At least one checklist |
+
+### 2. Cross-Artifact Consistency Check
+
+Validate relationships between artifacts:
+
+1. **Spec → Tasks Traceability**:
+   - Every FR-XXX requirement should have corresponding task(s)
+   - Every user story should have a task phase
+   - Report: "Coverage: X/Y requirements have tasks (Z%)"
+
+2. **Plan → Tasks Alignment**:
+   - Tech stack in plan matches task file paths (e.g., Python → .py files)
+   - Project structure matches task paths
+   - WARN if mismatch: "Plan says Python but tasks create .js files"
+
+3. **Constitution → Plan Compliance**:
+   - Re-verify no constitution violations in plan
+   - Extract MUST/MUST NOT rules and validate
+
+### 3. Implementation Readiness Score
+
+```
+╭─────────────────────────────────────────────────────╮
+│  IMPLEMENTATION READINESS (Skills Advantage)         │
+├─────────────────────────────────────────────────────┤
+│  Artifacts:        X/Y complete              [✓/✗]  │
+│  Spec Coverage:    X% requirements → tasks   [✓/✗]  │
+│  Plan Alignment:   [Aligned/X mismatches]    [✓/✗]  │
+│  Constitution:     [Compliant/X violations]  [✓/✗]  │
+│  Checklists:       X/Y at 100%               [✓/✗]  │
+│  Dependencies:     [Valid/Circular detected] [✓/✗]  │
+├─────────────────────────────────────────────────────┤
+│  OVERALL READINESS: [READY/BLOCKED]                 │
+│  Blocking Issues: [None/List issues]                │
+╰─────────────────────────────────────────────────────╯
+```
+
+**If BLOCKED**: List all blocking issues and required actions
+**If READY**: Proceed to Checklist Gating
 
 ## Checklist Gating (CRITICAL)
 

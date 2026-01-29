@@ -102,21 +102,22 @@ fi
 # Validate required directories and files
 if [[ ! -d "$FEATURE_DIR" ]]; then
     echo "ERROR: Feature directory not found: $FEATURE_DIR" >&2
-    echo "Run /speckit-specify first to create the feature structure." >&2
+    echo "Run /speckit-01-specify first to create the feature structure." >&2
     exit 1
 fi
 
-if [[ ! -f "$IMPL_PLAN" ]]; then
-    echo "ERROR: plan.md not found in $FEATURE_DIR" >&2
-    echo "Run /speckit-plan first to create the implementation plan." >&2
-    exit 1
-fi
+# VALIDATION: Check constitution exists (Skills Advantage)
+validate_constitution "$REPO_ROOT" || exit 1
 
-# Check for tasks.md if required
-if $REQUIRE_TASKS && [[ ! -f "$TASKS" ]]; then
-    echo "ERROR: tasks.md not found in $FEATURE_DIR" >&2
-    echo "Run /speckit-tasks first to create the task list." >&2
-    exit 1
+# VALIDATION: Check spec.md with structure validation (Skills Advantage)
+validate_spec "$FEATURE_SPEC" || exit 1
+
+# VALIDATION: Check plan.md with structure validation (Skills Advantage)
+validate_plan "$IMPL_PLAN" || exit 1
+
+# Check for tasks.md if required (with structure validation)
+if $REQUIRE_TASKS; then
+    validate_tasks "$TASKS" || exit 1
 fi
 
 # Build list of available documents

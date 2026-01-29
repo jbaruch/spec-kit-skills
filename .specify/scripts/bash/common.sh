@@ -153,3 +153,142 @@ EOF
 
 check_file() { [[ -f "$1" ]] && echo "  ✓ $2" || echo "  ✗ $2"; }
 check_dir() { [[ -d "$1" && -n $(ls -A "$1" 2>/dev/null) ]] && echo "  ✓ $2" || echo "  ✗ $2"; }
+
+# =============================================================================
+# VALIDATION FUNCTIONS (Skills Advantage - vanilla doesn't have these)
+# =============================================================================
+
+# Validate constitution exists
+validate_constitution() {
+    local repo_root="$1"
+    local constitution="$repo_root/.specify/memory/constitution.md"
+
+    if [[ ! -f "$constitution" ]]; then
+        echo "ERROR: Constitution not found at $constitution" >&2
+        echo "Run /speckit-00-constitution first to define project principles." >&2
+        return 1
+    fi
+
+    # Check for required sections
+    if ! grep -q "^## .*Principles\|^# .*Constitution" "$constitution" 2>/dev/null; then
+        echo "WARNING: Constitution may be incomplete - missing principles section" >&2
+    fi
+
+    return 0
+}
+
+# Validate spec.md exists and has required structure
+validate_spec() {
+    local spec_file="$1"
+    local errors=0
+
+    if [[ ! -f "$spec_file" ]]; then
+        echo "ERROR: spec.md not found at $spec_file" >&2
+        echo "Run /speckit-01-specify first to create the feature specification." >&2
+        return 1
+    fi
+
+    # Check for required sections
+    if ! grep -q "^## Requirements\|^## Functional Requirements\|^### Functional Requirements" "$spec_file" 2>/dev/null; then
+        echo "ERROR: spec.md missing 'Requirements' section" >&2
+        ((errors++))
+    fi
+
+    if ! grep -q "^## Success Criteria" "$spec_file" 2>/dev/null; then
+        echo "ERROR: spec.md missing 'Success Criteria' section" >&2
+        ((errors++))
+    fi
+
+    if ! grep -q "^## User Scenarios\|^### User Story" "$spec_file" 2>/dev/null; then
+        echo "ERROR: spec.md missing 'User Scenarios' or 'User Story' section" >&2
+        ((errors++))
+    fi
+
+    # Check for unresolved clarifications
+    if grep -q "\[NEEDS CLARIFICATION" "$spec_file" 2>/dev/null; then
+        local count=$(grep -c "\[NEEDS CLARIFICATION" "$spec_file" 2>/dev/null || echo "0")
+        echo "WARNING: spec.md has $count unresolved [NEEDS CLARIFICATION] markers" >&2
+        echo "Consider running /speckit-02-clarify to resolve them." >&2
+    fi
+
+    [[ $errors -gt 0 ]] && return 1
+    return 0
+}
+
+# Validate plan.md exists and has required structure
+validate_plan() {
+    local plan_file="$1"
+    local errors=0
+
+    if [[ ! -f "$plan_file" ]]; then
+        echo "ERROR: plan.md not found at $plan_file" >&2
+        echo "Run /speckit-03-plan first to create the implementation plan." >&2
+        return 1
+    fi
+
+    # Check for required sections
+    if ! grep -q "^## Technical Context\|^\*\*Language/Version\*\*" "$plan_file" 2>/dev/null; then
+        echo "WARNING: plan.md may be incomplete - missing Technical Context" >&2
+    fi
+
+    # Check for unresolved clarifications
+    if grep -q "NEEDS CLARIFICATION" "$plan_file" 2>/dev/null; then
+        local count=$(grep -c "NEEDS CLARIFICATION" "$plan_file" 2>/dev/null || echo "0")
+        echo "WARNING: plan.md has $count unresolved NEEDS CLARIFICATION items" >&2
+    fi
+
+    return 0
+}
+
+# Validate tasks.md exists and has required structure
+validate_tasks() {
+    local tasks_file="$1"
+
+    if [[ ! -f "$tasks_file" ]]; then
+        echo "ERROR: tasks.md not found at $tasks_file" >&2
+        echo "Run /speckit-05-tasks first to create the task list." >&2
+        return 1
+    fi
+
+    # Check for at least one task
+    if ! grep -q "^- \[ \]\|^- \[x\]\|^- \[X\]" "$tasks_file" 2>/dev/null; then
+        echo "WARNING: tasks.md appears to have no task items" >&2
+    fi
+
+    return 0
+}
+
+# Calculate spec quality score (0-10)
+calculate_spec_quality() {
+    local spec_file="$1"
+    local score=0
+
+    [[ ! -f "$spec_file" ]] && echo "0" && return
+
+    # +2 for having requirements section
+    grep -q "^## Requirements\|^### Functional Requirements" "$spec_file" 2>/dev/null && ((score+=2))
+
+    # +2 for having success criteria
+    grep -q "^## Success Criteria" "$spec_file" 2>/dev/null && ((score+=2))
+
+    # +2 for having user scenarios
+    grep -q "^## User Scenarios\|^### User Story" "$spec_file" 2>/dev/null && ((score+=2))
+
+    # +1 for having at least 3 requirements
+    local req_count
+    req_count=$(grep -c "^- \*\*FR-\|^- FR-" "$spec_file" 2>/dev/null) || req_count=0
+    [[ $req_count -ge 3 ]] && ((score+=1))
+
+    # +1 for having at least 3 success criteria
+    local sc_count
+    sc_count=$(grep -c "^- \*\*SC-\|^- SC-" "$spec_file" 2>/dev/null) || sc_count=0
+    [[ $sc_count -ge 3 ]] && ((score+=1))
+
+    # +1 for no NEEDS CLARIFICATION markers
+    ! grep -q "\[NEEDS CLARIFICATION" "$spec_file" 2>/dev/null && ((score+=1))
+
+    # +1 for having edge cases section
+    grep -q "^### Edge Cases\|^## Edge Cases" "$spec_file" 2>/dev/null && ((score+=1))
+
+    echo "$score"
+}

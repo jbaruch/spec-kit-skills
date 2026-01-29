@@ -51,9 +51,16 @@ Examples:
 
 ### 2. Create Feature Branch and Directory
 
-Run the feature creation script:
+Run the feature creation script (choose based on platform):
+
+**Unix/macOS/Linux:**
 ```bash
 .specify/scripts/bash/create-new-feature.sh --json "$ARGUMENTS" --short-name "your-short-name"
+```
+
+**Windows (PowerShell):**
+```powershell
+pwsh .specify/scripts/powershell/create-new-feature.ps1 -Json "$ARGUMENTS" -ShortName "your-short-name"
 ```
 
 Parse the JSON output for `BRANCH_NAME`, `SPEC_FILE`, and `FEATURE_NUM`.
@@ -199,6 +206,62 @@ Success criteria must be:
 **Bad examples**:
 - "API response time is under 200ms" (too technical)
 - "Database can handle 1000 TPS" (implementation detail)
+
+## Semantic Diff on Re-run (Skills Advantage)
+
+**If spec.md already exists**, perform semantic diff before overwriting:
+
+### 1. Detect Existing Artifact
+```bash
+test -f "$SPEC_FILE" && echo "EXISTING_SPEC_FOUND"
+```
+
+### 2. If Existing Spec Found
+
+1. **Read and parse existing spec.md**
+2. **Extract semantic elements**:
+   - User story count and titles
+   - Requirement IDs and descriptions
+   - Success criteria
+   - Key entities
+
+3. **Compare with new content**:
+   ```
+   ╭─────────────────────────────────────────────────────╮
+   │  SEMANTIC DIFF: spec.md                             │
+   ├─────────────────────────────────────────────────────┤
+   │  User Stories:                                      │
+   │    + Added: US4 "Export Tasks"                      │
+   │    ~ Changed: US2 title updated                     │
+   │    - Removed: None                                  │
+   │                                                     │
+   │  Requirements:                                      │
+   │    + Added: FR-011, FR-012                          │
+   │    ~ Changed: FR-003 description modified           │
+   │    - Removed: FR-008 (verify intentional)           │
+   │                                                     │
+   │  Success Criteria:                                  │
+   │    + Added: SC-008                                  │
+   │    ~ Changed: None                                  │
+   │    - Removed: None                                  │
+   ├─────────────────────────────────────────────────────┤
+   │  DOWNSTREAM IMPACT:                                 │
+   │  ⚠ plan.md may need updates (new requirements)     │
+   │  ⚠ tasks.md may need regeneration                  │
+   │  ⚠ checklists may be invalidated                   │
+   ╰─────────────────────────────────────────────────────╯
+   ```
+
+4. **Ask for confirmation**:
+   - "Proceed with these changes? (yes/no)"
+   - If user declines, preserve existing spec
+
+### 3. Downstream Impact Warning
+
+If changes detected, warn about affected artifacts:
+- Removed requirements → tasks may reference deleted items
+- Changed requirements → plan may be inconsistent
+- New requirements → tasks.md needs regeneration
 
 ## Next Steps
 

@@ -34,13 +34,38 @@ Before ANY action, load and internalize the project constitution:
 
 3. Parse all principles, constraints, and governance rules.
 
-4. **Validation commitment:** Every output will be validated against each principle before being written.
+4. **Extract Enforcement Rules** (Skills Advantage - Hard Gate):
+   - Find all lines containing "MUST", "MUST NOT", "SHALL", "SHALL NOT", "REQUIRED", "NON-NEGOTIABLE"
+   - Build an enforcement checklist from these rules
+   - Example extraction:
+     ```
+     CONSTITUTION ENFORCEMENT RULES:
+     [MUST] Use TDD - write tests before implementation
+     [MUST NOT] Use external dependencies without justification
+     [REQUIRED] All code must have error handling
+     ```
+
+5. **Validation commitment:** Every output will be validated against each principle before being written.
+
+6. **Hard Gate Declaration**: State explicitly:
+   ```
+   CONSTITUTION GATE ACTIVE
+   Extracted X enforcement rules
+   ANY violation will HALT planning with explanation
+   ```
 
 ## Prerequisites Check
 
-1. Run setup script:
+1. Run setup script (choose based on platform):
+
+   **Unix/macOS/Linux:**
    ```bash
    .specify/scripts/bash/setup-plan.sh --json
+   ```
+
+   **Windows (PowerShell):**
+   ```powershell
+   pwsh .specify/scripts/powershell/setup-plan.ps1 -Json
    ```
 
 2. Parse JSON for:
@@ -54,6 +79,58 @@ Before ANY action, load and internalize the project constitution:
    ERROR: spec.md not found in feature directory.
    Run /speckit-01-specify first to create the feature specification.
    ```
+
+## Smart Validation (Skills Advantage)
+
+**BEFORE proceeding to planning, perform AI-powered semantic validation that vanilla commands cannot do:**
+
+### Spec Quality Gate
+
+Read the spec.md and validate:
+
+1. **Requirement Count Check**:
+   - Count functional requirements (FR-XXX patterns)
+   - WARN if fewer than 3 requirements: "Spec may be underspecified"
+   - HALT if 0 requirements: "Cannot plan without requirements"
+
+2. **Measurable Success Criteria Check**:
+   - Scan Success Criteria section for numeric values, percentages, or time measurements
+   - WARN if no measurable criteria found: "Success criteria should include metrics (e.g., 'under 3 seconds', '95% uptime')"
+
+3. **Unresolved Clarification Check**:
+   - Search for `[NEEDS CLARIFICATION]` markers
+   - If found, list each one and ask: "Resolve these before planning, or proceed with assumptions?"
+   - If user says proceed, document assumptions explicitly in plan.md
+
+4. **User Story Coverage Check**:
+   - Verify each user story has at least one acceptance scenario
+   - WARN if any story lacks scenarios: "User Story X has no acceptance criteria"
+
+5. **Cross-Reference Validation**:
+   - Check that requirements reference user stories (or vice versa)
+   - WARN if orphan requirements exist: "FR-XXX not linked to any user story"
+
+### Quality Score Report
+
+Calculate and display:
+```
+╭─────────────────────────────────────────────╮
+│  SPEC QUALITY REPORT (Skills Advantage)     │
+├─────────────────────────────────────────────┤
+│  Requirements:     X found (min: 3)    [✓/✗]│
+│  Success Criteria: X found (min: 3)    [✓/✗]│
+│  User Stories:     X found (min: 1)    [✓/✗]│
+│  Measurable:       X criteria have metrics  │
+│  Clarifications:   X unresolved             │
+│  Coverage:         X% requirements linked   │
+├─────────────────────────────────────────────┤
+│  OVERALL SCORE: X/10                        │
+│  STATUS: [READY/NEEDS WORK]                 │
+╰─────────────────────────────────────────────╯
+```
+
+**If score < 6**: Recommend running `/speckit-02-clarify` first
+**If score >= 6**: Proceed with planning
 
 ## Execution Flow
 
@@ -114,10 +191,18 @@ Follow the structure in IMPL_PLAN template to:
 
 3. **Create quickstart.md** with test scenarios
 
-4. **Agent context update**:
+4. **Agent context update** (choose based on platform):
+
+   **Unix/macOS/Linux:**
    ```bash
    .specify/scripts/bash/update-agent-context.sh claude
    ```
+
+   **Windows (PowerShell):**
+   ```powershell
+   pwsh .specify/scripts/powershell/update-agent-context.ps1 -AgentType claude
+   ```
+
    This updates CLAUDE.md with the new technology stack.
 
 **Output**: `data-model.md`, `/contracts/*`, `quickstart.md`, updated agent file
@@ -163,6 +248,56 @@ Output:
   - contracts/*
   - quickstart.md
 - Agent file update status
+
+## Semantic Diff on Re-run (Skills Advantage)
+
+**If plan.md already exists with content**, perform semantic diff before overwriting:
+
+### 1. Detect and Parse Existing Plan
+
+If plan.md exists and has Technical Context filled in:
+
+1. **Extract semantic elements**:
+   - Language/Version
+   - Primary Dependencies
+   - Storage choice
+   - Project structure decisions
+
+2. **Compare with new content**:
+   ```
+   ╭─────────────────────────────────────────────────────╮
+   │  SEMANTIC DIFF: plan.md                             │
+   ├─────────────────────────────────────────────────────┤
+   │  Tech Stack:                                        │
+   │    ~ Language: Python 3.11 → Python 3.12            │
+   │    + Added: Redis for caching                       │
+   │    - Removed: None                                  │
+   │                                                     │
+   │  Architecture:                                      │
+   │    ~ Changed: Switched from REST to GraphQL         │
+   │    + Added: Event sourcing pattern                  │
+   ├─────────────────────────────────────────────────────┤
+   │  DOWNSTREAM IMPACT:                                 │
+   │  ⚠ tasks.md MUST be regenerated (architecture change)│
+   │  ⚠ contracts/ need updates (API change)            │
+   │  ⚠ data-model.md may need updates                  │
+   ╰─────────────────────────────────────────────────────╯
+   ```
+
+3. **Flag breaking changes**:
+   - Language change → ALL tasks affected
+   - Framework change → Most tasks affected
+   - Storage change → Data layer tasks affected
+
+### 2. Automatic Downstream Invalidation
+
+If significant changes detected:
+```
+WARNING: Plan changes detected that invalidate downstream artifacts.
+Recommend re-running:
+- /speckit-05-tasks (REQUIRED - architecture changed)
+- /speckit-06-analyze (RECOMMENDED - verify consistency)
+```
 
 ## Next Steps
 

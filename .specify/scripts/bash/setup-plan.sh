@@ -33,6 +33,19 @@ eval $(get_feature_paths)
 # Check if we're on a proper feature branch (only for git repos)
 check_feature_branch "$CURRENT_BRANCH" "$HAS_GIT" || exit 1
 
+# VALIDATION: Check constitution exists (Skills Advantage)
+validate_constitution "$REPO_ROOT" || exit 1
+
+# VALIDATION: Check spec.md exists and has required structure (Skills Advantage)
+validate_spec "$FEATURE_SPEC" || exit 1
+
+# Report spec quality score
+SPEC_QUALITY=$(calculate_spec_quality "$FEATURE_SPEC")
+echo "Spec quality score: $SPEC_QUALITY/10"
+if [[ $SPEC_QUALITY -lt 6 ]]; then
+    echo "WARNING: Spec quality is low. Consider running /speckit-02-clarify." >&2
+fi
+
 # Ensure the feature directory exists
 mkdir -p "$FEATURE_DIR"
 
@@ -48,7 +61,8 @@ fi
 
 # Output results
 if $JSON_MODE; then
-    printf '{"FEATURE_SPEC":"%s","IMPL_PLAN":"%s","SPECS_DIR":"%s","BRANCH":"%s","HAS_GIT":"%s"}\n' \
+    # Output HAS_GIT as proper JSON boolean (no quotes)
+    printf '{"FEATURE_SPEC":"%s","IMPL_PLAN":"%s","SPECS_DIR":"%s","BRANCH":"%s","HAS_GIT":%s}\n' \
         "$FEATURE_SPEC" "$IMPL_PLAN" "$FEATURE_DIR" "$CURRENT_BRANCH" "$HAS_GIT"
 else
     echo "FEATURE_SPEC: $FEATURE_SPEC"

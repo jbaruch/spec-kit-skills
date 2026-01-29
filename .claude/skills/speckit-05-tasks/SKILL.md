@@ -41,6 +41,42 @@ Before ANY action, load and internalize the project constitution:
    Run /speckit-03-plan first to create the implementation plan.
    ```
 
+## Smart Validation (Skills Advantage)
+
+**BEFORE generating tasks, perform AI-powered validation that vanilla commands cannot do:**
+
+### Plan Completeness Gate
+
+1. **Tech Stack Validation**:
+   - Verify plan.md has Language/Version defined (not "NEEDS CLARIFICATION")
+   - WARN if missing: "Tech stack undefined - tasks may be too generic"
+
+2. **User Story Mapping**:
+   - Extract all user stories from spec.md (P1, P2, P3...)
+   - Verify each has clear acceptance criteria
+   - WARN if story lacks testable criteria: "US-X has no testable acceptance criteria"
+
+3. **Dependency Pre-Analysis**:
+   - Identify shared entities from data-model.md
+   - Flag entities used by multiple stories (potential blockers)
+   - Suggest: "Entity X used by US1, US2, US3 - recommend Phase 2 (Foundational)"
+
+### Quality Report
+
+```
+╭─────────────────────────────────────────────╮
+│  PLAN READINESS REPORT (Skills Advantage)   │
+├─────────────────────────────────────────────┤
+│  Tech Stack:       [Defined/Missing]   [✓/✗]│
+│  User Stories:     X found with criteria    │
+│  Shared Entities:  X (→ Foundational phase) │
+│  API Contracts:    X endpoints defined      │
+│  Research Items:   X decisions documented   │
+├─────────────────────────────────────────────┤
+│  TASK GENERATION: [READY/NEEDS WORK]        │
+╰─────────────────────────────────────────────╯
+```
+
 ## Execution Flow
 
 ### 1. Load Design Documents
@@ -137,6 +173,50 @@ Use template structure with:
 - Parallel execution examples
 - Implementation strategy section (MVP first, incremental delivery)
 
+### 7. Dependency Graph Validation (Skills Advantage)
+
+**After generating tasks, validate the dependency graph:**
+
+1. **Circular Dependency Detection**:
+   - Build task dependency graph from blockedBy/blocks relationships
+   - Detect cycles: "CIRCULAR DEPENDENCY: T005 → T012 → T008 → T005"
+   - If found: HALT and require manual resolution
+
+2. **Orphan Task Detection**:
+   - Find tasks with no dependencies AND not blocking anything
+   - WARN: "Orphan tasks detected: T015, T023 - verify they belong to a phase"
+
+3. **Critical Path Analysis**:
+   - Identify longest dependency chain
+   - Report: "Critical path: T001 → T003 → T012 → T018 (4 tasks)"
+   - Suggest parallelization opportunities
+
+4. **Phase Boundary Validation**:
+   - Ensure no cross-phase dependencies go backwards
+   - ERROR if Phase 4 task depends on Phase 5 task
+
+5. **Story Independence Check**:
+   - Verify each user story phase CAN be implemented independently
+   - WARN if US2 tasks depend on US3 tasks (wrong priority order)
+
+### Dependency Report
+
+```
+╭─────────────────────────────────────────────╮
+│  DEPENDENCY GRAPH ANALYSIS                  │
+├─────────────────────────────────────────────┤
+│  Total Tasks:      X                        │
+│  Circular Deps:    [None/X found]      [✓/✗]│
+│  Orphan Tasks:     [None/X found]      [✓/!]│
+│  Critical Path:    X tasks deep             │
+│  Phase Boundaries: [Valid/X violations][✓/✗]│
+│  Story Independence: [Yes/No]          [✓/✗]│
+├─────────────────────────────────────────────┤
+│  Parallel Opportunities: X task groups      │
+│  Estimated Parallelism: X% speedup          │
+╰─────────────────────────────────────────────╯
+```
+
 ## Report
 
 Output:
@@ -148,6 +228,65 @@ Output:
   - Independent test criteria for each story
   - Suggested MVP scope (typically just User Story 1)
   - Format validation confirmation
+
+## Semantic Diff on Re-run (Skills Advantage)
+
+**If tasks.md already exists**, perform semantic diff before overwriting:
+
+### 1. Detect Existing Tasks
+
+If tasks.md exists with task items:
+
+1. **Extract semantic elements**:
+   - Task IDs and descriptions
+   - Phase structure
+   - Completion status (checked/unchecked)
+   - User story assignments
+
+2. **Preserve completion status**:
+   - Tasks marked `[x]` should remain completed
+   - Map old task IDs to new task IDs by description similarity
+
+3. **Compare with new generation**:
+   ```
+   ╭─────────────────────────────────────────────────────╮
+   │  SEMANTIC DIFF: tasks.md                            │
+   ├─────────────────────────────────────────────────────┤
+   │  Tasks:                                             │
+   │    + Added: T025-T030 (new user story US4)          │
+   │    ~ Renamed: T012 description updated              │
+   │    - Removed: T008 (was for deleted FR-008)         │
+   │    ✓ Preserved: 15 completed tasks kept             │
+   │                                                     │
+   │  Phases:                                            │
+   │    + Added: Phase 5 (User Story 4)                  │
+   │    ~ Reordered: None                                │
+   ├─────────────────────────────────────────────────────┤
+   │  COMPLETION STATUS:                                 │
+   │    Previously completed: 15 tasks                   │
+   │    Mapped to new tasks: 14 tasks                    │
+   │    Lost (task removed): 1 task                      │
+   ╰─────────────────────────────────────────────────────╯
+   ```
+
+### 2. Smart Merge Strategy
+
+- **Completed tasks**: Preserve completion status where possible
+- **New tasks**: Add as uncompleted
+- **Removed tasks**: Warn if they were completed (work may be lost)
+- **Reordered tasks**: Maintain new order, preserve completion
+
+### 3. Warn About In-Progress Work
+
+If significant changes affect completed tasks:
+```
+⚠ WARNING: 3 completed tasks would be affected by regeneration.
+Completed work that may need review:
+- T008 [x] Create User model (task removed)
+- T012 [x] Implement auth (description changed)
+
+Proceed anyway? (yes/no)
+```
 
 ## Next Steps
 
