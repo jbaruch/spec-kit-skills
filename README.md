@@ -14,21 +14,35 @@ Spec-Kit Skills provides specification-driven development directly in your AI co
 
 ### Installation
 
-1. Copy the skills bundle to your project:
+#### Linux/macOS (Bash)
 
 ```bash
+# Copy skills bundle (symlinks preserved)
 cp -r .claude .codex .gemini .opencode .specify AGENTS.md CLAUDE.md GEMINI.md your-project/
-```
 
-All cross-agent symlinks are pre-configured and included.
-
-2. Ensure scripts are executable:
-
-```bash
+# Make scripts executable
 chmod +x your-project/.specify/scripts/bash/*.sh
 ```
 
-3. Start using skills in your AI coding assistant:
+#### Windows (PowerShell)
+
+```powershell
+# Copy skills bundle
+Copy-Item -Recurse .claude, .codex, .gemini, .opencode, .specify, AGENTS.md your-project/
+
+# Create instruction file copies (symlinks require admin rights on Windows)
+Copy-Item AGENTS.md your-project/CLAUDE.md
+Copy-Item AGENTS.md your-project/GEMINI.md
+
+# If skills symlinks didn't copy correctly, create junctions instead:
+cmd /c mklink /J your-project\.codex\skills your-project\.claude\skills
+cmd /c mklink /J your-project\.gemini\skills your-project\.claude\skills
+cmd /c mklink /J your-project\.opencode\skills your-project\.claude\skills
+```
+
+> **Note:** Git on Windows converts symlinks to text files by default. Use `git config core.symlinks true` and clone with admin rights, or manually create junctions as shown above.
+
+#### Start Using
 
 ```
 /speckit-00-constitution
@@ -305,12 +319,13 @@ The workflow requires proper Git branch naming:
 |--------|------------------|-----------------|
 | Installation | `uv tool install specify-cli` | Copy directories |
 | Commands | `/speckit.constitution` | `/speckit-00-constitution` |
-| Prerequisites | Bash scripts | Same bash scripts |
+| Prerequisites | Bash scripts | Bash + PowerShell scripts |
 | Workflow enforcement | Identical | Identical |
 | Phase separation | Identical | Identical |
 | Output artifacts | Identical | Identical |
+| Windows support | Limited | Full (PowerShell scripts) |
 
-**Robustness:** Both implementations share the same bash scripts for workflow enforcement, providing identical protection against:
+**Robustness:** Both implementations use scripts for workflow enforcement, providing identical protection against:
 - Out-of-order phase execution
 - Missing prerequisites
 - Branch validation
@@ -321,15 +336,20 @@ The workflow requires proper Git branch naming:
 ### "Command not found" for skills
 
 Ensure skills are in the correct location for your agent:
-```bash
-# Check primary location
-ls -la .claude/skills/speckit-*/SKILL.md
 
-# Check symlinks exist for other agents
+**Bash:**
+```bash
+ls -la .claude/skills/speckit-*/SKILL.md
 ls -la .codex/skills .gemini/skills .opencode/skills
 ```
 
-### Scripts not executable
+**PowerShell:**
+```powershell
+Get-ChildItem .claude\skills\speckit-*\SKILL.md
+Get-ChildItem .codex\skills, .gemini\skills, .opencode\skills
+```
+
+### Scripts not executable (Linux/macOS)
 
 ```bash
 chmod +x .specify/scripts/bash/*.sh
@@ -338,8 +358,30 @@ chmod +x .specify/scripts/bash/*.sh
 ### Prerequisites failing
 
 Check the current feature context:
+
+**Bash:**
 ```bash
 .specify/scripts/bash/check-prerequisites.sh --json
+```
+
+**PowerShell:**
+```powershell
+.\.specify\scripts\powershell\check-prerequisites.ps1 -Json
+```
+
+### Symlinks not working (Windows)
+
+Git on Windows converts symlinks to text files by default. Fix with:
+
+```powershell
+# Create directory junctions for skills
+cmd /c mklink /J .codex\skills .claude\skills
+cmd /c mklink /J .gemini\skills .claude\skills
+cmd /c mklink /J .opencode\skills .claude\skills
+
+# Copy instruction files (or enable symlinks with admin rights)
+Copy-Item AGENTS.md CLAUDE.md
+Copy-Item AGENTS.md GEMINI.md
 ```
 
 ### Constitution has tech stack
@@ -402,6 +444,8 @@ This project tracks the upstream [GitHub Spec-Kit](https://github.com/github/spe
 | OpenAI Codex | `.codex/skills/` -> symlink | `AGENTS.md` |
 | Google Gemini | `.gemini/skills/` -> symlink | `GEMINI.md` -> `AGENTS.md` |
 | OpenCode | `.opencode/skills/` -> symlink | `AGENTS.md` |
+
+> **Windows:** Symlinks require admin rights or Developer Mode. Use directory junctions (`mklink /J`) as an alternative. See [Troubleshooting](#symlinks-not-working-windows).
 
 ## Contributing
 
