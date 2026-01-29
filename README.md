@@ -44,9 +44,18 @@ cmd /c mklink /J your-project\.opencode\skills your-project\.claude\skills
 
 #### Start Using
 
-```
-/speckit-00-constitution
-```
+1. Launch your AI coding assistant in the project directory:
+   ```bash
+   claude          # Claude Code
+   codex           # OpenAI Codex
+   gemini          # Google Gemini CLI
+   opencode        # OpenCode
+   ```
+
+2. Run your first skill:
+   ```
+   /speckit-00-constitution
+   ```
 
 ### Workflow Overview
 
