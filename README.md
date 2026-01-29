@@ -54,11 +54,11 @@ The workflow follows strict phase ordering. Each phase builds on the previous:
 │  2. /speckit-01-specify       →  Create feature specification         │
 │  3. /speckit-02-clarify       →  Resolve ambiguities (optional)       │
 │  4. /speckit-03-plan          →  Create technical implementation plan │
-│  5. /speckit-04-checklist     →  Generate quality checklists          │
+│  5. /speckit-04-checklist     →  Generate quality checklists (opt)    │
 │  6. /speckit-05-tasks         →  Generate task breakdown              │
-│  7. /speckit-06-analyze       →  Validate cross-artifact consistency  │
+│  7. /speckit-06-analyze       →  Validate consistency (optional)      │
 │  8. /speckit-07-implement     →  Execute implementation               │
-│  9. /speckit-08-taskstoissues →  Export tasks to GitHub Issues        │
+│  9. /speckit-08-taskstoissues →  Export to GitHub Issues (optional)   │
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -158,7 +158,7 @@ Creates technical implementation plan with technology decisions.
 
 ---
 
-### /speckit-04-checklist
+### /speckit-04-checklist (Optional)
 
 Generates domain-specific quality checklists for requirements validation.
 
@@ -168,6 +168,8 @@ Generates domain-specific quality checklists for requirements validation.
 - `specs/NNN-feature-name/checklists/*.md` - Domain-specific checklists
 
 **Purpose:** "Unit tests for English" - validates REQUIREMENTS quality, not implementation.
+
+**Note:** Implementation can proceed without checklists (user will be prompted to confirm).
 
 ---
 
@@ -193,7 +195,7 @@ Where:
 
 ---
 
-### /speckit-06-analyze
+### /speckit-06-analyze (Optional)
 
 Validates cross-artifact consistency between spec, plan, and tasks.
 
@@ -204,6 +206,8 @@ Validates cross-artifact consistency between spec, plan, and tasks.
 - All tasks trace back to requirements
 - No orphaned artifacts
 - Constitution compliance
+
+**Note:** Recommended but not required before implementation.
 
 ---
 
@@ -223,7 +227,7 @@ Executes implementation plan by processing tasks in order.
 
 ---
 
-### /speckit-05-taskstoissues
+### /speckit-08-taskstoissues (Optional)
 
 Exports tasks to GitHub Issues for project tracking.
 
@@ -355,35 +359,35 @@ If your constitution contains technology choices (languages, frameworks, databas
 Here's a complete workflow example:
 
 ```bash
-# 1. Initialize governance
+# 1. Initialize governance (required)
 /speckit-00-constitution
 # Answer questions about project principles
 
-# 2. Create feature specification
+# 2. Create feature specification (required)
 /speckit-01-specify Build a CLI task manager that lets users add tasks with
 title and description, list all tasks, and mark tasks as complete.
 Use SQLite for storage.
 
-# 3. Clarify requirements (optional but recommended)
+# 3. Clarify requirements (optional - recommended for complex features)
 /speckit-02-clarify
 
-# 4. Create technical plan
+# 4. Create technical plan (required)
 /speckit-03-plan
 
-# 5. Generate quality checklists
+# 5. Generate quality checklists (optional - recommended)
 /speckit-04-checklist
 
-# 6. Generate task breakdown
+# 6. Generate task breakdown (required)
 /speckit-05-tasks
 
-# 7. Validate consistency
+# 7. Validate consistency (optional - recommended)
 /speckit-06-analyze
 
-# 8. Implement (requires 100% checklist completion)
+# 8. Implement (prompts to confirm if checklists incomplete)
 /speckit-07-implement
 
 # 9. Export to GitHub Issues (optional)
-/speckit-05-taskstoissues
+/speckit-08-taskstoissues
 ```
 
 ## Upstream Relationship
