@@ -17,20 +17,10 @@ Spec-Kit Skills provides specification-driven development directly in your AI co
 1. Copy the skills bundle to your project:
 
 ```bash
-# Copy skills and support files
-cp -r .claude .specify AGENTS.md your-project/
-
-# Create symlinks for your preferred agent(s)
-cd your-project
-ln -s AGENTS.md CLAUDE.md      # For Claude Code
-ln -s AGENTS.md GEMINI.md      # For Gemini
-
-# Optional: Create skills symlinks for other agents
-mkdir -p .codex .gemini .opencode
-ln -s ../.claude/skills .codex/skills
-ln -s ../.claude/skills .gemini/skills
-ln -s ../.claude/skills .opencode/skills
+cp -r .claude .codex .gemini .opencode .specify AGENTS.md CLAUDE.md GEMINI.md your-project/
 ```
+
+All cross-agent symlinks are pre-configured and included.
 
 2. Ensure scripts are executable:
 
