@@ -1,10 +1,10 @@
 # Spec-Kit Skills
 
-A Claude Code skills bundle that replicates [GitHub Spec-Kit](https://github.com/github/spec-kit) functionality using the native Claude Code skills format.
+An AI coding assistant skills bundle that replicates [GitHub Spec-Kit](https://github.com/github/spec-kit) functionality. Compatible with multiple AI agents including Claude Code, OpenAI Codex, Google Gemini, and OpenCode.
 
 ## What is This?
 
-Spec-Kit Skills provides specification-driven development directly in Claude Code without requiring external CLI tools. It implements the same workflow phases as vanilla Spec-Kit but uses Claude's native skills system.
+Spec-Kit Skills provides specification-driven development directly in your AI coding assistant without requiring external CLI tools. It implements the same workflow phases as vanilla Spec-Kit using the native skills system.
 
 **Key Difference from Vanilla Spec-Kit:**
 - **Vanilla**: Requires `specify-cli` installation via `uv tool install specify-cli`
@@ -17,9 +17,19 @@ Spec-Kit Skills provides specification-driven development directly in Claude Cod
 1. Copy the skills bundle to your project:
 
 ```bash
-mkdir -p your-project/.claude/skills
-cp -r .claude/skills/speckit-* your-project/.claude/skills/
-cp -r .specify your-project/
+# Copy skills and support files
+cp -r .claude .specify AGENTS.md your-project/
+
+# Create symlinks for your preferred agent(s)
+cd your-project
+ln -s AGENTS.md CLAUDE.md      # For Claude Code
+ln -s AGENTS.md GEMINI.md      # For Gemini
+
+# Optional: Create skills symlinks for other agents
+mkdir -p .codex .gemini .opencode
+ln -s ../.claude/skills .codex/skills
+ln -s ../.claude/skills .gemini/skills
+ln -s ../.claude/skills .opencode/skills
 ```
 
 2. Ensure scripts are executable:
@@ -28,7 +38,7 @@ cp -r .specify your-project/
 chmod +x your-project/.specify/scripts/bash/*.sh
 ```
 
-3. Start using skills in Claude Code:
+3. Start using skills in your AI coding assistant:
 
 ```
 /speckit-00-constitution
@@ -228,7 +238,7 @@ After running the full workflow:
 ```
 your-project/
 ├── .claude/
-│   └── skills/
+│   └── skills/                  # Primary skills location (source of truth)
 │       ├── speckit-00-constitution/
 │       ├── speckit-01-specify/
 │       ├── speckit-02-clarify/
@@ -238,10 +248,14 @@ your-project/
 │       ├── speckit-06-analyze/
 │       ├── speckit-07-implement/
 │       └── speckit-08-taskstoissues/
+├── .codex/skills -> ../.claude/skills   # Symlink for Codex
+├── .gemini/skills -> ../.claude/skills  # Symlink for Gemini
+├── .opencode/skills -> ../.claude/skills # Symlink for OpenCode
 ├── .specify/
 │   ├── memory/
 │   │   └── constitution.md      # Project governance
-│   ├── scripts/bash/            # Workflow enforcement scripts
+│   ├── scripts/bash/            # Workflow scripts (Linux/macOS)
+│   ├── scripts/powershell/      # Workflow scripts (Windows)
 │   └── templates/               # Artifact templates
 ├── specs/
 │   └── NNN-feature-name/
@@ -253,20 +267,24 @@ your-project/
 │       ├── quickstart.md        # Usage examples
 │       ├── contracts/           # API/CLI contracts
 │       └── checklists/          # Quality checklists
-└── CLAUDE.md                    # Claude Code context file
+├── AGENTS.md                    # Agent instructions (source of truth)
+├── CLAUDE.md -> AGENTS.md       # Symlink for Claude Code
+└── GEMINI.md -> AGENTS.md       # Symlink for Gemini
 ```
 
 ## Workflow Enforcement
 
-The skills use bash scripts to enforce proper workflow:
+The skills use scripts to enforce proper workflow (available in both Bash and PowerShell):
 
 | Script | Purpose |
 |--------|---------|
-| `check-prerequisites.sh` | Validates phase prerequisites |
-| `create-new-feature.sh` | Creates feature branch and directory |
-| `setup-plan.sh` | Initializes plan phase artifacts |
-| `update-agent-context.sh` | Updates CLAUDE.md with tech stack |
-| `common.sh` | Shared utility functions |
+| `check-prerequisites` | Validates phase prerequisites |
+| `create-new-feature` | Creates feature branch and directory |
+| `setup-plan` | Initializes plan phase artifacts |
+| `update-agent-context` | Updates AGENTS.md with tech stack |
+| `common` | Shared utility functions |
+
+Scripts are located in `.specify/scripts/bash/` (Linux/macOS) and `.specify/scripts/powershell/` (Windows).
 
 ### Prerequisite Checking
 
@@ -306,9 +324,13 @@ The workflow requires proper Git branch naming:
 
 ### "Command not found" for skills
 
-Ensure skills are in the correct location:
+Ensure skills are in the correct location for your agent:
 ```bash
+# Check primary location
 ls -la .claude/skills/speckit-*/SKILL.md
+
+# Check symlinks exist for other agents
+ls -la .codex/skills .gemini/skills .opencode/skills
 ```
 
 ### Scripts not executable
@@ -376,9 +398,18 @@ This project tracks the upstream [GitHub Spec-Kit](https://github.com/github/spe
 
 **Current Version**: Based on Spec-Kit Template v0.0.90
 
+## Supported Agents
+
+| Agent | Skills Location | Instructions File |
+|-------|-----------------|-------------------|
+| Claude Code | `.claude/skills/` | `CLAUDE.md` -> `AGENTS.md` |
+| OpenAI Codex | `.codex/skills/` -> symlink | `AGENTS.md` |
+| Google Gemini | `.gemini/skills/` -> symlink | `GEMINI.md` -> `AGENTS.md` |
+| OpenCode | `.opencode/skills/` -> symlink | `AGENTS.md` |
+
 ## Contributing
 
-This is a community implementation of Spec-Kit for Claude Code. For the official Spec-Kit, see [github/spec-kit](https://github.com/github/spec-kit).
+This is a community implementation of Spec-Kit for AI coding assistants. For the official Spec-Kit, see [github/spec-kit](https://github.com/github/spec-kit).
 
 ## License
 
