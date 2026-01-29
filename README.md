@@ -114,7 +114,7 @@ Creates a feature specification from natural language description.
 
 ---
 
-### /speckit-02-clarify
+### /speckit-02-clarify (Optional)
 
 Identifies underspecified areas and asks targeted clarification questions.
 
@@ -124,6 +124,8 @@ Identifies underspecified areas and asks targeted clarification questions.
 - Asks maximum 5 focused questions
 - Updates spec.md with answers
 - Marks clarification as complete in context
+
+**Note:** Recommended for complex features, but plan can proceed without it.
 
 ---
 
