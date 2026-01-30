@@ -103,10 +103,15 @@ Spec-Kit Skills integrates with [Tessl](https://tessl.io) to provide AI-optimize
 
 ### What is Tessl?
 
-Tessl provides "tiles" - curated, version-specific documentation packages for libraries and frameworks. These tiles help AI agents:
+Tessl is a **package manager for AI agent skills and context**. It provides "tiles" - versioned packages containing documentation, rules, and skills for libraries and frameworks. The [Tessl Registry](https://tessl.io/registry) contains 2,000+ evaluated tiles.
+
+Tiles help AI agents:
 - Use current API patterns (not outdated training data)
 - Follow library-specific conventions
 - Avoid common pitfalls and anti-patterns
+- Leverage pre-built skills for common tasks
+
+See the [Tessl skills announcement](https://tessl.io/blog/skills-are-software-and-they-need-a-lifecycle-introducing-skills-on-tessl/) for more details.
 
 ### Tile Types
 
@@ -115,6 +120,8 @@ Tessl provides "tiles" - curated, version-specific documentation packages for li
 | **Documentation** | Library usage specs and examples | Queried before writing library code |
 | **Rules** | Behavioral guidelines | Auto-applied via `.tessl/RULES.md` |
 | **Skills** | AI commands for specific tasks | Invoked during implementation |
+
+All tile types are **versioned and tracked** in `tessl.json`, ensuring reproducible agent behavior across environments. Skills can be discovered via `tessl skill search` or the [Tessl Registry](https://tessl.io/registry), which includes quality evaluations for each tile.
 
 ### Which Skills Use Tessl?
 
@@ -185,11 +192,19 @@ Tessl integration is optional. If not installed, skills continue without tile do
 
 ```bash
 # Install Tessl CLI
-npm install -g tessl
+npm install -g @tessl/cli
 
 # Authenticate (required for tile installation)
 tessl login
+
+# Discover available skills and documentation tiles
+tessl skill search
+
+# Install a skill from GitHub
+tessl i github:user/skill-repo
 ```
+
+Explore available tiles at the [Tessl Registry](https://tessl.io/registry) - each tile includes quality evaluations based on Anthropic's best practices.
 
 ### Without Tessl
 
