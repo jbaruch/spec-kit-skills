@@ -189,20 +189,10 @@ No skill tiles installed for this stack.
 Tessl integration is optional. If not installed, skills continue without tile documentation.
 
 ```bash
-# Install Tessl CLI
 npm install -g @tessl/cli
-
-# Authenticate (required for tile installation)
-tessl login
-
-# Discover available skills and documentation tiles
-tessl skill search
-
-# Install a skill from GitHub
-tessl i github:user/skill-repo
 ```
 
-Explore available tiles at the [Tessl Registry](https://tessl.io/registry) - each tile includes quality evaluations based on Anthropic's best practices.
+Explore available tiles at the [Tessl Registry](https://tessl.io/registry).
 
 ### Without Tessl
 
