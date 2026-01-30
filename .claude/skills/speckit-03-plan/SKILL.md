@@ -159,7 +159,112 @@ Follow the structure in IMPL_PLAN template to:
 
 3. **Evaluate gates** - ERROR if violations cannot be justified
 
-### 3. Phase 0: Outline & Research
+### 3. Tessl Tile Discovery (MANDATORY if Tessl installed)
+
+**Purpose**: Discover, install, and catalog Tessl tiles for all technologies in the Technical Context. Tiles provide documentation, rules, and skills that improve implementation quality.
+
+#### 3.1 Check Tessl Availability
+
+**Platform Detection**:
+- Unix/Linux/macOS: `command -v tessl >/dev/null 2>&1`
+- Windows PowerShell: `Get-Command tessl -ErrorAction SilentlyContinue`
+
+**If Tessl NOT Available**:
+Display once and continue without tile operations:
+```
+ℹ️ Tessl not installed. Tile-based documentation unavailable.
+   Install Tessl for enhanced library documentation: https://tessl.io
+```
+
+**If Tessl Available**: Proceed with tile discovery.
+
+#### 3.2 Check Tessl Status
+
+```
+mcp__tessl__status()
+```
+
+This shows authentication status and any existing tiles.
+
+#### 3.3 Extract Technologies from Technical Context
+
+From the drafted Technical Context, extract:
+- Language/Version (e.g., "Python 3.12", "TypeScript 5.x")
+- Primary Dependencies (e.g., "Click", "Express", "React")
+- Storage (e.g., "SQLite", "PostgreSQL", "MongoDB")
+- Testing (e.g., "pytest", "Jest", "Vitest")
+- Any other frameworks/libraries mentioned
+
+#### 3.4 Search and Install Tiles for Each Technology
+
+For each technology identified:
+
+1. **Search for tiles**:
+   ```
+   mcp__tessl__search(query="<technology>")
+   ```
+
+2. **For each tile found, identify type**:
+   - **Documentation tile**: Contains library usage specs (has `describes` field)
+   - **Rules tile**: Contains behavioral guidelines (has `rules` section)
+   - **Skills tile**: Contains invocable AI commands (has `skill` section)
+
+3. **Install relevant tiles**:
+   ```
+   mcp__tessl__install(packageName="<workspace/tile-name>")
+   ```
+
+4. **Document in research.md** (Tessl Tiles section):
+   ```
+   ## Tessl Tiles
+
+   ### Installed Tiles
+
+   | Technology | Tile | Type | Version |
+   |------------|------|------|---------|
+   | Python | tessl/python | Documentation | 1.2.0 |
+   | Click | tessl/click | Documentation | 0.8.0 |
+   | pytest | tessl/pytest | Documentation + Rules | 1.0.0 |
+
+   ### Available Skills
+
+   The following skills are available from installed tiles:
+   - `/<skill-name>` - Description of what the skill does
+
+   ### Technologies Without Tiles
+
+   - <technology>: No tile found in registry
+   ```
+
+5. **If no tiles found for a technology**:
+   - Note in research.md: "No Tessl tile available for <technology>"
+   - Continue without tile for that technology
+
+#### 3.5 Query Installed Documentation Tiles for Best Practices
+
+For each installed documentation tile, query for best practices:
+
+```
+mcp__tessl__query_library_docs(query="best practices for <library>")
+```
+
+Incorporate findings into research.md decisions section.
+
+#### 3.6 Catalog Installed Skill Tiles
+
+List all available skills from installed tiles:
+- Record skill name and purpose
+- Note in research.md: "Available skills: /<skill-1>, /<skill-2>, ..."
+- Skills become available for use in subsequent phases (especially `/speckit-07-implement`)
+
+#### 3.7 Handle Failures Gracefully
+
+- **Network issues**: Log warning, continue without affected tiles
+- **Registry unavailable**: Log warning, continue without tiles
+- **Authentication required**: Prompt user to run `tessl login`, continue without tiles
+- **Search returns no results**: Note in research.md, continue
+
+### 4. Phase 0: Outline & Research (includes Tessl findings)
 
 1. **Extract unknowns from Technical Context**:
    - For each NEEDS CLARIFICATION -> research task
@@ -173,9 +278,9 @@ Follow the structure in IMPL_PLAN template to:
    - Rationale: [why chosen]
    - Alternatives considered: [what else evaluated]
 
-**Output**: `research.md` with all NEEDS CLARIFICATION resolved
+**Output**: `research.md` with all NEEDS CLARIFICATION resolved (includes Tessl Tiles section if Tessl available)
 
-### 4. Phase 1: Design & Contracts
+### 5. Phase 1: Design & Contracts
 
 **Prerequisites:** `research.md` complete
 
@@ -207,7 +312,7 @@ Follow the structure in IMPL_PLAN template to:
 
 **Output**: `data-model.md`, `/contracts/*`, `quickstart.md`, updated agent file
 
-### 5. Constitution Check (Post-Design)
+### 6. Constitution Check (Post-Design)
 
 Re-evaluate the Constitution Check after design phase:
 
@@ -219,7 +324,7 @@ Re-evaluate the Constitution Check after design phase:
   - Suggest compliant alternative approach
   - DO NOT proceed with "best effort" or workarounds
 
-### 6. Phase Separation Validation (REQUIRED)
+### 7. Phase Separation Validation (REQUIRED)
 
 Before finalizing, scan the draft plan for governance content that belongs in `/speckit-00-constitution`:
 
@@ -286,11 +391,15 @@ Output:
 - Branch name
 - IMPL_PLAN path
 - Generated artifacts list:
-  - research.md
+  - research.md (includes Tessl Tiles section if Tessl available)
   - data-model.md
   - contracts/*
   - quickstart.md
 - Agent file update status
+- Tessl integration status:
+  - Tiles installed (with versions)
+  - Skills available for implementation phase
+  - Technologies without tiles
 
 ## Semantic Diff on Re-run
 

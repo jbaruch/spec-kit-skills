@@ -39,3 +39,6 @@ node_modules/
 
 # Logs
 *.log
+.mcp.json
+.tessl/
+tessl.json

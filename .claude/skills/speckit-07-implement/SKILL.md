@@ -173,104 +173,137 @@ Example output:
 - **REQUIRED**: Read `plan.md` for tech stack, architecture, and file structure
 - **IF EXISTS**: Read `data-model.md` for entities and relationships
 - **IF EXISTS**: Read `contracts/` for API specifications
-- **IF EXISTS**: Read `research.md` for technical decisions
+- **IF EXISTS**: Read `research.md` for technical decisions and Tessl tile catalog
 - **IF EXISTS**: Read `quickstart.md` for integration scenarios
 
-### 2. Tessl Initialization (Optional but Recommended)
+### 2. Tessl Integration (MANDATORY if Tessl installed)
 
-Initialize Tessl and install tiles for the planned tech stack BEFORE any implementation begins.
+**Purpose**: Use Tessl tiles for accurate, up-to-date library documentation during implementation. This prevents API drift, outdated patterns, and spinning on obscure library features.
 
-**Why Tessl:** AI agents often drift, misuse APIs, or fall back on outdated patterns when working with libraries. Tessl provides 10,000+ "tiles" of agent-optimized documentation that keeps implementation aligned with current best practices and prevents spinning on obscure library usage.
+#### 2.1 Check Tessl Availability
 
-1. **Check if Tessl is available:**
-   ```bash
-   command -v tessl >/dev/null 2>&1 && echo "TESSL_AVAILABLE" || echo "TESSL_NOT_FOUND"
+**Platform Detection**:
+- Unix/Linux/macOS: `command -v tessl >/dev/null 2>&1`
+- Windows PowerShell: `Get-Command tessl -ErrorAction SilentlyContinue`
+
+**If Tessl NOT Available**:
+Display once and continue:
+```
+ℹ️ Tessl not installed. Tile-based documentation unavailable.
+   Install Tessl for enhanced library documentation: https://tessl.io
+```
+Then proceed without Tessl (skip to section 3).
+
+**If Tessl Available**: Integration is **automatic and mandatory**. Continue with sections 2.2-2.6.
+
+#### 2.2 Load Tessl Context from research.md
+
+If `/speckit-03-plan` was run with Tessl available, `research.md` contains a "Tessl Tiles" section with:
+- List of installed tiles
+- Available skills from skill tiles
+- Technologies without tiles
+
+**Read this section** to understand what tiles are available for implementation.
+
+If `research.md` doesn't have a Tessl section (plan was run without Tessl), initialize tiles now:
+
+```
+mcp__tessl__status()
+```
+
+If no tiles installed, search and install for technologies in plan.md Technical Context:
+
+```
+mcp__tessl__search(query="<technology>")
+mcp__tessl__install(packageName="<workspace/tile-name>")
+```
+
+#### 2.3 Initialize Tile Usage Tracking
+
+Create an internal tracking structure for the completion report:
+```
+TESSL_USAGE = {
+    "documentation_queries": [],    # Track (library, topic, task_id)
+    "skills_invoked": [],           # Track (skill_name, task_ids)
+    "rules_applied": false          # Set true if .tessl/RULES.md exists
+}
+```
+
+Check if rules are being applied:
+```bash
+test -f .tessl/RULES.md && echo "RULES_ACTIVE" || echo "NO_RULES"
+```
+
+#### 2.4 Documentation Query Pattern (REQUIRED for each task)
+
+**Before implementing ANY code that uses an installed tile's library**:
+
+1. **Identify the library and feature needed** for the current task
+2. **Query the tile**:
    ```
-
-2. **If Tessl is NOT available**, display a gentle recommendation:
+   mcp__tessl__query_library_docs(query="<specific task context for library>")
    ```
-   ╭──────────────────────────────────────────────────────────────────╮
-   │  Tessl not detected                                              │
-   │                                                                  │
-   │  Tessl helps AI agents write better code by providing accurate, │
-   │  up-to-date documentation for libraries and frameworks.         │
-   │                                                                  │
-   │  Without Tessl, I may:                                          │
-   │  • Use outdated API patterns                                    │
-   │  • Miss library-specific conventions                            │
-   │  • Spin on obscure library features                             │
-   │                                                                  │
-   │  Learn more: https://tessl.io                                   │
-   │  Quick install: npm install -g tessl                            │
-   ╰──────────────────────────────────────────────────────────────────╯
-   ```
-   Then proceed without Tessl.
+3. **Apply patterns** from the response to implementation
+4. **Track the query** in TESSL_USAGE
 
-3. **If Tessl IS available**, initialize and install tiles from plan.md:
+**Example queries by task type**:
+- Creating a CLI command: `mcp__tessl__query_library_docs(query="click command with options and arguments")`
+- Database connection: `mcp__tessl__query_library_docs(query="sqlite3 connection context manager")`
+- Writing tests: `mcp__tessl__query_library_docs(query="pytest fixtures for database testing")`
+- API endpoint: `mcp__tessl__query_library_docs(query="fastapi route with request validation")`
 
-   a. Initialize Tessl:
-   ```bash
-   tessl init --agent claude-code
-   ```
+**Query when**:
+- Starting a task that uses a library with an installed tile
+- Implementing non-trivial library features
+- Encountering library-related errors
+- Unsure about current best practices
 
-   b. Extract technologies from plan.md **Technical Context** section:
-   - Language/Version (e.g., Python, Node.js, TypeScript)
-   - Primary Dependencies (e.g., Click, Express, React)
-   - Storage (e.g., SQLite, PostgreSQL, MongoDB)
-   - Testing (e.g., pytest, Jest, Vitest)
-   - Any other frameworks/libraries mentioned
+**Do NOT query**:
+- For basic language constructs (loops, conditionals)
+- For the same pattern already queried this session
+- When task doesn't involve an installed tile's library
 
-   c. For each technology, search for available tiles and install:
-   ```bash
-   # Search for tile
-   tessl search <technology>
+#### 2.5 Skill Tile Usage During Implementation
 
-   # If tile found, install it
-   tessl install tessl/<tile-name>
-   ```
+**Skill tiles** provide specialized AI commands that can automate parts of implementation.
 
-   Example for Python + Click + SQLite + pytest stack:
-   ```bash
-   tessl search python      # → install tessl/python if found
-   tessl search click       # → install tessl/click if found
-   tessl search sqlite      # → install tessl/sqlite3 if found
-   tessl search pytest      # → install tessl/pytest if found
-   ```
+**Before starting each task**:
+1. Check if any installed skill tile is relevant to the task
+2. Skills are cataloged in research.md "Available Skills" section
 
-   d. Report installed tiles:
-   ```
-   Tessl initialized with tiles:
-   ✓ tessl/python
-   ✓ tessl/click
-   ✓ tessl/sqlite3
-   ✓ tessl/pytest
-   ✗ tessl/somelib (not found in registry)
+**Examples of skill tile usage**:
+- Database migration task → invoke migration skill if installed
+- API endpoint scaffolding → invoke API scaffold skill if installed
+- Test generation → invoke test generation skill if installed
 
-   Library documentation now available via MCP.
-   ```
+**Pattern for invoking a skill tile**:
+```
+Skill(skill="<skill-name>", args="<context from current task>")
+```
 
-4. **Using Tessl during implementation (IMPORTANT):**
+**After skill invocation**:
+- Integrate skill output into implementation
+- Track invocation in TESSL_USAGE.skills_invoked
+- Continue with manual implementation for any gaps
 
-   After tiles are installed, **actively use the Tessl MCP tool** to get library documentation when implementing features:
+**Example**:
+```
+Task: T015 Create unit tests for UserService
 
-   ```
-   mcp__tessl__get_library_docs(library="click", topic="commands")
-   mcp__tessl__get_library_docs(library="sqlite3", topic="connections")
-   mcp__tessl__get_library_docs(library="pytest", topic="fixtures")
-   ```
+Check research.md → skill tile "test-gen" is installed
+Invoke: Skill(skill="test-gen", args="UserService in src/services/user_service.py")
+Integrate generated tests
+Track: TESSL_USAGE.skills_invoked.append(("test-gen", ["T015"]))
+```
 
-   **When to query Tessl:**
-   - Before using any API from an installed tile's library
-   - When unsure about correct patterns or conventions
-   - When implementing non-trivial features with the library
-   - When encountering errors related to library usage
+#### 2.6 Handle Tessl Failures Gracefully
 
-   **Query pattern:**
-   - Be specific with the `topic` parameter (e.g., "decorators", "async", "error handling")
-   - Query once per distinct feature/pattern, cache mentally for the session
-   - If no useful result, proceed with best knowledge
+- **MCP tool unavailable**: Log warning, continue without tile queries
+- **Query returns no useful result**: Proceed with best knowledge
+- **Tile not found**: Note in report, implement without tile guidance
+- **Network issues**: Log warning, continue implementation
 
-**Skip if:** User passes `--no-tessl` flag.
+**Skip Tessl if**: User passes `--no-tessl` flag.
 
 ### 3. Project Setup Verification
 
@@ -319,7 +352,7 @@ Execute Setup phase tasks:
 - Create configuration files (package.json, pyproject.toml, etc.)
 - Install dependencies (`npm install`, `pip install`, etc.)
 
-**Note:** Tessl was already initialized in step 2 with tiles for the planned tech stack.
+**Note:** Tessl was initialized in step 2. Use `mcp__tessl__query_library_docs` before implementing features that use installed tile libraries.
 
 #### 5.2 Remaining Phases
 
@@ -329,6 +362,8 @@ Continue with remaining phases:
 - **Final Phase: Polish** - cross-cutting concerns
 
 **Implementation execution rules**:
+- **Tessl queries**: Before implementing code using an installed tile's library, query `mcp__tessl__query_library_docs` (see section 2.4)
+- **Skill tiles**: Check if a skill tile can automate part of the task (see section 2.5)
 - Tests before code: If tests requested, write them first and verify they fail
 - Core development: Implement models, services, CLI commands, endpoints
 - Integration work: Database connections, middleware, logging, external services
@@ -363,6 +398,37 @@ Before writing ANY file:
 - Validate that tests pass and coverage meets requirements
 - Confirm the implementation follows the technical plan
 - Report final status with summary of completed work
+
+### 9. Tessl Tile Usage Report (if Tessl was used)
+
+If Tessl was available and used during implementation, generate a usage report:
+
+```
+╭─────────────────────────────────────────────╮
+│  TESSL TILE USAGE REPORT                    │
+├─────────────────────────────────────────────┤
+│  Documentation queries:  X                  │
+│    - <library>: <topics queried>            │
+│    - <library>: <topics queried>            │
+│                                             │
+│  Skills invoked:         X                  │
+│    - /<skill-name> (task IDs)               │
+│    - /<skill-name> (task IDs)               │
+│                                             │
+│  Rules applied:          [Yes/No]           │
+│    Source: .tessl/RULES.md                  │
+│                                             │
+│  Tiles used:             X of Y installed   │
+│  Unused tiles:           <list if any>      │
+╰─────────────────────────────────────────────╯
+```
+
+**Report includes**:
+- Count of documentation queries made
+- Which libraries were queried and for what topics
+- Which skill tiles were invoked and for which tasks
+- Whether rules from `.tessl/RULES.md` were applied
+- Coverage: how many installed tiles were actually used
 
 ## Error Handling
 

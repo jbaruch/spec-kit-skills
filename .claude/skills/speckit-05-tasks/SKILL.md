@@ -85,7 +85,61 @@ Read from FEATURE_DIR:
 - **Required**: `plan.md` (tech stack, libraries, structure), `spec.md` (user stories with priorities)
 - **Optional**: `data-model.md` (entities), `contracts/` (API endpoints), `research.md` (decisions), `quickstart.md` (test scenarios)
 
-### 2. Execute Task Generation
+### 2. Tessl Convention Consultation (if tiles installed)
+
+**Purpose**: Query installed Tessl tiles for framework conventions to improve file path generation and task ordering.
+
+#### 2.1 Check for Installed Tiles
+
+**Platform Detection**:
+- Unix/Linux/macOS: `command -v tessl >/dev/null 2>&1`
+- Windows PowerShell: `Get-Command tessl -ErrorAction SilentlyContinue`
+
+**If Tessl NOT Available**: Skip this section silently (no message needed, plan phase already informed user).
+
+**If Tessl Available**:
+```
+mcp__tessl__status()
+```
+
+If no tiles are installed, skip to task generation.
+
+#### 2.2 Query Primary Framework Tile for Project Structure
+
+If a tile is installed for the primary framework (e.g., React, Django, FastAPI, Express):
+
+```
+mcp__tessl__query_library_docs(query="project structure conventions for <framework>")
+```
+
+Apply conventions to:
+- File path generation in tasks
+- Module/package organization
+- Naming conventions for files
+
+#### 2.3 Query Testing Framework Tile for Test Organization
+
+If a tile is installed for the testing framework (e.g., pytest, Jest, Vitest):
+
+```
+mcp__tessl__query_library_docs(query="test organization patterns for <testing-framework>")
+```
+
+Apply patterns to:
+- Test file naming and location
+- Test task ordering within phases
+- Fixture/helper organization
+
+#### 2.4 Document Applied Conventions
+
+If conventions were queried and applied, note in task generation:
+```
+Tasks generated with Tessl conventions:
+- File structure: <framework> standard layout
+- Test organization: <testing-framework> patterns
+```
+
+### 3. Execute Task Generation
 
 1. Load `plan.md` and extract tech stack, libraries, project structure
 2. Load `spec.md` and extract user stories with their priorities (P1, P2, P3, etc.)
@@ -97,7 +151,7 @@ Read from FEATURE_DIR:
 8. Create parallel execution examples per user story
 9. Validate task completeness
 
-### 3. Task Format (REQUIRED)
+### 4. Task Format (REQUIRED)
 
 Every task MUST strictly follow this format:
 
@@ -127,7 +181,7 @@ Every task MUST strictly follow this format:
 - WRONG: `T001 [US1] Create model` (missing checkbox)
 - WRONG: `- [ ] [US1] Create User model` (missing Task ID)
 
-### 4. Phase Structure
+### 5. Phase Structure
 
 - **Phase 1**: Setup (project initialization)
 - **Phase 2**: Foundational (blocking prerequisites - MUST complete before user stories)
@@ -136,7 +190,7 @@ Every task MUST strictly follow this format:
   - Each phase should be independently testable
 - **Final Phase**: Polish & Cross-Cutting Concerns
 
-### 5. Task Organization
+### 6. Task Organization
 
 **From User Stories (spec.md)** - PRIMARY ORGANIZATION:
 - Each user story (P1, P2, P3...) gets its own phase
@@ -161,7 +215,7 @@ Every task MUST strictly follow this format:
 - Foundational/blocking tasks -> Foundational phase (Phase 2)
 - Story-specific setup -> within that story's phase
 
-### 6. Generate tasks.md
+### 7. Generate tasks.md
 
 Use template structure with:
 - Correct feature name from plan.md
@@ -173,7 +227,7 @@ Use template structure with:
 - Parallel execution examples
 - Implementation strategy section (MVP first, incremental delivery)
 
-### 7. Dependency Graph Validation
+### 8. Dependency Graph Validation
 
 **After generating tasks, validate the dependency graph:**
 

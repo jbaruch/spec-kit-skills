@@ -6,9 +6,10 @@ An AI coding assistant skills bundle that replicates [GitHub Spec-Kit](https://g
 
 Spec-Kit Skills provides specification-driven development directly in your AI coding assistant without requiring external CLI tools. It implements the same workflow phases as vanilla Spec-Kit using the native skills system.
 
-**Key Difference from Vanilla Spec-Kit:**
+**Key Differences from Vanilla Spec-Kit:**
 - **Vanilla**: Requires `specify-cli` installation via `uv tool install specify-cli`
 - **Skills**: Zero installation - just copy the `.claude/skills/` directory to your project
+- **Tessl Integration**: Automatic library documentation via Tessl tiles (when installed)
 
 ## Quick Start
 
@@ -96,6 +97,110 @@ Understanding what belongs in each phase is critical:
 
 **Important:** Constitution must be technology-agnostic. Tech stack decisions belong exclusively in the Plan phase.
 
+## Tessl Integration
+
+Spec-Kit Skills integrates with [Tessl](https://tessl.io) to provide AI-optimized library documentation during planning and implementation. This integration is **automatic when Tessl is installed** and **gracefully skipped** when not available.
+
+### What is Tessl?
+
+Tessl provides "tiles" - curated, version-specific documentation packages for libraries and frameworks. These tiles help AI agents:
+- Use current API patterns (not outdated training data)
+- Follow library-specific conventions
+- Avoid common pitfalls and anti-patterns
+
+### Tile Types
+
+| Type | Purpose | When Used |
+|------|---------|-----------|
+| **Documentation** | Library usage specs and examples | Queried before writing library code |
+| **Rules** | Behavioral guidelines | Auto-applied via `.tessl/RULES.md` |
+| **Skills** | AI commands for specific tasks | Invoked during implementation |
+
+### Which Skills Use Tessl?
+
+| Skill | Tessl Usage |
+|-------|-------------|
+| `/speckit-03-plan` | **Tile Discovery** - Searches and installs tiles for all technologies in Technical Context |
+| `/speckit-05-tasks` | **Convention Queries** - Queries tiles for framework conventions when generating file paths |
+| `/speckit-07-implement` | **Mandatory Queries** - Queries documentation before writing library code; invokes skill tiles |
+
+### How It Works
+
+1. **During `/speckit-03-plan`:**
+   - Detects Tessl availability
+   - Extracts technologies from Technical Context (language, frameworks, storage, testing)
+   - Searches for and installs relevant tiles
+   - Queries best practices
+   - Documents findings in `research.md` under "Tessl Tiles" section
+
+2. **During `/speckit-07-implement`:**
+   - Loads tile catalog from `research.md`
+   - Before implementing code using a tiled library, queries `mcp__tessl__query_library_docs`
+   - Invokes skill tiles when tasks match their purpose
+   - Generates Tessl Tile Usage Report at completion
+
+### Example Output
+
+**research.md (Tessl Tiles section):**
+```markdown
+## Tessl Tiles
+
+### Installed Tiles
+
+| Technology | Tile | Type | Version |
+|------------|------|------|---------|
+| Click | tessl/pypi-click | Documentation | 8.2.0 |
+| pytest | tessl/pypi-pytest | Documentation | 8.4.0 |
+| SQLite | tessl/pypi-aiosqlite | Documentation | 0.21.0 |
+
+### Available Skills
+
+No skill tiles installed for this stack.
+
+### Technologies Without Tiles
+
+- Python 3.12: No specific version tile (using general patterns)
+```
+
+**Implementation Tile Usage Report:**
+```
+╭─────────────────────────────────────────────╮
+│  TESSL TILE USAGE REPORT                    │
+├─────────────────────────────────────────────┤
+│  Documentation queries:  12                 │
+│    - click: commands, options, groups       │
+│    - pytest: fixtures, parametrize          │
+│                                             │
+│  Skills invoked:         0                  │
+│  Rules applied:          Yes                │
+│    Source: .tessl/RULES.md                  │
+│                                             │
+│  Tiles used:             3 of 3 installed   │
+╰─────────────────────────────────────────────╯
+```
+
+### Installation (Optional)
+
+Tessl integration is optional. If not installed, skills continue without tile documentation.
+
+```bash
+# Install Tessl CLI
+npm install -g tessl
+
+# Authenticate (required for tile installation)
+tessl login
+```
+
+### Without Tessl
+
+When Tessl is not installed, you'll see a one-time informational message:
+```
+ℹ️ Tessl not installed. Tile-based documentation unavailable.
+   Install Tessl for enhanced library documentation: https://tessl.io
+```
+
+The workflow continues normally - Tessl enhances but is not required.
+
 ## Skills Reference
 
 ### /speckit-00-constitution
@@ -160,7 +265,7 @@ Creates technical implementation plan with technology decisions.
 
 **Creates:**
 - `specs/NNN-feature-name/plan.md` - Implementation plan
-- `specs/NNN-feature-name/research.md` - Technology research
+- `specs/NNN-feature-name/research.md` - Technology research (includes Tessl Tiles section if Tessl installed)
 - `specs/NNN-feature-name/data-model.md` - Data structures
 - `specs/NNN-feature-name/quickstart.md` - Usage examples
 - `specs/NNN-feature-name/contracts/` - API/CLI contracts
@@ -170,6 +275,12 @@ Creates technical implementation plan with technology decisions.
 - Project structure
 - Constitution compliance check
 - Complexity tracking
+
+**Tessl Integration:** If Tessl is installed, this skill automatically:
+- Searches for tiles matching technologies in Technical Context
+- Installs relevant documentation, rules, and skill tiles
+- Queries best practices from installed tiles
+- Documents all tiles in `research.md` for use in implementation
 
 ---
 
@@ -208,6 +319,10 @@ Where:
 - `[P]` = Priority (P=Primary, S=Secondary)
 - `[US1]` = User story reference
 
+**Tessl Integration:** If tiles are installed, queries framework conventions for:
+- Project structure and file path generation
+- Test organization patterns
+
 ---
 
 ### /speckit-06-analyze (Optional)
@@ -239,6 +354,12 @@ Executes implementation plan by processing tasks in order.
 - Updates task status in tasks.md
 - Runs tests after each task
 - Halts on test failure
+
+**Tessl Integration:** If Tessl is installed, this skill:
+- Loads tile catalog from `research.md`
+- **Mandatory**: Queries `mcp__tessl__query_library_docs` before implementing code that uses a tiled library
+- Invokes skill tiles when tasks match their purpose (e.g., test generation, API scaffolding)
+- Generates Tessl Tile Usage Report showing documentation queries, skills invoked, and rules applied
 
 ---
 
@@ -331,8 +452,10 @@ The workflow requires proper Git branch naming:
 | Prerequisites | Bash scripts | Bash + PowerShell scripts |
 | Workflow enforcement | Identical | Identical |
 | Phase separation | Identical | Identical |
-| Output artifacts | Identical | Identical |
+| Output artifacts | Identical | Identical + Tessl tiles catalog |
 | Windows support | Limited | Full (PowerShell scripts) |
+| Library documentation | Manual | **Automatic via Tessl tiles** |
+| Best practices lookup | Manual research | **Automatic tile queries** |
 
 **Robustness:** Both implementations use scripts for workflow enforcement, providing identical protection against:
 - Out-of-order phase execution
