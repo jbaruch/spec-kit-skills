@@ -136,7 +136,7 @@ function Test-DirHasFiles {
 }
 
 # =============================================================================
-# VALIDATION FUNCTIONS (Skills Advantage - vanilla doesn't have these)
+# VALIDATION FUNCTIONS
 # =============================================================================
 
 function Test-Constitution {

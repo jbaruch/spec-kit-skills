@@ -251,7 +251,7 @@ Success criteria must be:
 - "API response time is under 200ms" (too technical)
 - "Database can handle 1000 TPS" (implementation detail)
 
-## Semantic Diff on Re-run (Skills Advantage)
+## Semantic Diff on Re-run
 
 **If spec.md already exists**, perform semantic diff before overwriting:
 

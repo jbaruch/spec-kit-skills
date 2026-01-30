@@ -34,7 +34,7 @@ Before ANY action, load and internalize the project constitution:
 
 3. Parse all principles, constraints, and governance rules.
 
-4. **Extract Enforcement Rules** (Skills Advantage - Hard Gate):
+4. **Extract Enforcement Rules**:
    - Find all lines containing "MUST", "MUST NOT", "SHALL", "SHALL NOT", "REQUIRED", "NON-NEGOTIABLE"
    - Build an enforcement checklist from these rules
    - Example extraction:
@@ -80,9 +80,9 @@ Before ANY action, load and internalize the project constitution:
    Run /speckit-01-specify first to create the feature specification.
    ```
 
-## Smart Validation (Skills Advantage)
+## Smart Validation
 
-**BEFORE proceeding to planning, perform AI-powered semantic validation that vanilla commands cannot do:**
+**BEFORE proceeding to planning, perform semantic validation:**
 
 ### Spec Quality Gate
 
@@ -115,7 +115,7 @@ Read the spec.md and validate:
 Calculate and display:
 ```
 ╭─────────────────────────────────────────────╮
-│  SPEC QUALITY REPORT (Skills Advantage)     │
+│  SPEC QUALITY REPORT                        │
 ├─────────────────────────────────────────────┤
 │  Requirements:     X found (min: 3)    [✓/✗]│
 │  Success Criteria: X found (min: 3)    [✓/✗]│
@@ -292,7 +292,7 @@ Output:
   - quickstart.md
 - Agent file update status
 
-## Semantic Diff on Re-run (Skills Advantage)
+## Semantic Diff on Re-run
 
 **If plan.md already exists with content**, perform semantic diff before overwriting:
 

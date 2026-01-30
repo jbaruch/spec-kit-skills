@@ -33,10 +33,10 @@ eval $(get_feature_paths)
 # Check if we're on a proper feature branch (only for git repos)
 check_feature_branch "$CURRENT_BRANCH" "$HAS_GIT" || exit 1
 
-# VALIDATION: Check constitution exists (Skills Advantage)
+# VALIDATION: Check constitution exists
 validate_constitution "$REPO_ROOT" || exit 1
 
-# VALIDATION: Check spec.md exists and has required structure (Skills Advantage)
+# VALIDATION: Check spec.md exists and has required structure
 validate_spec "$FEATURE_SPEC" || exit 1
 
 # Report spec quality score

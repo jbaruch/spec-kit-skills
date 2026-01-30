@@ -41,9 +41,9 @@ Before ANY action, load and internalize the project constitution:
    Run /speckit-03-plan first to create the implementation plan.
    ```
 
-## Smart Validation (Skills Advantage)
+## Smart Validation
 
-**BEFORE generating tasks, perform AI-powered validation that vanilla commands cannot do:**
+**BEFORE generating tasks, perform validation:**
 
 ### Plan Completeness Gate
 
@@ -65,7 +65,7 @@ Before ANY action, load and internalize the project constitution:
 
 ```
 ╭─────────────────────────────────────────────╮
-│  PLAN READINESS REPORT (Skills Advantage)   │
+│  PLAN READINESS REPORT                      │
 ├─────────────────────────────────────────────┤
 │  Tech Stack:       [Defined/Missing]   [✓/✗]│
 │  User Stories:     X found with criteria    │
@@ -173,7 +173,7 @@ Use template structure with:
 - Parallel execution examples
 - Implementation strategy section (MVP first, incremental delivery)
 
-### 7. Dependency Graph Validation (Skills Advantage)
+### 7. Dependency Graph Validation
 
 **After generating tasks, validate the dependency graph:**
 
@@ -229,7 +229,7 @@ Output:
   - Suggested MVP scope (typically just User Story 1)
   - Format validation confirmation
 
-## Semantic Diff on Re-run (Skills Advantage)
+## Semantic Diff on Re-run
 
 **If tasks.md already exists**, perform semantic diff before overwriting:
 

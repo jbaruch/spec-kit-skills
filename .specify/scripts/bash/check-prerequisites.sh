@@ -106,13 +106,13 @@ if [[ ! -d "$FEATURE_DIR" ]]; then
     exit 1
 fi
 
-# VALIDATION: Check constitution exists (Skills Advantage)
+# VALIDATION: Check constitution exists
 validate_constitution "$REPO_ROOT" || exit 1
 
-# VALIDATION: Check spec.md with structure validation (Skills Advantage)
+# VALIDATION: Check spec.md with structure validation
 validate_spec "$FEATURE_SPEC" || exit 1
 
-# VALIDATION: Check plan.md with structure validation (Skills Advantage)
+# VALIDATION: Check plan.md with structure validation
 validate_plan "$IMPL_PLAN" || exit 1
 
 # Check for tasks.md if required (with structure validation)

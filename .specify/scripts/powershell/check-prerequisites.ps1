@@ -92,17 +92,17 @@ if (-not (Test-Path $paths.FEATURE_DIR -PathType Container)) {
     exit 1
 }
 
-# VALIDATION: Check constitution exists (Skills Advantage)
+# VALIDATION: Check constitution exists
 if (-not (Test-Constitution -RepoRoot $paths.REPO_ROOT)) {
     exit 1
 }
 
-# VALIDATION: Check spec.md with structure validation (Skills Advantage)
+# VALIDATION: Check spec.md with structure validation
 if (-not (Test-Spec -SpecFile $paths.FEATURE_SPEC)) {
     exit 1
 }
 
-# VALIDATION: Check plan.md with structure validation (Skills Advantage)
+# VALIDATION: Check plan.md with structure validation
 if (-not (Test-Plan -PlanFile $paths.IMPL_PLAN)) {
     exit 1
 }

@@ -28,12 +28,12 @@ if (-not (Test-FeatureBranch -Branch $paths.CURRENT_BRANCH -HasGit $paths.HAS_GI
     exit 1
 }
 
-# VALIDATION: Check constitution exists (Skills Advantage)
+# VALIDATION: Check constitution exists
 if (-not (Test-Constitution -RepoRoot $paths.REPO_ROOT)) {
     exit 1
 }
 
-# VALIDATION: Check spec.md exists and has required structure (Skills Advantage)
+# VALIDATION: Check spec.md exists and has required structure
 if (-not (Test-Spec -SpecFile $paths.FEATURE_SPEC)) {
     exit 1
 }

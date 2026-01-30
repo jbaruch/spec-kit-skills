@@ -34,7 +34,7 @@ Before ANY action, load and internalize the project constitution:
 
 3. Parse all principles, constraints, and governance rules.
 
-4. **Extract Enforcement Rules** (Skills Advantage - Hard Gate):
+4. **Extract Enforcement Rules**:
    - Find all lines containing "MUST", "MUST NOT", "SHALL", "SHALL NOT", "REQUIRED", "NON-NEGOTIABLE"
    - Build enforcement checklist:
      ```
@@ -80,7 +80,7 @@ Before ANY action, load and internalize the project constitution:
    Run /speckit-05-tasks first to create the task list.
    ```
 
-## Comprehensive Pre-Implementation Validation (Skills Advantage)
+## Comprehensive Pre-Implementation Validation
 
 **BEFORE any implementation, perform complete validation sweep:**
 
@@ -120,7 +120,7 @@ Validate relationships between artifacts:
 
 ```
 ╭─────────────────────────────────────────────────────╮
-│  IMPLEMENTATION READINESS (Skills Advantage)         │
+│  IMPLEMENTATION READINESS                            │
 ├─────────────────────────────────────────────────────┤
 │  Artifacts:        X/Y complete              [✓/✗]  │
 │  Spec Coverage:    X% requirements → tasks   [✓/✗]  │
