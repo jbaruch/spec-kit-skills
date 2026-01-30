@@ -111,8 +111,6 @@ Tiles help AI agents:
 - Avoid common pitfalls and anti-patterns
 - Leverage pre-built skills for common tasks
 
-See the [Tessl skills announcement](https://tessl.io/blog/skills-are-software-and-they-need-a-lifecycle-introducing-skills-on-tessl/) for more details.
-
 ### Tile Types
 
 | Type | Purpose | When Used |
