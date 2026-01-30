@@ -152,11 +152,11 @@ All tile types are **versioned and tracked** in `tessl.json`, ensuring reproduci
 
 ### Installed Tiles
 
-| Technology | Tile | Type | Version |
-|------------|------|------|---------|
-| Click | tessl/pypi-click | Documentation | 8.2.0 |
-| pytest | tessl/pypi-pytest | Documentation | 8.4.0 |
-| SQLite | tessl/pypi-aiosqlite | Documentation | 0.21.0 |
+| Technology | Tile                  | Type          | Version |
+|------------|-----------------------|---------------|---------|
+| Click      | tessl/pypi-click      | Documentation | 8.2.0   |
+| pytest     | tessl/pypi-pytest     | Documentation | 8.4.0   |
+| SQLite     | tessl/pypi-aiosqlite  | Documentation | 0.21.0  |
 
 ### Available Skills
 
