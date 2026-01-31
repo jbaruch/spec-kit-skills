@@ -34,18 +34,19 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Prerequisites Check
 
-1. Check if constitution template exists:
+1. Check if constitution already exists:
    ```bash
    cat .specify/memory/constitution.md 2>/dev/null || echo "NO_CONSTITUTION"
    ```
 
-2. If file doesn't exist, copy from skill references:
-   - Read the constitution template from this skill's `references/constitution-template.md`
-   - Create `.specify/memory/constitution.md` with the template
+2. If constitution doesn't exist, copy from template:
+   ```bash
+   cp .specify/templates/constitution-template.md .specify/memory/constitution.md
+   ```
 
 ## Execution Flow
 
-1. **Load the existing constitution template** at `.specify/memory/constitution.md`.
+1. **Load the existing constitution** at `.specify/memory/constitution.md`.
    - Identify every placeholder token of the form `[ALL_CAPS_IDENTIFIER]`.
    - **IMPORTANT**: The user might require fewer or more principles than the template. Adapt accordingly.
 

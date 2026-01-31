@@ -406,11 +406,12 @@ your-project/
 ├── .gemini/skills -> ../.claude/skills  # Symlink for Gemini
 ├── .opencode/skills -> ../.claude/skills # Symlink for OpenCode
 ├── .specify/
-│   ├── memory/
-│   │   └── constitution.md      # Project governance
+│   ├── memory/                  # Project artifacts (created by skills)
+│   │   └── constitution.md      # Created by /speckit-00-constitution
 │   ├── scripts/bash/            # Workflow scripts (Linux/macOS)
 │   ├── scripts/powershell/      # Workflow scripts (Windows)
-│   └── templates/               # Artifact templates
+│   └── templates/               # Framework templates (source of truth)
+│       └── constitution-template.md, spec-template.md, etc.
 ├── specs/
 │   └── NNN-feature-name/
 │       ├── spec.md              # Feature specification

@@ -33,7 +33,7 @@ Read `.specify/memory/constitution.md` for this project's governing principles.
 .opencode/skills/            # Symlink -> .claude/skills
 
 .specify/
-  memory/
+  memory/                    # Project-specific artifacts (created by skills)
     constitution.md          # Project constitution (created by /speckit-00-constitution)
   scripts/bash/
     common.sh                # Shared functions
@@ -42,7 +42,8 @@ Read `.specify/memory/constitution.md` for this project's governing principles.
     setup-plan.sh            # Plan initialization
     update-agent-context.sh  # Agent file updates
   scripts/powershell/        # Windows equivalents
-  templates/
+  templates/                 # Framework templates (do not edit - copied by skills)
+    constitution-template.md # Constitution template
     spec-template.md         # Feature spec template
     plan-template.md         # Implementation plan template
     tasks-template.md        # Task list template
