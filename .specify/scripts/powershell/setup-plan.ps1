@@ -20,13 +20,17 @@ if ($Help) {
 # Load common functions
 . "$PSScriptRoot/common.ps1"
 
-# Get all paths and variables from common functions
-$paths = Get-FeaturePathsEnv
-
-# Check if we're on a proper feature branch (only for git repos)
-if (-not (Test-FeatureBranch -Branch $paths.CURRENT_BRANCH -HasGit $paths.HAS_GIT)) {
+# Check if we're on a proper feature branch FIRST (may set SPECIFY_FEATURE)
+# This must happen before Get-FeaturePathsEnv so it uses the corrected feature name
+$repoRoot = Get-RepoRoot
+$hasGit = Test-HasGit
+$currentBranch = Get-CurrentBranch
+if (-not (Test-FeatureBranch -Branch $currentBranch -HasGit $hasGit)) {
     exit 1
 }
+
+# Now get all paths (will use SPECIFY_FEATURE if it was set by Test-FeatureBranch)
+$paths = Get-FeaturePathsEnv
 
 # VALIDATION: Check constitution exists
 if (-not (Test-Constitution -RepoRoot $paths.REPO_ROOT)) {

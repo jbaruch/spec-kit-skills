@@ -27,11 +27,16 @@ done
 SCRIPT_DIR="$(CDPATH="" cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/common.sh"
 
-# Get all paths and variables from common functions
-eval $(get_feature_paths)
-
-# Check if we're on a proper feature branch (only for git repos)
+# Check if we're on a proper feature branch FIRST (may set SPECIFY_FEATURE)
+# This must happen before get_feature_paths so it uses the corrected feature name
+REPO_ROOT=$(get_repo_root)
+HAS_GIT="false"
+has_git && HAS_GIT="true"
+CURRENT_BRANCH=$(get_current_branch)
 check_feature_branch "$CURRENT_BRANCH" "$HAS_GIT" || exit 1
+
+# Now get all paths (will use SPECIFY_FEATURE if it was set by check_feature_branch)
+eval $(get_feature_paths)
 
 # VALIDATION: Check constitution exists
 validate_constitution "$REPO_ROOT" || exit 1
