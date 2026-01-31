@@ -35,7 +35,16 @@ $ErrorActionPreference = 'Stop'
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 . (Join-Path $ScriptDir 'common.ps1')
 
-# Acquire environment paths
+# Check if we're on a proper feature branch FIRST (may set SPECIFY_FEATURE)
+# This must happen before Get-FeaturePathsEnv so it uses the corrected feature name
+$repoRoot = Get-RepoRoot
+$hasGit = Test-HasGit
+$currentBranch = Get-CurrentBranch
+if (-not (Test-FeatureBranch -Branch $currentBranch -HasGit $hasGit)) {
+    exit 1
+}
+
+# Now acquire environment paths (will use SPECIFY_FEATURE if it was set by Test-FeatureBranch)
 $envData = Get-FeaturePathsEnv
 $REPO_ROOT     = $envData.REPO_ROOT
 $CURRENT_BRANCH = $envData.CURRENT_BRANCH
