@@ -79,12 +79,41 @@ function Test-FeatureBranch {
         return $true
     }
 
-    if ($Branch -notmatch '^[0-9]{3}-') {
-        Write-Output "ERROR: Not on a feature branch. Current branch: $Branch"
-        Write-Output "Feature branches should be named like: 001-feature-name"
+    # Accept if branch matches NNN- pattern (standard feature branch)
+    if ($Branch -match '^[0-9]{3}-') {
+        return $true
+    }
+
+    # Accept if SPECIFY_FEATURE env var is set (explicit feature context, e.g., -SkipBranch)
+    if ($env:SPECIFY_FEATURE) {
+        Write-Warning "[specify] Using feature context from SPECIFY_FEATURE: $env:SPECIFY_FEATURE"
+        return $true
+    }
+
+    # Check if there are feature directories we can use
+    $repoRoot = Get-RepoRoot
+    $specsDir = Join-Path $repoRoot 'specs'
+    $featureDirs = @()
+
+    if (Test-Path $specsDir) {
+        $featureDirs = Get-ChildItem -Path $specsDir -Directory | Where-Object { $_.Name -match '^[0-9]{3}-' }
+    }
+
+    if ($featureDirs.Count -eq 1) {
+        Write-Warning "[specify] Not on feature branch, but found single feature directory: $($featureDirs[0].Name)"
+        $env:SPECIFY_FEATURE = $featureDirs[0].Name
+        return $true
+    } elseif ($featureDirs.Count -gt 1) {
+        Write-Output "WARNING: Not on a feature branch and multiple feature directories exist."
+        Write-Output "Current branch: $Branch"
+        Write-Output "Set SPECIFY_FEATURE=<feature-name> to specify which feature to use."
+        Write-Output "Or run: /speckit-01-specify to create a new feature."
         return $false
     }
-    return $true
+
+    Write-Output "ERROR: Not on a feature branch. Current branch: $Branch"
+    Write-Output "Run: /speckit-01-specify <feature description>"
+    return $false
 }
 
 function Get-FeatureDir {

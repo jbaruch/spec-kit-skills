@@ -10,6 +10,8 @@ param(
     [string]$ShortName,
     [Alias('n')]
     [int]$Number = 0,
+    [Alias('b')]
+    [switch]$SkipBranch,
     [Alias('h')]
     [switch]$Help
 )
@@ -17,17 +19,19 @@ $ErrorActionPreference = 'Stop'
 
 # Show help if requested
 if ($Help) {
-    Write-Host "Usage: ./create-new-feature.ps1 [-Json] [-ShortName <name>] [-Number N] <feature description>"
+    Write-Host "Usage: ./create-new-feature.ps1 [-Json] [-ShortName <name>] [-Number N] [-SkipBranch] <feature description>"
     Write-Host ""
     Write-Host "Options:"
     Write-Host "  -Json               Output in JSON format"
     Write-Host "  -ShortName <name>   Provide a custom short name (2-4 words) for the branch"
     Write-Host "  -Number N           Specify branch number manually (overrides auto-detection)"
+    Write-Host "  -SkipBranch         Create feature directory without creating a git branch"
     Write-Host "  -Help               Show this help message"
     Write-Host ""
     Write-Host "Examples:"
     Write-Host "  ./create-new-feature.ps1 'Add user authentication system' -ShortName 'user-auth'"
     Write-Host "  ./create-new-feature.ps1 'Implement OAuth2 integration for API'"
+    Write-Host "  ./create-new-feature.ps1 -SkipBranch 'Fix bug on existing branch'"
     exit 0
 }
 
@@ -245,7 +249,9 @@ if ($branchName.Length -gt $maxBranchLength) {
     Write-Warning "[specify] Truncated to: $branchName ($($branchName.Length) bytes)"
 }
 
-if ($hasGit) {
+if ($SkipBranch) {
+    Write-Warning "[specify] Skipping branch creation (-SkipBranch). Feature directory: $branchName"
+} elseif ($hasGit) {
     try {
         git checkout -b $branchName | Out-Null
     } catch {

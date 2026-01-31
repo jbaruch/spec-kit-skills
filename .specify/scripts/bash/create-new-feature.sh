@@ -5,6 +5,7 @@ set -e
 JSON_MODE=false
 SHORT_NAME=""
 BRANCH_NUMBER=""
+SKIP_BRANCH=false
 ARGS=()
 i=1
 while [ $i -le $# ]; do
@@ -12,6 +13,9 @@ while [ $i -le $# ]; do
     case "$arg" in
         --json)
             JSON_MODE=true
+            ;;
+        --skip-branch)
+            SKIP_BRANCH=true
             ;;
         --short-name)
             if [ $((i + 1)) -gt $# ]; then
@@ -40,17 +44,19 @@ while [ $i -le $# ]; do
             BRANCH_NUMBER="$next_arg"
             ;;
         --help|-h)
-            echo "Usage: $0 [--json] [--short-name <name>] [--number N] <feature_description>"
+            echo "Usage: $0 [--json] [--short-name <name>] [--number N] [--skip-branch] <feature_description>"
             echo ""
             echo "Options:"
             echo "  --json              Output in JSON format"
             echo "  --short-name <name> Provide a custom short name (2-4 words) for the branch"
             echo "  --number N          Specify branch number manually (overrides auto-detection)"
+            echo "  --skip-branch       Create feature directory without creating a git branch"
             echo "  --help, -h          Show this help message"
             echo ""
             echo "Examples:"
             echo "  $0 'Add user authentication system' --short-name 'user-auth'"
             echo "  $0 'Implement OAuth2 integration for API' --number 5"
+            echo "  $0 --skip-branch 'Fix bug on existing branch'"
             exit 0
             ;;
         *)
@@ -240,7 +246,9 @@ if [ ${#BRANCH_NAME} -gt $MAX_BRANCH_LENGTH ]; then
     >&2 echo "[specify] Truncated to: $BRANCH_NAME (${#BRANCH_NAME} bytes)"
 fi
 
-if [ "$HAS_GIT" = true ]; then
+if [ "$SKIP_BRANCH" = true ]; then
+    >&2 echo "[specify] Skipping branch creation (--skip-branch). Feature directory: $BRANCH_NAME"
+elif [ "$HAS_GIT" = true ]; then
     git checkout -b "$BRANCH_NAME"
 else
     >&2 echo "[specify] Warning: Git repository not detected; skipped branch creation for $BRANCH_NAME"

@@ -52,16 +52,47 @@ Examples:
 
 ### 2. Create Feature Branch and Directory
 
-Run the feature creation script (choose based on platform):
+#### 2.1 Branch Creation Decision
+
+Before creating a feature branch, check context and ask user:
+
+1. **Check current branch**:
+   ```bash
+   git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "no-git"
+   ```
+
+2. **Decide whether to prompt**:
+   - If already on a feature branch (matches `^[0-9]{3}-`): suggest skipping branch creation
+   - If on main/master/develop: suggest creating a new branch (default)
+
+3. **Ask user** (with context-aware default):
+   ```
+   Create feature branch? [Y/n]
+   - Y (default): Create new branch 'NNN-feature-name'
+   - n: Stay on current branch, create feature directory only
+   ```
+
+4. **If user declines branch creation** (answers 'n', 'no', or 'skip'):
+   - Add `--skip-branch` flag to the script
+
+#### 2.2 Run Feature Creation Script
 
 **Unix/macOS/Linux:**
 ```bash
+# With branch creation (default):
 .specify/scripts/bash/create-new-feature.sh --json "$ARGUMENTS" --short-name "your-short-name"
+
+# Without branch creation (if user declined):
+.specify/scripts/bash/create-new-feature.sh --json --skip-branch "$ARGUMENTS" --short-name "your-short-name"
 ```
 
 **Windows (PowerShell):**
 ```powershell
+# With branch creation (default):
 pwsh .specify/scripts/powershell/create-new-feature.ps1 -Json "$ARGUMENTS" -ShortName "your-short-name"
+
+# Without branch creation (if user declined):
+pwsh .specify/scripts/powershell/create-new-feature.ps1 -Json -SkipBranch "$ARGUMENTS" -ShortName "your-short-name"
 ```
 
 Parse the JSON output for `BRANCH_NAME`, `SPEC_FILE`, and `FEATURE_NUM`.

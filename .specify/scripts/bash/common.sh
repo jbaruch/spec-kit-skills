@@ -72,13 +72,47 @@ check_feature_branch() {
         return 0
     fi
 
-    if [[ ! "$branch" =~ ^[0-9]{3}- ]]; then
-        echo "ERROR: Not on a feature branch. Current branch: $branch" >&2
-        echo "Feature branches should be named like: 001-feature-name" >&2
+    # Accept if branch matches NNN- pattern (standard feature branch)
+    if [[ "$branch" =~ ^[0-9]{3}- ]]; then
+        return 0
+    fi
+
+    # Accept if SPECIFY_FEATURE env var is set (explicit feature context, e.g., --skip-branch)
+    if [[ -n "${SPECIFY_FEATURE:-}" ]]; then
+        echo "[specify] Using feature context from SPECIFY_FEATURE: $SPECIFY_FEATURE" >&2
+        return 0
+    fi
+
+    # Check if there are feature directories we can use
+    local repo_root=$(get_repo_root)
+    local specs_dir="$repo_root/specs"
+    local feature_count=0
+    local latest_feature=""
+
+    if [[ -d "$specs_dir" ]]; then
+        for dir in "$specs_dir"/*; do
+            if [[ -d "$dir" ]] && [[ "$(basename "$dir")" =~ ^[0-9]{3}- ]]; then
+                feature_count=$((feature_count + 1))
+                latest_feature=$(basename "$dir")
+            fi
+        done
+    fi
+
+    if [[ "$feature_count" -eq 1 ]]; then
+        echo "[specify] Not on feature branch, but found single feature directory: $latest_feature" >&2
+        export SPECIFY_FEATURE="$latest_feature"
+        return 0
+    elif [[ "$feature_count" -gt 1 ]]; then
+        echo "WARNING: Not on a feature branch and multiple feature directories exist." >&2
+        echo "Current branch: $branch" >&2
+        echo "Set SPECIFY_FEATURE=<feature-name> to specify which feature to use." >&2
+        echo "Or run: /speckit-01-specify to create a new feature." >&2
         return 1
     fi
 
-    return 0
+    echo "ERROR: Not on a feature branch. Current branch: $branch" >&2
+    echo "Run: /speckit-01-specify <feature description>" >&2
+    return 1
 }
 
 get_feature_dir() { echo "$1/specs/$2"; }
