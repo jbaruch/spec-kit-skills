@@ -28,8 +28,8 @@ Before ANY action, load and internalize the project constitution:
    ```
    ERROR: Project constitution not found at .specify/memory/constitution.md
 
-   STOP - Cannot proceed without constitution.
-   Run /speckit-00-constitution first to define project principles.
+   Cannot proceed without constitution.
+   Run: /speckit-00-constitution
    ```
 
 3. Parse all principles, constraints, and governance rules.
@@ -77,7 +77,8 @@ Before ANY action, load and internalize the project constitution:
 3. If error or missing spec.md:
    ```
    ERROR: spec.md not found in feature directory.
-   Run /speckit-01-specify first to create the feature specification.
+
+   Run: /speckit-01-specify <feature description>
    ```
 
 ## Smart Validation
@@ -90,12 +91,26 @@ Read the spec.md and validate:
 
 1. **Requirement Count Check**:
    - Count functional requirements (FR-XXX patterns)
-   - WARN if fewer than 3 requirements: "Spec may be underspecified"
-   - HALT if 0 requirements: "Cannot plan without requirements"
+   - If fewer than 3 requirements:
+     ```
+     WARNING: Spec may be underspecified (found X requirements, recommend 3+).
+     ```
+   - If 0 requirements:
+     ```
+     ERROR: Cannot plan without requirements.
+
+     The spec.md has no functional requirements (FR-XXX).
+     Run: /speckit-01-specify to add requirements, or manually add FR-XXX items to spec.md
+     ```
 
 2. **Measurable Success Criteria Check**:
    - Scan Success Criteria section for numeric values, percentages, or time measurements
-   - WARN if no measurable criteria found: "Success criteria should include metrics (e.g., 'under 3 seconds', '95% uptime')"
+   - If no measurable criteria found:
+     ```
+     WARNING: No measurable success criteria found.
+
+     Recommendation: Add metrics like "under 3 seconds", "95% uptime", "10,000 users".
+     ```
 
 3. **Unresolved Clarification Check**:
    - Search for `[NEEDS CLARIFICATION]` markers
@@ -104,11 +119,21 @@ Read the spec.md and validate:
 
 4. **User Story Coverage Check**:
    - Verify each user story has at least one acceptance scenario
-   - WARN if any story lacks scenarios: "User Story X has no acceptance criteria"
+   - If any story lacks scenarios:
+     ```
+     WARNING: User Story X has no acceptance criteria.
+
+     Recommendation: Add acceptance scenarios to validate the story is complete.
+     ```
 
 5. **Cross-Reference Validation**:
    - Check that requirements reference user stories (or vice versa)
-   - WARN if orphan requirements exist: "FR-XXX not linked to any user story"
+   - If orphan requirements exist:
+     ```
+     WARNING: Orphan requirement detected (FR-XXX not linked to any user story).
+
+     Recommendation: Link requirements to user stories for traceability.
+     ```
 
 ### Quality Score Report
 

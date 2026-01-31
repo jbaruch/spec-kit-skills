@@ -28,7 +28,8 @@ Before ANY action, load and internalize the project constitution:
    ```
    WARNING: Project constitution not found at .specify/memory/constitution.md
 
-   Proceeding without constitution. Consider running /speckit-00-constitution first.
+   Proceeding without constitution.
+   Recommendation: Run /speckit-00-constitution first to define project principles.
    ```
 
 3. If exists, parse all principles, constraints, and governance rules.
@@ -76,7 +77,13 @@ Read `.specify/templates/spec-template.md` to understand required sections.
 Follow this execution flow:
 
 1. Parse user description from Input
-   - If empty: ERROR "No feature description provided"
+   - If empty:
+     ```
+     ERROR: No feature description provided.
+
+     Usage: /speckit-01-specify <feature description>
+     Example: /speckit-01-specify Add user authentication with OAuth2 support
+     ```
 
 2. Extract key concepts from description
    - Identify: actors, actions, data, constraints

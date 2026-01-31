@@ -34,8 +34,8 @@ Before ANY action, load the project constitution:
    ```
    ERROR: Project constitution not found at .specify/memory/constitution.md
 
-   STOP - Cannot proceed without constitution.
-   Run /speckit-00-constitution first to define project principles.
+   Cannot proceed without constitution.
+   Run: /speckit-00-constitution
    ```
 
 3. Extract principle names and MUST/SHOULD normative statements.
@@ -54,7 +54,16 @@ Before ANY action, load the project constitution:
    - PLAN = FEATURE_DIR/plan.md
    - TASKS = FEATURE_DIR/tasks.md
 
-4. Abort with error if any required file is missing.
+4. If any required file is missing:
+   ```
+   ERROR: Required artifact missing.
+
+   Missing: [spec.md | plan.md | tasks.md]
+   Run the appropriate skill to create the missing artifact:
+   - spec.md:  /speckit-01-specify <feature description>
+   - plan.md:  /speckit-03-plan
+   - tasks.md: /speckit-05-tasks
+   ```
 
 ## Execution Steps
 

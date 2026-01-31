@@ -38,7 +38,8 @@ Before ANY action, load and internalize the project constitution:
 3. If error or missing `plan.md`:
    ```
    ERROR: plan.md not found in feature directory.
-   Run /speckit-03-plan first to create the implementation plan.
+
+   Run: /speckit-03-plan
    ```
 
 ## Smart Validation
@@ -49,12 +50,22 @@ Before ANY action, load and internalize the project constitution:
 
 1. **Tech Stack Validation**:
    - Verify plan.md has Language/Version defined (not "NEEDS CLARIFICATION")
-   - WARN if missing: "Tech stack undefined - tasks may be too generic"
+   - If missing:
+     ```
+     WARNING: Tech stack undefined - tasks may be too generic.
+
+     Recommendation: Run /speckit-03-plan to define the tech stack.
+     ```
 
 2. **User Story Mapping**:
    - Extract all user stories from spec.md (P1, P2, P3...)
    - Verify each has clear acceptance criteria
-   - WARN if story lacks testable criteria: "US-X has no testable acceptance criteria"
+   - If story lacks testable criteria:
+     ```
+     WARNING: US-X has no testable acceptance criteria.
+
+     Recommendation: Add acceptance scenarios to spec.md for this user story.
+     ```
 
 3. **Dependency Pre-Analysis**:
    - Identify shared entities from data-model.md
@@ -232,13 +243,72 @@ Use template structure with:
 **After generating tasks, validate the dependency graph:**
 
 1. **Circular Dependency Detection**:
-   - Build task dependency graph from blockedBy/blocks relationships
-   - Detect cycles: "CIRCULAR DEPENDENCY: T005 → T012 → T008 → T005"
-   - If found: HALT and require manual resolution
+
+   Build task dependency graph and detect cycles using DFS:
+
+   **Algorithm (DFS-based cycle detection)**:
+   ```
+   1. Build adjacency list from task dependencies:
+      - For each task with "blockedBy: [T00X, T00Y]", add edges T00X → task, T00Y → task
+      - For each task with "blocks: [T00X]", add edge task → T00X
+
+   2. Initialize:
+      - visited = {} (empty set)
+      - recursion_stack = {} (empty set)
+      - cycles = [] (empty list)
+
+   3. For each task_id in graph:
+      if task_id not in visited:
+         dfs_detect_cycle(task_id, visited, recursion_stack, path=[], cycles)
+
+   4. dfs_detect_cycle(node, visited, rec_stack, path, cycles):
+      visited.add(node)
+      rec_stack.add(node)
+      path.append(node)
+
+      for neighbor in graph[node]:
+         if neighbor not in visited:
+            dfs_detect_cycle(neighbor, visited, rec_stack, path, cycles)
+         elif neighbor in rec_stack:
+            # Cycle found! Extract cycle path
+            cycle_start = path.index(neighbor)
+            cycle = path[cycle_start:] + [neighbor]
+            cycles.append(cycle)
+
+      rec_stack.remove(node)
+      path.pop()
+
+   5. Return cycles list
+   ```
+
+   **If cycles found**:
+   ```
+   ERROR: Circular dependency detected.
+
+   CIRCULAR DEPENDENCY: T005 → T012 → T008 → T005
+
+   Tasks involved:
+   - T005: [description]
+   - T012: [description]
+   - T008: [description]
+
+   Resolution options:
+   1. Remove one dependency to break the cycle
+   2. Merge tasks if they represent the same work
+   3. Reorder phases to resolve implicit dependencies
+
+   Cannot generate tasks.md until resolved.
+   ```
 
 2. **Orphan Task Detection**:
    - Find tasks with no dependencies AND not blocking anything
-   - WARN: "Orphan tasks detected: T015, T023 - verify they belong to a phase"
+   - If orphans found:
+     ```
+     WARNING: Orphan tasks detected: T015, T023
+
+     These tasks have no dependencies and don't block anything.
+     Verify they belong to the correct phase or add explicit dependencies.
+     ```
 
 3. **Critical Path Analysis**:
    - Identify longest dependency chain
@@ -247,11 +317,27 @@ Use template structure with:
 
 4. **Phase Boundary Validation**:
    - Ensure no cross-phase dependencies go backwards
-   - ERROR if Phase 4 task depends on Phase 5 task
+   - If backward dependency found:
+     ```
+     ERROR: Invalid phase dependency.
+
+     T012 (Phase 3) depends on T018 (Phase 4).
+     Earlier phases cannot depend on later phases.
+
+     Resolution: Move T018 to Phase 3 or earlier, or remove the dependency.
+     ```
 
 5. **Story Independence Check**:
    - Verify each user story phase CAN be implemented independently
-   - WARN if US2 tasks depend on US3 tasks (wrong priority order)
+   - If higher-priority story depends on lower-priority:
+     ```
+     WARNING: Priority inversion detected.
+
+     US2 (higher priority) depends on US3 tasks (lower priority).
+     This may indicate incorrect story prioritization.
+
+     Recommendation: Review story priorities or adjust dependencies.
+     ```
 
 ### Dependency Report
 

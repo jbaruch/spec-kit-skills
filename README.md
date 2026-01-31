@@ -31,17 +31,28 @@ chmod +x your-project/.specify/scripts/bash/*.sh
 # Copy skills bundle
 Copy-Item -Recurse .claude, .codex, .gemini, .opencode, .specify, AGENTS.md your-project/
 
-# Create instruction file copies (symlinks require admin rights on Windows)
+# Run the automated setup script to create symlinks/junctions
+pwsh your-project/.specify/scripts/powershell/setup-windows-links.ps1
+```
+
+**What the setup script does:**
+- Creates symlinks if Developer Mode is enabled or running as Administrator
+- Falls back to directory junctions (work without admin rights)
+- Creates file symlinks for CLAUDE.md and GEMINI.md (or copies if symlinks unavailable)
+
+**Manual alternative** (if you prefer not to use the script):
+```powershell
+# Create instruction file copies
 Copy-Item AGENTS.md your-project/CLAUDE.md
 Copy-Item AGENTS.md your-project/GEMINI.md
 
-# If skills symlinks didn't copy correctly, create junctions instead:
+# Create junctions for skills directories
 cmd /c mklink /J your-project\.codex\skills your-project\.claude\skills
 cmd /c mklink /J your-project\.gemini\skills your-project\.claude\skills
 cmd /c mklink /J your-project\.opencode\skills your-project\.claude\skills
 ```
 
-> **Note:** Git on Windows converts symlinks to text files by default. Use `git config core.symlinks true` and clone with admin rights, or manually create junctions as shown above.
+> **Note:** Git on Windows converts symlinks to text files by default. Use `git config core.symlinks true` and clone with admin rights, or use the setup script after cloning.
 
 #### Start Using
 

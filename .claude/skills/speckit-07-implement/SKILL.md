@@ -28,8 +28,8 @@ Before ANY action, load and internalize the project constitution:
    ```
    ERROR: Project constitution not found at .specify/memory/constitution.md
 
-   STOP - Cannot proceed without constitution.
-   Run /speckit-00-constitution first to define project principles.
+   Cannot proceed without constitution.
+   Run: /speckit-00-constitution
    ```
 
 3. Parse all principles, constraints, and governance rules.
@@ -77,7 +77,8 @@ Before ANY action, load and internalize the project constitution:
 3. If error or missing `tasks.md`:
    ```
    ERROR: tasks.md not found in feature directory.
-   Run /speckit-05-tasks first to create the task list.
+
+   Run: /speckit-05-tasks
    ```
 
 ## Comprehensive Pre-Implementation Validation

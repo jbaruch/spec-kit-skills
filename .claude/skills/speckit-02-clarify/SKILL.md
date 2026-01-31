@@ -37,7 +37,13 @@ Before ANY action, load and internalize the project constitution:
    - `FEATURE_DIR`
    - `FEATURE_SPEC`
 
-3. If JSON parsing fails, abort and instruct user to run `/speckit-01-specify` first.
+3. If JSON parsing fails:
+   ```
+   ERROR: Feature specification not found.
+
+   No active feature detected. Create a feature specification first.
+   Run: /speckit-01-specify <feature description>
+   ```
 
 ## Goal
 
@@ -193,7 +199,12 @@ Output:
 ## Behavior Rules
 
 - If no meaningful ambiguities found, respond: "No critical ambiguities detected worth formal clarification." and suggest proceeding
-- If spec file missing, instruct user to run `/speckit-01-specify` first
+- If spec file missing:
+  ```
+  ERROR: spec.md not found in feature directory.
+
+  Run: /speckit-01-specify <feature description>
+  ```
 - Never exceed 5 total asked questions
 - Avoid speculative tech stack questions unless absence blocks functional clarity
 - Respect user early termination signals ("stop", "done", "proceed")
