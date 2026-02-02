@@ -30,7 +30,7 @@ Before ANY action, load and internalize the project constitution:
 
 1. Run prerequisites check:
    ```bash
-   .tessl/tiles/tessl-labs/spec-kit/scripts/bash/check-prerequisites.sh --json --paths-only
+   .tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/check-prerequisites.sh --json --paths-only
    ```
 
 2. Parse JSON for:

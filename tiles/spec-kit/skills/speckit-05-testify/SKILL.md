@@ -79,7 +79,7 @@ Before ANY action, load and analyze the project constitution for TDD requirement
 
 1. Run prerequisites check:
    ```bash
-   .tessl/tiles/tessl-labs/spec-kit/scripts/bash/check-prerequisites.sh --json
+   .tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/check-prerequisites.sh --json
    ```
 
 2. Parse JSON for `FEATURE_DIR` and `AVAILABLE_DOCS`.
@@ -251,19 +251,19 @@ mkdir -p FEATURE_DIR/tests
 **Unix/macOS/Linux:**
 ```bash
 # Store in context.json (primary)
-.tessl/tiles/tessl-labs/spec-kit/scripts/bash/testify-tdd.sh store-hash "FEATURE_DIR/tests/test-specs.md" ".specify/context.json"
+.tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/testify-tdd.sh store-hash "FEATURE_DIR/tests/test-specs.md" ".specify/context.json"
 
 # Store as git note (tamper-resistant backup)
-.tessl/tiles/tessl-labs/spec-kit/scripts/bash/testify-tdd.sh store-git-note "FEATURE_DIR/tests/test-specs.md"
+.tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/testify-tdd.sh store-git-note "FEATURE_DIR/tests/test-specs.md"
 ```
 
 **Windows (PowerShell):**
 ```powershell
 # Store in context.json (primary)
-pwsh .tessl/tiles/tessl-labs/spec-kit/scripts/powershell/testify-tdd.ps1 store-hash "FEATURE_DIR/tests/test-specs.md" ".specify/context.json"
+pwsh .tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/powershell/testify-tdd.ps1 store-hash "FEATURE_DIR/tests/test-specs.md" ".specify/context.json"
 
 # Store as git note (tamper-resistant backup)
-pwsh .tessl/tiles/tessl-labs/spec-kit/scripts/powershell/testify-tdd.ps1 store-git-note "FEATURE_DIR/tests/test-specs.md"
+pwsh .tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/powershell/testify-tdd.ps1 store-git-note "FEATURE_DIR/tests/test-specs.md"
 ```
 
 This stores a SHA256 hash of all Given/When/Then assertion lines in two locations:
