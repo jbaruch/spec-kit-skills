@@ -64,8 +64,14 @@ setup() {
         log_info "Installing from local..."
         tessl install "file:$ORIGINAL_DIR/tiles/spec-kit" 2>&1 | grep -v "^-"
     else
-        log_info "Installing from registry..."
+        log_info "Installing from registry (latest)..."
+        # Note: May need to specify version if recently published
         tessl install tessl-labs/spec-kit 2>&1 | grep -v "^-"
+        if [[ ! -d ".tessl/tiles/tessl-labs/spec-kit" ]]; then
+            log_info "Retrying with explicit version..."
+            tessl install tessl-labs/spec-kit@0.6.5 2>&1 | grep -v "^-" || \
+            tessl install tessl-labs/spec-kit@0.6.4 2>&1 | grep -v "^-"
+        fi
     fi
 }
 
