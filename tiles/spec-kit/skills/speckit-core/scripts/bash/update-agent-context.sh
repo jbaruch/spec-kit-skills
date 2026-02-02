@@ -37,7 +37,8 @@ GEMINI_FILE="$REPO_ROOT/GEMINI.md"
 AGENTS_FILE="$REPO_ROOT/AGENTS.md"
 
 # Template file
-TEMPLATE_FILE="$REPO_ROOT/.claude/skills/speckit-core/templates/agent-file-template.md"
+# Template path relative to script location (works for both .tessl and .claude installs)
+TEMPLATE_FILE="$SCRIPT_DIR/../../templates/agent-file-template.md"
 
 # Global variables for parsed plan data
 NEW_LANG=""

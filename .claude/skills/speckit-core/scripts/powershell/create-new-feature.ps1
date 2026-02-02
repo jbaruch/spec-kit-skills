@@ -272,7 +272,8 @@ if ($SkipBranch) {
 $featureDir = Join-Path $specsDir $branchName
 New-Item -ItemType Directory -Path $featureDir -Force | Out-Null
 
-$template = Join-Path $repoRoot '.claude/skills/speckit-core/templates/spec-template.md'
+# Template path relative to script location (works for both .tessl and .claude installs)
+$template = Join-Path $PSScriptRoot '..\..\templates\spec-template.md'
 $specFile = Join-Path $featureDir 'spec.md'
 if (Test-Path $template) {
     Copy-Item $template $specFile -Force

@@ -57,7 +57,8 @@ $CLAUDE_FILE   = Join-Path $REPO_ROOT 'CLAUDE.md'
 $GEMINI_FILE   = Join-Path $REPO_ROOT 'GEMINI.md'
 $AGENTS_FILE   = Join-Path $REPO_ROOT 'AGENTS.md'
 
-$TEMPLATE_FILE = Join-Path $REPO_ROOT '.claude/skills/speckit-core/templates/agent-file-template.md'
+# Template path relative to script location (works for both .tessl and .claude installs)
+$TEMPLATE_FILE = Join-Path $PSScriptRoot '..\..\templates\agent-file-template.md'
 
 # Parsed plan data placeholders
 $script:NEW_LANG = ''
