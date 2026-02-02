@@ -124,10 +124,39 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 8. **Write the completed constitution** back to `.specify/memory/constitution.md`
 
-9. **Output final summary** to the user with:
-   - New version and bump rationale
-   - Any files flagged for manual follow-up
-   - Suggested commit message
+9. **Initialize Git Repository (REQUIRED)**
+
+   A spec-kit project MUST be a git repository to ensure proper project isolation.
+
+   ```bash
+   # Check if git repo exists, initialize if not
+   if [ ! -d ".git" ]; then
+       git init
+       echo "[specify] Git repository initialized"
+   fi
+   ```
+
+   **Why this is required**: Without git init, scripts like `create-new-feature.sh` may
+   find a parent git repository and create files in the wrong location.
+
+10. **Commit Constitution to Git**
+
+    After writing the constitution, commit it to establish the project baseline:
+
+    ```bash
+    git add .specify/memory/constitution.md
+    # Also add README if it exists
+    [ -f README.md ] && git add README.md
+    git commit -m "Initialize spec-kit project with constitution"
+    ```
+
+    This creates the initial commit with the project's governing document.
+
+11. **Output final summary** to the user with:
+    - New version and bump rationale
+    - Git initialization status
+    - Any files flagged for manual follow-up
+    - Suggested next steps
 
 ## Formatting Requirements
 
