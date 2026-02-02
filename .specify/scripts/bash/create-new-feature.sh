@@ -152,18 +152,31 @@ clean_branch_name() {
 }
 
 # Resolve repository root
+# Priority: current working directory with .specify > git root > marker search
 SCRIPT_DIR="$(CDPATH="" cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CURRENT_DIR="$(pwd)"
 
+# Check if git is available
 if git rev-parse --show-toplevel >/dev/null 2>&1; then
-    REPO_ROOT=$(git rev-parse --show-toplevel)
     HAS_GIT=true
 else
+    HAS_GIT=false
+fi
+
+# Determine project root: prefer current directory if it has .specify
+if [ -d "$CURRENT_DIR/.specify" ]; then
+    # Current working directory is a project root (has .specify)
+    REPO_ROOT="$CURRENT_DIR"
+elif [ "$HAS_GIT" = true ]; then
+    # Fall back to git root
+    REPO_ROOT=$(git rev-parse --show-toplevel)
+else
+    # No git, search for markers
     REPO_ROOT="$(find_repo_root "$SCRIPT_DIR")"
     if [ -z "$REPO_ROOT" ]; then
         echo "Error: Could not determine repository root. Please run this script from within the repository." >&2
         exit 1
     fi
-    HAS_GIT=false
 fi
 
 cd "$REPO_ROOT"

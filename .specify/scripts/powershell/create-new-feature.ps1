@@ -137,22 +137,30 @@ function ConvertTo-CleanBranchName {
 
     return $Name.ToLower() -replace '[^a-z0-9]', '-' -replace '-{2,}', '-' -replace '^-', '' -replace '-$', ''
 }
-$fallbackRoot = (Find-RepositoryRoot -StartDir $PSScriptRoot)
-if (-not $fallbackRoot) {
-    Write-Error "Error: Could not determine repository root. Please run this script from within the repository."
-    exit 1
+# Check if git is available
+try {
+    $gitRoot = git rev-parse --show-toplevel 2>$null
+    $hasGit = ($LASTEXITCODE -eq 0)
+} catch {
+    $hasGit = $false
+    $gitRoot = $null
 }
 
-try {
-    $repoRoot = git rev-parse --show-toplevel 2>$null
-    if ($LASTEXITCODE -eq 0) {
-        $hasGit = $true
-    } else {
-        throw "Git not available"
+# Determine project root: prefer current directory if it has .specify
+$currentDir = Get-Location
+if (Test-Path (Join-Path $currentDir '.specify')) {
+    # Current working directory is a project root (has .specify)
+    $repoRoot = $currentDir
+} elseif ($hasGit -and $gitRoot) {
+    # Fall back to git root
+    $repoRoot = $gitRoot
+} else {
+    # No git or current dir .specify, search for markers
+    $repoRoot = Find-RepositoryRoot -StartDir $PSScriptRoot
+    if (-not $repoRoot) {
+        Write-Error "Error: Could not determine repository root. Please run this script from within the repository."
+        exit 1
     }
-} catch {
-    $repoRoot = $fallbackRoot
-    $hasGit = $false
 }
 
 Set-Location $repoRoot
