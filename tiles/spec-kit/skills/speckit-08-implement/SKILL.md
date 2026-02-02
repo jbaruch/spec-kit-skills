@@ -98,9 +98,16 @@ Report: Artifacts complete, Spec coverage %, Plan alignment, Constitution compli
 
 ### 2. TDD Support Check
 
-If `tests/test-specs.md` exists:
-- Verify assertion integrity using `bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/testify-tdd.sh comprehensive-check`
-- **BLOCKED** if assertions were tampered → halt with remediation steps
+If `tests/test-specs.md` exists in FEATURE_DIR:
+
+```bash
+bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/testify-tdd.sh comprehensive-check "FEATURE_DIR/tests/test-specs.md" ".specify/context.json" ".specify/memory/constitution.md"
+```
+
+Replace `FEATURE_DIR` with the actual path from prerequisites check.
+
+- **BLOCKED** if output contains `HASH_MISMATCH` → assertions were tampered, halt with remediation steps
+- **OK** if output contains `HASH_VALID` → proceed
 - Display circular verification warning: fix code to pass tests, don't modify assertions
 
 If TDD is **mandatory** in constitution but test-specs.md missing → ERROR
