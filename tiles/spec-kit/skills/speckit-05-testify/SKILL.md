@@ -79,7 +79,7 @@ Before ANY action, load and analyze the project constitution for TDD requirement
 
 1. Run prerequisites check:
    ```bash
-   .tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/check-prerequisites.sh --json
+   bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/check-prerequisites.sh --json
    ```
 
 2. Parse JSON for `FEATURE_DIR` and `AVAILABLE_DOCS`.
@@ -251,10 +251,10 @@ mkdir -p FEATURE_DIR/tests
 **Unix/macOS/Linux:**
 ```bash
 # Store in context.json (primary)
-.tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/testify-tdd.sh store-hash "FEATURE_DIR/tests/test-specs.md" ".specify/context.json"
+bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/testify-tdd.sh store-hash "FEATURE_DIR/tests/test-specs.md" ".specify/context.json"
 
 # Store as git note (tamper-resistant backup)
-.tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/testify-tdd.sh store-git-note "FEATURE_DIR/tests/test-specs.md"
+bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/testify-tdd.sh store-git-note "FEATURE_DIR/tests/test-specs.md"
 ```
 
 **Windows (PowerShell):**

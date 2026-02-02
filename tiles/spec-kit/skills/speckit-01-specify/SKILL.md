@@ -80,10 +80,10 @@ Before creating a feature branch, check context and ask user:
 **Unix/macOS/Linux:**
 ```bash
 # With branch creation (default):
-.tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/create-new-feature.sh --json "$ARGUMENTS" --short-name "your-short-name"
+bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/create-new-feature.sh --json "$ARGUMENTS" --short-name "your-short-name"
 
 # Without branch creation (if user declined):
-.tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/create-new-feature.sh --json --skip-branch "$ARGUMENTS" --short-name "your-short-name"
+bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/create-new-feature.sh --json --skip-branch "$ARGUMENTS" --short-name "your-short-name"
 ```
 
 **Windows (PowerShell):**

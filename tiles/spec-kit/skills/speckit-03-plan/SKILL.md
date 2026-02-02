@@ -60,7 +60,7 @@ Before ANY action, load and internalize the project constitution:
 
    **Unix/macOS/Linux:**
    ```bash
-   .tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/setup-plan.sh --json
+   bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/setup-plan.sh --json
    ```
 
    **Windows (PowerShell):**
@@ -325,7 +325,7 @@ List all available skills from installed tiles:
 
    **Unix/macOS/Linux:**
    ```bash
-   .tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/update-agent-context.sh claude
+   bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/update-agent-context.sh claude
    ```
 
    **Windows (PowerShell):**
