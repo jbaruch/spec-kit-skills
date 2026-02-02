@@ -563,6 +563,111 @@ test_update_agent_context_script() {
     fi
 }
 
+test_template_paths_resolve() {
+    log_section "Template Paths Resolve"
+    local base=".tessl/tiles/tessl-labs/spec-kit/skills/speckit-core"
+    local scripts_dir="$base/scripts/bash"
+    local templates_dir="$base/templates"
+
+    # Verify templates directory exists
+    ((TESTS_RUN++))
+    if [[ -d "$templates_dir" ]]; then
+        log_pass "templates directory exists"
+    else
+        log_fail "templates directory missing: $templates_dir"
+        return
+    fi
+
+    # Check each script's template references resolve
+    # create-new-feature.sh -> spec-template.md
+    ((TESTS_RUN++))
+    local script_dir="$scripts_dir"
+    local template_path="$script_dir/../../templates/spec-template.md"
+    if [[ -f "$template_path" ]]; then
+        log_pass "create-new-feature.sh template path resolves"
+    else
+        log_fail "create-new-feature.sh template not found: $template_path"
+    fi
+
+    # setup-plan.sh -> plan-template.md
+    ((TESTS_RUN++))
+    template_path="$script_dir/../../templates/plan-template.md"
+    if [[ -f "$template_path" ]]; then
+        log_pass "setup-plan.sh template path resolves"
+    else
+        log_fail "setup-plan.sh template not found: $template_path"
+    fi
+
+    # update-agent-context.sh -> agent-file-template.md
+    ((TESTS_RUN++))
+    template_path="$script_dir/../../templates/agent-file-template.md"
+    if [[ -f "$template_path" ]]; then
+        log_pass "update-agent-context.sh template path resolves"
+    else
+        log_fail "update-agent-context.sh template not found: $template_path"
+    fi
+
+    # Verify all expected templates exist
+    local expected_templates=(
+        "spec-template.md"
+        "plan-template.md"
+        "tasks-template.md"
+        "constitution-template.md"
+        "checklist-template.md"
+        "testspec-template.md"
+        "agent-file-template.md"
+    )
+
+    for tmpl in "${expected_templates[@]}"; do
+        ((TESTS_RUN++))
+        if [[ -f "$templates_dir/$tmpl" ]]; then
+            log_pass "template exists: $tmpl"
+        else
+            log_fail "template missing: $tmpl"
+        fi
+    done
+}
+
+test_skill_template_references() {
+    log_section "Skill Template References"
+    local base=".tessl/tiles/tessl-labs/spec-kit/skills"
+
+    # Check that skill files reference correct template paths
+    # speckit-00-constitution should reference speckit-core/templates/
+    ((TESTS_RUN++))
+    if grep -q "speckit-core/templates/constitution-template.md" "$base/speckit-00-constitution/SKILL.md"; then
+        log_pass "constitution skill references correct template path"
+    else
+        log_fail "constitution skill has wrong template path"
+    fi
+
+    # speckit-01-specify should reference speckit-core/templates/
+    ((TESTS_RUN++))
+    if grep -q "speckit-core/templates/spec-template.md" "$base/speckit-01-specify/SKILL.md"; then
+        log_pass "specify skill references correct template path"
+    else
+        log_fail "specify skill has wrong template path"
+    fi
+
+    # Verify no skills reference old paths
+    ((TESTS_RUN++))
+    local old_path_count
+    old_path_count=$(grep -r "spec-kit/templates/" "$base"/*/SKILL.md 2>/dev/null | grep -v "speckit-core/templates" | wc -l)
+    if [[ "$old_path_count" -eq 0 ]]; then
+        log_pass "no skills reference old template paths"
+    else
+        log_fail "found $old_path_count references to old template paths"
+    fi
+
+    # Verify no skills reference speckit-01-specify/templates (old location)
+    ((TESTS_RUN++))
+    if grep -rq "speckit-01-specify/templates/" "$base"/*/SKILL.md 2>/dev/null; then
+        log_fail "found references to old speckit-01-specify/templates path"
+    else
+        log_pass "no references to old speckit-01-specify/templates path"
+    fi
+}
+
 main() {
     ORIGINAL_DIR=$(pwd)
 
@@ -599,6 +704,8 @@ main() {
     test_feature_prefix_matching
     test_init_script
     test_update_agent_context_script
+    test_template_paths_resolve
+    test_skill_template_references
 
     log_section "Summary"
     echo "  Total:  $TESTS_RUN"
