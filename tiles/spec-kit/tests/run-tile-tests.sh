@@ -69,8 +69,8 @@ setup() {
         tessl install tessl-labs/spec-kit 2>&1 | grep -v "^-"
         if [[ ! -d ".tessl/tiles/tessl-labs/spec-kit" ]]; then
             log_info "Retrying with explicit version..."
-            tessl install tessl-labs/spec-kit@0.6.5 2>&1 | grep -v "^-" || \
-            tessl install tessl-labs/spec-kit@0.6.4 2>&1 | grep -v "^-"
+            tessl install tessl-labs/spec-kit@0.7.0 2>&1 | grep -v "^-" || \
+            tessl install tessl-labs/spec-kit@0.6.5 2>&1 | grep -v "^-"
         fi
     fi
 }
@@ -82,7 +82,7 @@ teardown() {
 
 test_scripts_exist() {
     log_section "Scripts Exist"
-    local base=".tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash"
+    local base=".tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/bash"
 
     run_test "check-prerequisites.sh exists" "[[ -f '$base/check-prerequisites.sh' ]]"
     run_test "create-new-feature.sh exists" "[[ -f '$base/create-new-feature.sh' ]]"
@@ -93,7 +93,7 @@ test_scripts_exist() {
 
 test_scripts_executable() {
     log_section "Scripts Execute with Bash"
-    local base=".tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash"
+    local base=".tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/bash"
 
     ((TESTS_RUN++))
     if bash "$base/check-prerequisites.sh" --help >/dev/null 2>&1; then
@@ -129,7 +129,7 @@ test_scripts_executable() {
 
 test_templates_exist() {
     log_section "Templates Exist"
-    local base=".tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/templates"
+    local base=".tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/templates"
 
     run_test "constitution-template.md" "[[ -f '$base/constitution-template.md' ]]"
     run_test "spec-template.md" "[[ -f '$base/spec-template.md' ]]"
@@ -142,6 +142,9 @@ test_templates_exist() {
 test_skills_exist() {
     log_section "Skills Exist"
     local base=".tessl/tiles/tessl-labs/spec-kit/skills"
+
+    # Check speckit-core exists
+    run_test "speckit-core skill" "[[ -d '$base/speckit-core' && -f '$base/speckit-core/SKILL.md' ]]"
 
     for i in 00 01 02 03 04 05 06 07 08 09; do
         local skill=$(ls -d "$base"/speckit-${i}-* 2>/dev/null | head -1)
