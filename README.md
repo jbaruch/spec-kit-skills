@@ -80,10 +80,11 @@ The workflow follows strict phase ordering. Each phase builds on the previous:
 │  3. /speckit-02-clarify       →  Resolve ambiguities (optional)            │
 │  4. /speckit-03-plan          →  Create technical implementation plan      │
 │  5. /speckit-04-checklist     →  Generate quality checklists (optional)    │
-│  6. /speckit-05-tasks         →  Generate task breakdown                   │
-│  7. /speckit-06-analyze       →  Validate consistency (optional)           │
-│  8. /speckit-07-implement     →  Execute implementation                    │
-│  9. /speckit-08-taskstoissues →  Export to GitHub Issues (optional)        │
+│  6. /speckit-05-testify       →  Generate test specifications (TDD)        │
+│  7. /speckit-06-tasks         →  Generate task breakdown                   │
+│  8. /speckit-07-analyze       →  Validate consistency (optional)           │
+│  9. /speckit-08-implement     →  Execute implementation                    │
+│ 10. /speckit-09-taskstoissues →  Export to GitHub Issues (optional)        │
 └────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -137,8 +138,8 @@ All tile types are **versioned and tracked** in `tessl.json`, ensuring reproduci
 | Skill | Tessl Usage |
 |-------|-------------|
 | `/speckit-03-plan` | **Tile Discovery** - Searches and installs tiles for all technologies in Technical Context |
-| `/speckit-05-tasks` | **Convention Queries** - Queries tiles for framework conventions when generating file paths |
-| `/speckit-07-implement` | **Mandatory Queries** - Queries documentation before writing library code; invokes skill tiles |
+| `/speckit-06-tasks` | **Convention Queries** - Queries tiles for framework conventions when generating file paths |
+| `/speckit-08-implement` | **Mandatory Queries** - Queries documentation before writing library code; invokes skill tiles |
 
 ### How It Works
 
@@ -149,7 +150,7 @@ All tile types are **versioned and tracked** in `tessl.json`, ensuring reproduci
    - Queries best practices
    - Documents findings in `research.md` under "Tessl Tiles" section
 
-2. **During `/speckit-07-implement`:**
+2. **During `/speckit-08-implement`:**
    - Loads tile catalog from `research.md`
    - Before implementing code using a tiled library, queries `mcp__tessl__query_library_docs`
    - Invokes skill tiles when tasks match their purpose
@@ -214,6 +215,78 @@ When Tessl is not installed, you'll see a one-time informational message:
 ```
 
 The workflow continues normally - Tessl enhances but is not required.
+
+## TDD Support and Circular Verification Protection
+
+Spec-Kit Skills includes built-in support for Test-Driven Development (TDD) with protection against a common AI pitfall: **circular verification**.
+
+### The Problem: Circular Verification
+
+When an AI implements code against test specifications, it may be tempted to modify the tests to match buggy code instead of fixing the code to pass the tests. This defeats the purpose of TDD.
+
+### The Solution: Multi-Layer Protection
+
+The `/speckit-05-testify` and `/speckit-08-implement` skills work together to prevent this:
+
+1. **Hash-Based Integrity** - SHA256 hash of all assertion lines (Given/When/Then) stored in `context.json`
+2. **Git Note Backup** - Tamper-resistant hash stored as git note (requires history rewrite to modify)
+3. **Git Diff Detection** - Detects uncommitted changes to assertion lines
+4. **Comprehensive Check** - Single script combining all checks with deterministic blocking
+
+### Blocking Conditions
+
+Implementation is **blocked** (not warned) when:
+
+| Condition | Detection Method |
+|-----------|------------------|
+| Assertions modified | Hash mismatch in context.json or git note |
+| Uncommitted assertion changes | `git diff` on Given/When/Then lines |
+| TDD mandatory but testify not run | Hash missing + constitution requires TDD |
+
+### How It Works
+
+```
+/speckit-05-testify                    /speckit-08-implement
+       │                                       │
+       ▼                                       ▼
+┌─────────────────┐                  ┌─────────────────────┐
+│ Generate tests  │                  │ comprehensive-check │
+│ from spec.md    │                  │ (deterministic)     │
+└────────┬────────┘                  └──────────┬──────────┘
+         │                                      │
+         ▼                                      ▼
+┌─────────────────┐                  ┌─────────────────────┐
+│ Store hash in:  │                  │ Verify hash from:   │
+│ - context.json  │                  │ - context.json      │
+│ - git note      │                  │ - git note          │
+└─────────────────┘                  │ - git diff          │
+                                     └──────────┬──────────┘
+                                                │
+                                     ┌──────────┴──────────┐
+                                     │                     │
+                                     ▼                     ▼
+                              PASS/WARN              BLOCKED
+                              (proceed)          (halt + explain)
+```
+
+### Constitutional TDD Requirements
+
+The constitution can require, allow, or forbid TDD:
+
+| Constitution Contains | TDD Status | Testify | Missing Hash at Implement |
+|----------------------|------------|---------|---------------------------|
+| "TDD MUST be used" | mandatory | Required | **BLOCKED** |
+| No TDD indicators | optional | Optional | WARN |
+| "test-after MUST be used" | forbidden | Error | N/A |
+
+### Legitimate Test Changes
+
+If requirements change and tests need updating:
+1. Update `spec.md` with new requirements
+2. Re-run `/speckit-05-testify` to regenerate tests
+3. New hash is stored, implementation proceeds
+
+This ensures test changes are intentional and traceable to requirement changes.
 
 ## Skills Reference
 
@@ -313,7 +386,32 @@ Generates domain-specific quality checklists for requirements validation.
 
 ---
 
-### /speckit-05-tasks
+### /speckit-05-testify
+
+Generates test specifications from requirements before implementation (TDD support).
+
+**Prerequisites:** Plan and spec must exist with acceptance scenarios.
+
+**Creates:**
+- `specs/NNN-feature-name/tests/test-specs.md` - Test specifications
+
+**Purpose:** Enables Test-Driven Development by generating test specifications from requirements BEFORE implementation begins. Tests serve as acceptance criteria.
+
+**TDD Assessment:** Analyzes constitution for TDD requirements:
+- `mandatory` - Constitution requires TDD (e.g., "TDD MUST be used")
+- `optional` - No TDD requirements found (can skip)
+- `forbidden` - Constitution prohibits TDD (skill won't run)
+
+**Circular Verification Protection:** The skill stores integrity hashes to prevent the AI from modifying tests to match buggy code:
+- SHA256 hash stored in `context.json`
+- Tamper-resistant backup stored as git note
+- Implementation blocked if assertions modified without re-running testify
+
+**Note:** When TDD is mandatory in the constitution, `/speckit-08-implement` requires testify to have been run.
+
+---
+
+### /speckit-06-tasks
 
 Generates actionable task breakdown from plan and specification.
 
@@ -339,7 +437,7 @@ Where:
 
 ---
 
-### /speckit-06-analyze (Optional)
+### /speckit-07-analyze (Optional)
 
 Validates cross-artifact consistency between spec, plan, and tasks.
 
@@ -355,19 +453,39 @@ Validates cross-artifact consistency between spec, plan, and tasks.
 
 ---
 
-### /speckit-07-implement
+### /speckit-08-implement
 
 Executes implementation plan by processing tasks in order.
 
 **Prerequisites:**
 - Tasks must exist
 - All checklists must be complete (100%)
+- If TDD mandatory: testify must have been run
 
 **Behavior:**
 - Processes tasks sequentially
 - Updates task status in tasks.md
 - Runs tests after each task
 - Halts on test failure
+
+**Assertion Integrity Verification:** Before implementation, verifies test specifications haven't been tampered with:
+```
+╭─────────────────────────────────────────────────────────────────────────╮
+│  ASSERTION INTEGRITY CHECK                                              │
+├─────────────────────────────────────────────────────────────────────────┤
+│  Context hash:  valid | invalid | missing                               │
+│  Git note:      valid | invalid | missing                               │
+│  Git diff:      clean | modified | untracked                            │
+│  TDD status:    mandatory | optional                                    │
+├─────────────────────────────────────────────────────────────────────────┤
+│  Overall:       PASS | WARN | BLOCKED                                   │
+╰─────────────────────────────────────────────────────────────────────────╯
+```
+
+**Blocking Conditions:**
+- Assertions modified since testify (hash invalid)
+- Uncommitted changes to assertion lines (git diff)
+- TDD mandatory but testify not run (hash missing)
 
 **Tessl Integration:** If Tessl is installed, this skill:
 - Loads tile catalog from `research.md`
@@ -377,7 +495,7 @@ Executes implementation plan by processing tasks in order.
 
 ---
 
-### /speckit-08-taskstoissues (Optional)
+### /speckit-09-taskstoissues (Optional)
 
 Exports tasks to GitHub Issues for project tracking.
 
@@ -398,10 +516,11 @@ your-project/
 │       ├── speckit-02-clarify/
 │       ├── speckit-03-plan/
 │       ├── speckit-04-checklist/
-│       ├── speckit-05-tasks/
-│       ├── speckit-06-analyze/
-│       ├── speckit-07-implement/
-│       └── speckit-08-taskstoissues/
+│       ├── speckit-05-testify/
+│       ├── speckit-06-tasks/
+│       ├── speckit-07-analyze/
+│       ├── speckit-08-implement/
+│       └── speckit-09-taskstoissues/
 ├── .codex/skills -> ../.claude/skills   # Symlink for Codex
 ├── .gemini/skills -> ../.claude/skills  # Symlink for Gemini
 ├── .opencode/skills -> ../.claude/skills # Symlink for OpenCode
@@ -421,7 +540,9 @@ your-project/
 │       ├── data-model.md        # Data structures
 │       ├── quickstart.md        # Usage examples
 │       ├── contracts/           # API/CLI contracts
-│       └── checklists/          # Quality checklists
+│       ├── checklists/          # Quality checklists
+│       └── tests/
+│           └── test-specs.md    # Test specifications (from /speckit-05-testify)
 ├── AGENTS.md                    # Agent instructions (source of truth)
 ├── CLAUDE.md -> AGENTS.md       # Symlink for Claude Code
 └── GEMINI.md -> AGENTS.md       # Symlink for Gemini
@@ -571,17 +692,20 @@ Use SQLite for storage.
 # 5. Generate quality checklists (optional - recommended)
 /speckit-04-checklist
 
-# 6. Generate task breakdown (required)
-/speckit-05-tasks
+# 6. Generate test specifications (optional - required if TDD in constitution)
+/speckit-05-testify
 
-# 7. Validate consistency (optional - recommended)
-/speckit-06-analyze
+# 7. Generate task breakdown (required)
+/speckit-06-tasks
 
-# 8. Implement (prompts to confirm if checklists incomplete)
-/speckit-07-implement
+# 8. Validate consistency (optional - recommended)
+/speckit-07-analyze
 
-# 9. Export to GitHub Issues (optional)
-/speckit-08-taskstoissues
+# 9. Implement (verifies test integrity if testify was run)
+/speckit-08-implement
+
+# 10. Export to GitHub Issues (optional)
+/speckit-09-taskstoissues
 ```
 
 ## Upstream Relationship
