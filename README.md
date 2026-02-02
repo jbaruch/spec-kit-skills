@@ -4,57 +4,27 @@ An AI coding assistant skills bundle that replicates [GitHub Spec-Kit](https://g
 
 ## What is This?
 
-Spec-Kit Skills provides specification-driven development directly in your AI coding assistant without requiring external CLI tools. It implements the same workflow phases as vanilla Spec-Kit using the native skills system.
+Spec-Kit Skills provides specification-driven development directly in your AI coding assistant. It implements the same workflow phases as vanilla Spec-Kit using AI agent skills, with integrated library documentation via Tessl tiles.
 
 **Key Differences from Vanilla Spec-Kit:**
 - **Vanilla**: Requires `specify-cli` installation via `uv tool install specify-cli`
-- **Skills**: Zero installation - just copy the `.claude/skills/` directory to your project
-- **Tessl Integration**: Automatic library documentation via Tessl tiles (when installed)
+- **Skills**: Install via Tessl - `tessl install tessl-labs/spec-kit`
+- **Tessl Integration**: Automatic library documentation via Tessl tiles
 
 ## Quick Start
 
 ### Installation
 
-#### Linux/macOS (Bash)
-
 ```bash
-# Copy skills bundle (symlinks preserved)
-cp -r .claude .codex .gemini .opencode .specify AGENTS.md CLAUDE.md GEMINI.md your-project/
-
-# Make scripts executable
-chmod +x your-project/.specify/scripts/bash/*.sh
+# Install via Tessl
+tessl install tessl-labs/spec-kit
 ```
 
-#### Windows (PowerShell)
+This installs all 10 spec-kit skills into your project.
 
-```powershell
-# Copy skills bundle
-Copy-Item -Recurse .claude, .codex, .gemini, .opencode, .specify, AGENTS.md your-project/
+> **Don't have Tessl?** Install it first: `npm install -g @tessl/cli`
 
-# Run the automated setup script to create symlinks/junctions
-pwsh your-project/.specify/scripts/powershell/setup-windows-links.ps1
-```
-
-**What the setup script does:**
-- Creates symlinks if Developer Mode is enabled or running as Administrator
-- Falls back to directory junctions (work without admin rights)
-- Creates file symlinks for CLAUDE.md and GEMINI.md (or copies if symlinks unavailable)
-
-**Manual alternative** (if you prefer not to use the script):
-```powershell
-# Create instruction file copies
-Copy-Item AGENTS.md your-project/CLAUDE.md
-Copy-Item AGENTS.md your-project/GEMINI.md
-
-# Create junctions for skills directories
-cmd /c mklink /J your-project\.codex\skills your-project\.claude\skills
-cmd /c mklink /J your-project\.gemini\skills your-project\.claude\skills
-cmd /c mklink /J your-project\.opencode\skills your-project\.claude\skills
-```
-
-> **Note:** Git on Windows converts symlinks to text files by default. Use `git config core.symlinks true` and clone with admin rights, or use the setup script after cloning.
-
-#### Start Using
+### Start Using
 
 1. Launch your AI coding assistant in the project directory:
    ```bash
@@ -111,17 +81,16 @@ Understanding what belongs in each phase is critical:
 
 ## Tessl Integration
 
-Spec-Kit Skills integrates with [Tessl](https://tessl.io) to provide AI-optimized library documentation during planning and implementation. This integration is **automatic when Tessl is installed** and **gracefully skipped** when not available.
+Spec-Kit Skills uses [Tessl](https://tessl.io) tiles to provide AI-optimized library documentation during planning and implementation.
 
-### What is Tessl?
+### What are Tessl Tiles?
 
-Tessl is a **package manager for AI agent skills and context**. It provides "tiles" - versioned packages containing documentation, rules, and skills for libraries and frameworks. The [Tessl Registry](https://tessl.io/registry) contains 2,000+ evaluated tiles.
+Tiles are versioned packages containing documentation, rules, and skills for libraries and frameworks. The [Tessl Registry](https://tessl.io/registry) contains 2,000+ evaluated tiles.
 
 Tiles help AI agents:
 - Use current API patterns (not outdated training data)
 - Follow library-specific conventions
 - Avoid common pitfalls and anti-patterns
-- Leverage pre-built skills for common tasks
 
 ### Tile Types
 
@@ -131,20 +100,17 @@ Tiles help AI agents:
 | **Rules** | Behavioral guidelines | Auto-applied via `.tessl/RULES.md` |
 | **Skills** | AI commands for specific tasks | Invoked during implementation |
 
-All tile types are **versioned and tracked** in `tessl.json`, ensuring reproducible agent behavior across environments. Skills can be discovered via `tessl skill search` or the [Tessl Registry](https://tessl.io/registry), which includes quality evaluations for each tile.
+### Which Skills Use Tiles?
 
-### Which Skills Use Tessl?
-
-| Skill | Tessl Usage |
-|-------|-------------|
-| `/speckit-03-plan` | **Tile Discovery** - Searches and installs tiles for all technologies in Technical Context |
+| Skill | Tile Usage |
+|-------|------------|
+| `/speckit-03-plan` | **Tile Discovery** - Searches and installs tiles for technologies in Technical Context |
 | `/speckit-06-tasks` | **Convention Queries** - Queries tiles for framework conventions when generating file paths |
-| `/speckit-08-implement` | **Mandatory Queries** - Queries documentation before writing library code; invokes skill tiles |
+| `/speckit-08-implement` | **Documentation Queries** - Queries tiles before writing library code; invokes skill tiles |
 
 ### How It Works
 
 1. **During `/speckit-03-plan`:**
-   - Detects Tessl availability
    - Extracts technologies from Technical Context (language, frameworks, storage, testing)
    - Searches for and installs relevant tiles
    - Queries best practices
@@ -152,7 +118,7 @@ All tile types are **versioned and tracked** in `tessl.json`, ensuring reproduci
 
 2. **During `/speckit-08-implement`:**
    - Loads tile catalog from `research.md`
-   - Before implementing code using a tiled library, queries `mcp__tessl__query_library_docs`
+   - Queries `mcp__tessl__query_library_docs` before implementing library code
    - Invokes skill tiles when tasks match their purpose
    - Generates Tessl Tile Usage Report at completion
 
@@ -169,14 +135,6 @@ All tile types are **versioned and tracked** in `tessl.json`, ensuring reproduci
 | Click      | tessl/pypi-click      | Documentation | 8.2.0   |
 | pytest     | tessl/pypi-pytest     | Documentation | 8.4.0   |
 | SQLite     | tessl/pypi-aiosqlite  | Documentation | 0.21.0  |
-
-### Available Skills
-
-No skill tiles installed for this stack.
-
-### Technologies Without Tiles
-
-- Python 3.12: No specific version tile (using general patterns)
 ```
 
 **Implementation Tile Usage Report:**
@@ -190,31 +148,9 @@ No skill tiles installed for this stack.
 │                                             │
 │  Skills invoked:         0                  │
 │  Rules applied:          Yes                │
-│    Source: .tessl/RULES.md                  │
-│                                             │
 │  Tiles used:             3 of 3 installed   │
 ╰─────────────────────────────────────────────╯
 ```
-
-### Installation (Optional)
-
-Tessl integration is optional. If not installed, skills continue without tile documentation.
-
-```bash
-npm install -g @tessl/cli
-```
-
-Explore available tiles at the [Tessl Registry](https://tessl.io/registry).
-
-### Without Tessl
-
-When Tessl is not installed, you'll see a one-time informational message:
-```
-ℹ️ Tessl not installed. Tile-based documentation unavailable.
-   Install Tessl for enhanced library documentation: https://tessl.io
-```
-
-The workflow continues normally - Tessl enhances but is not required.
 
 ## TDD Support and Circular Verification Protection
 
@@ -352,7 +288,7 @@ Creates technical implementation plan with technology decisions.
 
 **Creates:**
 - `specs/NNN-feature-name/plan.md` - Implementation plan
-- `specs/NNN-feature-name/research.md` - Technology research (includes Tessl Tiles section if Tessl installed)
+- `specs/NNN-feature-name/research.md` - Technology research (includes Tessl Tiles section)
 - `specs/NNN-feature-name/data-model.md` - Data structures
 - `specs/NNN-feature-name/quickstart.md` - Usage examples
 - `specs/NNN-feature-name/contracts/` - API/CLI contracts
@@ -363,11 +299,7 @@ Creates technical implementation plan with technology decisions.
 - Constitution compliance check
 - Complexity tracking
 
-**Tessl Integration:** If Tessl is installed, this skill automatically:
-- Searches for tiles matching technologies in Technical Context
-- Installs relevant documentation, rules, and skill tiles
-- Queries best practices from installed tiles
-- Documents all tiles in `research.md` for use in implementation
+**Tessl Integration:** Automatically searches for and installs tiles matching technologies in Technical Context, queries best practices, and documents findings in `research.md`.
 
 ---
 
@@ -402,10 +334,7 @@ Generates test specifications from requirements before implementation (TDD suppo
 - `optional` - No TDD requirements found (can skip)
 - `forbidden` - Constitution prohibits TDD (skill won't run)
 
-**Circular Verification Protection:** The skill stores integrity hashes to prevent the AI from modifying tests to match buggy code:
-- SHA256 hash stored in `context.json`
-- Tamper-resistant backup stored as git note
-- Implementation blocked if assertions modified without re-running testify
+**Circular Verification Protection:** Stores integrity hashes to prevent the AI from modifying tests to match buggy code.
 
 **Note:** When TDD is mandatory in the constitution, `/speckit-08-implement` requires testify to have been run.
 
@@ -431,9 +360,7 @@ Where:
 - `[P]` = Priority (P=Primary, S=Secondary)
 - `[US1]` = User story reference
 
-**Tessl Integration:** If tiles are installed, queries framework conventions for:
-- Project structure and file path generation
-- Test organization patterns
+**Tessl Integration:** Queries framework tiles for project structure and test organization patterns.
 
 ---
 
@@ -482,16 +409,7 @@ Executes implementation plan by processing tasks in order.
 ╰─────────────────────────────────────────────────────────────────────────╯
 ```
 
-**Blocking Conditions:**
-- Assertions modified since testify (hash invalid)
-- Uncommitted changes to assertion lines (git diff)
-- TDD mandatory but testify not run (hash missing)
-
-**Tessl Integration:** If Tessl is installed, this skill:
-- Loads tile catalog from `research.md`
-- **Mandatory**: Queries `mcp__tessl__query_library_docs` before implementing code that uses a tiled library
-- Invokes skill tiles when tasks match their purpose (e.g., test generation, API scaffolding)
-- Generates Tessl Tile Usage Report showing documentation queries, skills invoked, and rules applied
+**Tessl Integration:** Queries `mcp__tessl__query_library_docs` before implementing library code, invokes skill tiles when applicable, and generates usage report.
 
 ---
 
@@ -509,43 +427,29 @@ After running the full workflow:
 
 ```
 your-project/
-├── .claude/
-│   └── skills/                  # Primary skills location (source of truth)
-│       ├── speckit-00-constitution/
-│       ├── speckit-01-specify/
-│       ├── speckit-02-clarify/
-│       ├── speckit-03-plan/
-│       ├── speckit-04-checklist/
-│       ├── speckit-05-testify/
-│       ├── speckit-06-tasks/
-│       ├── speckit-07-analyze/
-│       ├── speckit-08-implement/
-│       └── speckit-09-taskstoissues/
-├── .codex/skills -> ../.claude/skills   # Symlink for Codex
-├── .gemini/skills -> ../.claude/skills  # Symlink for Gemini
-├── .opencode/skills -> ../.claude/skills # Symlink for OpenCode
+├── .tessl/                         # Tessl installation (tiles, rules)
 ├── .specify/
-│   ├── memory/                  # Project artifacts (created by skills)
-│   │   └── constitution.md      # Created by /speckit-00-constitution
-│   ├── scripts/bash/            # Workflow scripts (Linux/macOS)
-│   ├── scripts/powershell/      # Workflow scripts (Windows)
-│   └── templates/               # Framework templates (source of truth)
-│       └── constitution-template.md, spec-template.md, etc.
+│   ├── memory/                     # Project artifacts (created by skills)
+│   │   └── constitution.md         # Created by /speckit-00-constitution
+│   ├── scripts/bash/               # Workflow scripts (Linux/macOS)
+│   ├── scripts/powershell/         # Workflow scripts (Windows)
+│   └── templates/                  # Framework templates
 ├── specs/
 │   └── NNN-feature-name/
-│       ├── spec.md              # Feature specification
-│       ├── plan.md              # Implementation plan
-│       ├── tasks.md             # Task breakdown
-│       ├── research.md          # Technology research
-│       ├── data-model.md        # Data structures
-│       ├── quickstart.md        # Usage examples
-│       ├── contracts/           # API/CLI contracts
-│       ├── checklists/          # Quality checklists
+│       ├── spec.md                 # Feature specification
+│       ├── plan.md                 # Implementation plan
+│       ├── tasks.md                # Task breakdown
+│       ├── research.md             # Technology research + Tessl tiles
+│       ├── data-model.md           # Data structures
+│       ├── quickstart.md           # Usage examples
+│       ├── contracts/              # API/CLI contracts
+│       ├── checklists/             # Quality checklists
 │       └── tests/
-│           └── test-specs.md    # Test specifications (from /speckit-05-testify)
-├── AGENTS.md                    # Agent instructions (source of truth)
-├── CLAUDE.md -> AGENTS.md       # Symlink for Claude Code
-└── GEMINI.md -> AGENTS.md       # Symlink for Gemini
+│           └── test-specs.md       # Test specifications (from /speckit-05-testify)
+├── tessl.json                      # Tessl manifest (installed tiles)
+├── AGENTS.md                       # Agent instructions (source of truth)
+├── CLAUDE.md -> AGENTS.md          # Symlink for Claude Code
+└── GEMINI.md -> AGENTS.md          # Symlink for Gemini
 ```
 
 ## Workflow Enforcement
@@ -583,7 +487,7 @@ The workflow requires proper Git branch naming:
 
 | Aspect | Vanilla Spec-Kit | Spec-Kit Skills |
 |--------|------------------|-----------------|
-| Installation | `uv tool install specify-cli` | Copy directories |
+| Installation | `uv tool install specify-cli` | `tessl install tessl-labs/spec-kit` |
 | Commands | `/speckit.constitution` | `/speckit-00-constitution` |
 | Prerequisites | Bash scripts | Bash + PowerShell scripts |
 | Workflow enforcement | Identical | Identical |
@@ -593,28 +497,18 @@ The workflow requires proper Git branch naming:
 | Library documentation | Manual | **Automatic via Tessl tiles** |
 | Best practices lookup | Manual research | **Automatic tile queries** |
 
-**Robustness:** Both implementations use scripts for workflow enforcement, providing identical protection against:
-- Out-of-order phase execution
-- Missing prerequisites
-- Branch validation
-- Empty/invalid inputs
-
 ## Troubleshooting
 
 ### "Command not found" for skills
 
-Ensure skills are in the correct location for your agent:
-
-**Bash:**
+Ensure skills are installed:
 ```bash
-ls -la .claude/skills/speckit-*/SKILL.md
-ls -la .codex/skills .gemini/skills .opencode/skills
+tessl list
 ```
 
-**PowerShell:**
-```powershell
-Get-ChildItem .claude\skills\speckit-*\SKILL.md
-Get-ChildItem .codex\skills, .gemini\skills, .opencode\skills
+If not listed, reinstall:
+```bash
+tessl install tessl-labs/spec-kit
 ```
 
 ### Scripts not executable (Linux/macOS)
@@ -635,21 +529,6 @@ Check the current feature context:
 **PowerShell:**
 ```powershell
 .\.specify\scripts\powershell\check-prerequisites.ps1 -Json
-```
-
-### Symlinks not working (Windows)
-
-Git on Windows converts symlinks to text files by default. Fix with:
-
-```powershell
-# Create directory junctions for skills
-cmd /c mklink /J .codex\skills .claude\skills
-cmd /c mklink /J .gemini\skills .claude\skills
-cmd /c mklink /J .opencode\skills .claude\skills
-
-# Copy instruction files (or enable symlinks with admin rights)
-Copy-Item AGENTS.md CLAUDE.md
-Copy-Item AGENTS.md GEMINI.md
 ```
 
 ### Phase Separation Violations
@@ -722,14 +601,12 @@ This project tracks the upstream [GitHub Spec-Kit](https://github.com/github/spe
 
 ## Supported Agents
 
-| Agent | Skills Location | Instructions File |
-|-------|-----------------|-------------------|
-| Claude Code | `.claude/skills/` | `CLAUDE.md` -> `AGENTS.md` |
-| OpenAI Codex | `.codex/skills/` -> symlink | `AGENTS.md` |
-| Google Gemini | `.gemini/skills/` -> symlink | `GEMINI.md` -> `AGENTS.md` |
-| OpenCode | `.opencode/skills/` -> symlink | `AGENTS.md` |
-
-> **Windows:** Symlinks require admin rights or Developer Mode. Use directory junctions (`mklink /J`) as an alternative. See [Troubleshooting](#symlinks-not-working-windows).
+| Agent | Instructions File |
+|-------|-------------------|
+| Claude Code | `CLAUDE.md` -> `AGENTS.md` |
+| OpenAI Codex | `AGENTS.md` |
+| Google Gemini | `GEMINI.md` -> `AGENTS.md` |
+| OpenCode | `AGENTS.md` |
 
 ## Contributing
 
