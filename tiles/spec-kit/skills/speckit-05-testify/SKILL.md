@@ -368,14 +368,12 @@ DO NOT MODIFY TEST ASSERTIONS
 
 After generating test specifications:
 
-1. **Required**: Run `/speckit-06-tasks` to generate tasks that reference the test specs
-2. **Optional**: Run `/speckit-07-analyze` to validate cross-artifact consistency
+**Required**: Run `/speckit-06-tasks` to generate tasks that reference the test specs
 
 Suggest to user:
 ```
-Test specifications generated! Next steps:
-- /speckit-06-tasks - Generate task breakdown (tasks can now reference test specs)
-- /speckit-07-analyze - (Optional) Validate consistency
+Test specifications generated! Next step:
+- /speckit-06-tasks - Generate task breakdown (tasks will reference test specs)
 ```
 
-**Note**: When TDD is mandatory, `/speckit-08-implement` will verify test specs exist before proceeding.
+**Note**: `/speckit-07-analyze` requires tasks.md - run it after `/speckit-06-tasks`.
