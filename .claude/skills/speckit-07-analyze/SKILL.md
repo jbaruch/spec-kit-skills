@@ -44,7 +44,7 @@ Before ANY action, load the project constitution:
 
 1. Run prerequisites check:
    ```bash
-   .specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
+   .claude/skills/speckit-core/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
    ```
 
 2. Parse JSON for `FEATURE_DIR` and `AVAILABLE_DOCS`.

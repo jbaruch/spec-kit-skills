@@ -80,19 +80,19 @@ Before creating a feature branch, check context and ask user:
 **Unix/macOS/Linux:**
 ```bash
 # With branch creation (default):
-.specify/scripts/bash/create-new-feature.sh --json "$ARGUMENTS" --short-name "your-short-name"
+.claude/skills/speckit-core/scripts/bash/create-new-feature.sh --json "$ARGUMENTS" --short-name "your-short-name"
 
 # Without branch creation (if user declined):
-.specify/scripts/bash/create-new-feature.sh --json --skip-branch "$ARGUMENTS" --short-name "your-short-name"
+.claude/skills/speckit-core/scripts/bash/create-new-feature.sh --json --skip-branch "$ARGUMENTS" --short-name "your-short-name"
 ```
 
 **Windows (PowerShell):**
 ```powershell
 # With branch creation (default):
-pwsh .specify/scripts/powershell/create-new-feature.ps1 -Json "$ARGUMENTS" -ShortName "your-short-name"
+pwsh .claude/skills/speckit-core/scripts/powershell/create-new-feature.ps1 -Json "$ARGUMENTS" -ShortName "your-short-name"
 
 # Without branch creation (if user declined):
-pwsh .specify/scripts/powershell/create-new-feature.ps1 -Json -SkipBranch "$ARGUMENTS" -ShortName "your-short-name"
+pwsh .claude/skills/speckit-core/scripts/powershell/create-new-feature.ps1 -Json -SkipBranch "$ARGUMENTS" -ShortName "your-short-name"
 ```
 
 Parse the JSON output for `BRANCH_NAME`, `SPEC_FILE`, and `FEATURE_NUM`.
@@ -101,7 +101,7 @@ Parse the JSON output for `BRANCH_NAME`, `SPEC_FILE`, and `FEATURE_NUM`.
 
 ### 3. Load Spec Template
 
-Read `.specify/templates/spec-template.md` to understand required sections.
+Read `.claude/skills/speckit-core/templates/spec-template.md` to understand required sections.
 
 ### 4. Generate Specification
 

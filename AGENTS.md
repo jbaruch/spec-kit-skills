@@ -1,6 +1,6 @@
 # Spec-Kit Skills Development Guide
 
-**Last updated**: 2025-02-01
+**Last updated**: 2025-02-02
 
 ## Overview
 
@@ -29,6 +29,13 @@ Read `FRAMEWORK-PRINCIPLES.md` for this framework's development principles.
 
 ```text
 .claude/skills/              # Primary skills location (source of truth)
+  speckit-core/              # Core skill with scripts and templates
+    scripts/bash/            # Bash scripts for all skills
+    scripts/powershell/      # PowerShell scripts for Windows
+    templates/               # Framework templates (do not edit)
+  speckit-00-constitution/   # Constitution skill
+  speckit-01-specify/        # Specification skill
+  ...                        # Other speckit-XX-* skills
 .codex/skills/               # Symlink -> .claude/skills
 .gemini/skills/              # Symlink -> .claude/skills
 .opencode/skills/            # Symlink -> .claude/skills
@@ -36,21 +43,6 @@ Read `FRAMEWORK-PRINCIPLES.md` for this framework's development principles.
 .specify/
   memory/                    # Project-specific artifacts (created by skills)
     constitution.md          # Project constitution (created by /speckit-00-constitution)
-  scripts/bash/
-    common.sh                # Shared functions
-    check-prerequisites.sh   # Validation script
-    create-new-feature.sh    # Feature branch creation
-    setup-plan.sh            # Plan initialization
-    update-agent-context.sh  # Agent file updates
-  scripts/powershell/        # Windows equivalents
-  templates/                 # Framework templates (do not edit - copied by skills)
-    constitution-template.md # Constitution template
-    spec-template.md         # Feature spec template
-    plan-template.md         # Implementation plan template
-    tasks-template.md        # Task list template
-    checklist-template.md    # Checklist template
-    testspec-template.md     # Test specification template
-    agent-file-template.md   # Agent context file template
 
 specs/                       # Feature specifications (created per feature)
   NNN-feature-name/
@@ -70,19 +62,20 @@ specs/                       # Feature specifications (created per feature)
 
 ```bash
 # Make scripts executable (if needed)
-chmod +x .specify/scripts/bash/*.sh
+chmod +x .claude/skills/speckit-core/scripts/bash/*.sh
 
 # Check prerequisites for a feature
-.specify/scripts/bash/check-prerequisites.sh --json
+.claude/skills/speckit-core/scripts/bash/check-prerequisites.sh --json
 
 # Create a new feature
-.specify/scripts/bash/create-new-feature.sh --json "Feature description"
+.claude/skills/speckit-core/scripts/bash/create-new-feature.sh --json "Feature description"
 ```
 
 ## Skills Available
 
 | Skill | Command | Description |
 |-------|---------|-------------|
+| Core | `/speckit-core` | Initialize project, check status, show help |
 | Constitution | `/speckit-00-constitution` | Create project governance principles |
 | Specify | `/speckit-01-specify` | Create feature spec from description |
 | Clarify | `/speckit-02-clarify` | Resolve spec ambiguities |
