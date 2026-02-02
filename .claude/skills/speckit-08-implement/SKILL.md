@@ -1,5 +1,5 @@
 ---
-name: speckit-07-implement
+name: speckit-08-implement
 description: Execute implementation plan by processing all tasks in tasks.md
 ---
 
@@ -78,7 +78,7 @@ Before ANY action, load and internalize the project constitution:
    ```
    ERROR: tasks.md not found in feature directory.
 
-   Run: /speckit-05-tasks
+   Run: /speckit-06-tasks
    ```
 
 ## Comprehensive Pre-Implementation Validation
@@ -176,6 +176,124 @@ Example output:
 - **IF EXISTS**: Read `contracts/` for API specifications
 - **IF EXISTS**: Read `research.md` for technical decisions and Tessl tile catalog
 - **IF EXISTS**: Read `quickstart.md` for integration scenarios
+- **IF EXISTS**: Read `tests/test-specs.md` for test specifications from testify
+
+### 1.1 Testify Output Check (TDD Support)
+
+Check if test specifications exist from `/speckit-05-testify`:
+
+1. Look for `FEATURE_DIR/tests/test-specs.md`
+2. If found:
+   - Note testify was run
+   - Read TDD Assessment from the file
+   - If TDD was **mandatory**, tests serve as acceptance criteria
+   - Display: "Test specifications found. Implementing to pass test specs."
+3. If not found:
+   - Check constitution for TDD requirements
+   - If TDD is **mandatory** in constitution:
+     ```
+     ERROR: TDD is required but testify was not run.
+
+     The constitution requires test-first development.
+     Run: /speckit-05-testify
+     ```
+   - If TDD is **optional**: Note that testify was skipped and continue
+
+### 1.2 Assertion Integrity Verification (CRITICAL GATE)
+
+**If test-specs.md exists**, verify assertion integrity BEFORE any implementation using the comprehensive check:
+
+**Unix/macOS/Linux:**
+```bash
+.specify/scripts/bash/testify-tdd.sh comprehensive-check "FEATURE_DIR/tests/test-specs.md" ".specify/context.json" ".specify/memory/constitution.md"
+```
+
+**Windows (PowerShell):**
+```powershell
+pwsh .specify/scripts/powershell/testify-tdd.ps1 comprehensive-check "FEATURE_DIR/tests/test-specs.md" ".specify/context.json" ".specify/memory/constitution.md"
+```
+
+**Parse the JSON result:**
+
+```json
+{
+    "overall_status": "PASS|WARN|BLOCKED",
+    "block_reason": "...",
+    "tdd_determination": "mandatory|optional|forbidden",
+    "checks": {
+        "context_hash": "valid|invalid|missing",
+        "git_note": "valid|invalid|missing|skipped",
+        "git_diff": "clean|modified|untracked|skipped"
+    }
+}
+```
+
+**Handle result based on `overall_status`:**
+
+| Status | Action |
+|--------|--------|
+| `PASS` | Proceed with implementation |
+| `WARN` | Display warning, proceed with implementation |
+| `BLOCKED` | **HARD STOP** - display block reason and halt |
+
+**If `BLOCKED`:**
+
+```
+╭─────────────────────────────────────────────────────────────────────────╮
+│  ASSERTION INTEGRITY FAILURE                                            │
+├─────────────────────────────────────────────────────────────────────────┤
+│  [block_reason from JSON]                                               │
+│                                                                         │
+│  This is a BLOCKING error. Implementation cannot proceed.               │
+│                                                                         │
+│  Checks performed:                                                      │
+│    Context hash: [context_hash]                                         │
+│    Git note:     [git_note]                                             │
+│    Git diff:     [git_diff]                                             │
+│    TDD status:   [tdd_determination]                                    │
+│                                                                         │
+│  To resolve:                                                            │
+│  1. If requirements changed: Update spec.md, re-run /speckit-05-testify │
+│  2. If accidental edit: Restore test-specs.md from git                  │
+│  3. If uncommitted changes: git checkout FEATURE_DIR/tests/test-specs.md│
+│  4. If TDD mandatory but hash missing: Run /speckit-05-testify          │
+│                                                                         │
+│  Modifying test assertions to match buggy code defeats TDD.             │
+│  The correct path is: fix the code to pass the tests.                   │
+╰─────────────────────────────────────────────────────────────────────────╯
+
+ERROR: Cannot proceed. Assertion integrity check failed.
+```
+
+**Blocking conditions (enforced by script, not LLM discretion):**
+- `context_hash` or `git_note` is `invalid` → assertions were tampered with
+- `git_diff` is `modified` → uncommitted changes to assertions
+- `tdd_determination` is `mandatory` AND both hashes are `missing` → TDD required but testify not run
+
+**Do NOT proceed with implementation if overall_status is BLOCKED.**
+
+### 1.3 Circular Verification Warning
+
+**IMPORTANT**: When test specifications exist from testify:
+
+```
+╭─────────────────────────────────────────────────────────────────────────╮
+│  CIRCULAR VERIFICATION WARNING                                          │
+├─────────────────────────────────────────────────────────────────────────┤
+│  Test specifications define the expected behavior.                      │
+│                                                                         │
+│  During implementation:                                                 │
+│  ✓ Fix code to pass tests - do NOT modify test assertions               │
+│  ✓ Structural changes (file names, organization) are acceptable         │
+│  ✗ Do NOT weaken assertions to make failing code pass                   │
+│  ✗ Do NOT change expected values to match buggy implementation          │
+│                                                                         │
+│  If a test seems wrong, the requirement may need revision.              │
+│  Re-run /speckit-05-testify after updating spec.md.                     │
+╰─────────────────────────────────────────────────────────────────────────╯
+```
+
+This warning should be displayed once at the start of implementation when test specs exist.
 
 ### 2. Tessl Integration (MANDATORY if Tessl installed)
 
@@ -435,7 +553,7 @@ If Tessl was available and used during implementation, generate a usage report:
 
 | Condition | Detection | Response |
 |-----------|-----------|----------|
-| Tasks file missing | File not found | STOP with "Run /speckit-05-tasks first" |
+| Tasks file missing | File not found | STOP with "Run /speckit-06-tasks first" |
 | Plan file missing | File not found | STOP with "Run /speckit-03-plan first" |
 | Constitution violation | Principle check fails | STOP, explain violation, suggest alternative |
 | Checklist incomplete | User says "no" | STOP gracefully with instructions |
@@ -447,7 +565,7 @@ After implementation:
 
 1. **Required**: Run tests to verify functionality
 2. **Required**: Commit and push changes
-3. **Optional**: Run `/speckit-05-taskstoissues` to create GitHub Issues
+3. **Optional**: Run `/speckit-09-taskstoissues` to create GitHub Issues
    - Exports remaining tasks to GitHub for project tracking
    - Useful for team collaboration and sprint planning
    - Creates issues with labels, assignments, and cross-references
@@ -457,5 +575,5 @@ Suggest to user:
 Implementation complete! Next steps:
 - Run tests to verify functionality
 - Commit and push changes
-- /speckit-05-taskstoissues - (Optional) Export remaining tasks to GitHub Issues
+- /speckit-09-taskstoissues - (Optional) Export remaining tasks to GitHub Issues
 ```

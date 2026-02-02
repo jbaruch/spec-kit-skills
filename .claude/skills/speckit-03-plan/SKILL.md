@@ -280,7 +280,7 @@ Incorporate findings into research.md decisions section.
 List all available skills from installed tiles:
 - Record skill name and purpose
 - Note in research.md: "Available skills: /<skill-1>, /<skill-2>, ..."
-- Skills become available for use in subsequent phases (especially `/speckit-07-implement`)
+- Skills become available for use in subsequent phases (especially `/speckit-08-implement`)
 
 #### 3.7 Handle Failures Gracefully
 
@@ -472,8 +472,8 @@ If significant changes detected:
 ```
 WARNING: Plan changes detected that invalidate downstream artifacts.
 Recommend re-running:
-- /speckit-05-tasks (REQUIRED - architecture changed)
-- /speckit-06-analyze (RECOMMENDED - verify consistency)
+- /speckit-06-tasks (REQUIRED - architecture changed)
+- /speckit-07-analyze (RECOMMENDED - verify consistency)
 ```
 
 ## Next Steps
@@ -483,13 +483,13 @@ After completing the plan:
 1. **Recommended**: Run `/speckit-04-checklist` to create domain-specific quality checklists
    - Generates "unit tests for English" to validate requirements quality
    - Helps catch requirement gaps before implementation
-   - Required to reach 100% before `/speckit-07-implement`
+   - Required to reach 100% before `/speckit-08-implement`
 
-2. **Required**: Run `/speckit-05-tasks` to generate the task breakdown
+2. **Required**: Run `/speckit-06-tasks` to generate the task breakdown
 
 Suggest to user:
 ```
 Plan complete! Next steps:
 - /speckit-04-checklist - (Recommended) Generate quality checklists for requirements validation
-- /speckit-05-tasks - Generate task breakdown from plan
+- /speckit-06-tasks - Generate task breakdown from plan
 ```

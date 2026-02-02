@@ -1,5 +1,5 @@
 ---
-name: speckit-06-analyze
+name: speckit-07-analyze
 description: Validate cross-artifact consistency between spec, plan, and tasks
 ---
 
@@ -62,7 +62,7 @@ Before ANY action, load the project constitution:
    Run the appropriate skill to create the missing artifact:
    - spec.md:  /speckit-01-specify <feature description>
    - plan.md:  /speckit-03-plan
-   - tasks.md: /speckit-05-tasks
+   - tasks.md: /speckit-06-tasks
    ```
 
 ## Execution Steps
@@ -206,7 +206,7 @@ Output a Markdown report (no file writes):
 
 At end of report, output a concise Next Actions block:
 
-- If CRITICAL issues exist: Recommend resolving before `/speckit-07-implement`
+- If CRITICAL issues exist: Recommend resolving before `/speckit-08-implement`
 - If only LOW/MEDIUM: User may proceed, but provide improvement suggestions
 - Provide explicit command suggestions
 
@@ -232,7 +232,7 @@ Ask the user: "Would you like me to suggest concrete remediation edits for the t
 ## Next Steps
 
 After analysis:
-- If CRITICAL issues: Resolve them first, then re-run `/speckit-06-analyze`
-- If no CRITICAL issues: Run `/speckit-07-implement` to execute the implementation
+- If CRITICAL issues: Resolve them first, then re-run `/speckit-07-analyze`
+- If no CRITICAL issues: Run `/speckit-08-implement` to execute the implementation
 
 The implement skill will perform its own prerequisite checks before proceeding.

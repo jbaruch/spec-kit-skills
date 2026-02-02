@@ -1,5 +1,5 @@
 ---
-name: speckit-05-tasks
+name: speckit-06-tasks
 description: Generate actionable task breakdown from plan and specification
 ---
 
@@ -95,6 +95,11 @@ Before ANY action, load and internalize the project constitution:
 Read from FEATURE_DIR:
 - **Required**: `plan.md` (tech stack, libraries, structure), `spec.md` (user stories with priorities)
 - **Optional**: `data-model.md` (entities), `contracts/` (API endpoints), `research.md` (decisions), `quickstart.md` (test scenarios)
+- **Optional**: `tests/test-specs.md` (test specifications from `/speckit-05-testify`)
+
+If `tests/test-specs.md` exists, tasks can reference specific test IDs:
+- Example: "T012 [US1] Implement to pass test TS-001 and TS-002"
+- This enables true TDD: tasks explicitly reference the tests they should satisfy
 
 ### 2. Tessl Convention Consultation (if tiles installed)
 
@@ -432,18 +437,18 @@ Proceed anyway? (yes/no)
 
 After generating tasks:
 
-1. **Recommended**: Run `/speckit-06-analyze` to validate cross-artifact consistency
+1. **Recommended**: Run `/speckit-07-analyze` to validate cross-artifact consistency
    - Checks all user stories have corresponding tasks
    - Verifies all tasks trace back to requirements
    - Detects orphaned artifacts and constitution violations
    - Catches issues before implementation begins
 
-2. **Required**: Run `/speckit-07-implement` to execute the implementation
+2. **Required**: Run `/speckit-08-implement` to execute the implementation
    - Note: Requires all checklists to be 100% complete
 
 Suggest to user:
 ```
 Tasks generated! Next steps:
-- /speckit-06-analyze - (Recommended) Validate consistency between spec, plan, and tasks
-- /speckit-07-implement - Execute implementation (requires 100% checklist completion)
+- /speckit-07-analyze - (Recommended) Validate consistency between spec, plan, and tasks
+- /speckit-08-implement - Execute implementation (requires 100% checklist completion)
 ```

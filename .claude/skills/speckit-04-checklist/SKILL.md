@@ -254,7 +254,7 @@ Output:
 After creating and resolving checklists:
 
 1. **If gaps remain**: Run `/speckit-04-checklist` again to continue gap resolution
-2. **When all gaps resolved**: Run `/speckit-05-tasks` to generate the task breakdown
+2. **When all gaps resolved**: Run `/speckit-06-tasks` to generate the task breakdown
 
 Suggest to user:
 ```
@@ -265,7 +265,7 @@ Gaps remaining: Y
 
 Next steps:
 - /speckit-04-checklist - (If gaps remain) Continue resolving requirement gaps
-- /speckit-05-tasks - Generate task breakdown from plan
+- /speckit-06-tasks - Generate task breakdown from plan
 ```
 
-**Note:** `/speckit-07-implement` requires all checklists to be 100% complete (no `[ ]` items).
+**Note:** `/speckit-08-implement` requires all checklists to be 100% complete (no `[ ]` items).

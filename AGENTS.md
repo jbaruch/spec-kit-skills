@@ -1,6 +1,6 @@
 # Spec-Kit Skills Development Guide
 
-**Last updated**: 2025-01-29
+**Last updated**: 2025-02-01
 
 ## Overview
 
@@ -15,10 +15,11 @@ This project uses specification-driven development. The phases are:
 3. `/speckit-02-clarify` - Resolve ambiguities (max 5 questions)
 4. `/speckit-03-plan` - Create technical implementation plan
 5. `/speckit-04-checklist` - Generate domain-specific quality checklists
-6. `/speckit-05-tasks` - Generate task breakdown
-7. `/speckit-06-analyze` - Validate cross-artifact consistency
-8. `/speckit-07-implement` - Execute implementation
-9. `/speckit-08-taskstoissues` - Export tasks to GitHub Issues
+6. `/speckit-05-testify` - Generate test specifications (TDD support, optional unless constitutionally required)
+7. `/speckit-06-tasks` - Generate task breakdown
+8. `/speckit-07-analyze` - Validate cross-artifact consistency
+9. `/speckit-08-implement` - Execute implementation
+10. `/speckit-09-taskstoissues` - Export tasks to GitHub Issues
 
 **Never skip phases.** Each `/speckit-*` command validates its prerequisites.
 
@@ -48,6 +49,7 @@ Read `.specify/memory/constitution.md` for this project's governing principles.
     plan-template.md         # Implementation plan template
     tasks-template.md        # Task list template
     checklist-template.md    # Checklist template
+    testspec-template.md     # Test specification template
     agent-file-template.md   # Agent context file template
 
 specs/                       # Feature specifications (created per feature)
@@ -60,6 +62,8 @@ specs/                       # Feature specifications (created per feature)
     quickstart.md            # Quick start guide
     contracts/               # API contracts
     checklists/              # Quality checklists
+    tests/                   # Test specifications (created by /speckit-05-testify)
+      test-specs.md          # Generated test specifications
 ```
 
 ## Commands
@@ -84,10 +88,11 @@ chmod +x .specify/scripts/bash/*.sh
 | Clarify | `/speckit-02-clarify` | Resolve spec ambiguities |
 | Plan | `/speckit-03-plan` | Create technical implementation plan |
 | Checklist | `/speckit-04-checklist` | Generate quality checklists |
-| Tasks | `/speckit-05-tasks` | Generate task breakdown |
-| Analyze | `/speckit-06-analyze` | Validate cross-artifact consistency |
-| Implement | `/speckit-07-implement` | Execute implementation |
-| Tasks to Issues | `/speckit-08-taskstoissues` | Export tasks to GitHub Issues |
+| Testify | `/speckit-05-testify` | Generate test specs (TDD support) |
+| Tasks | `/speckit-06-tasks` | Generate task breakdown |
+| Analyze | `/speckit-07-analyze` | Validate cross-artifact consistency |
+| Implement | `/speckit-08-implement` | Execute implementation |
+| Tasks to Issues | `/speckit-09-taskstoissues` | Export tasks to GitHub Issues |
 
 ## Key Concepts
 
@@ -110,6 +115,16 @@ The `.specify/context.json` file persists state between skill invocations:
 ### Checklist Gating
 
 Checklists are "unit tests for English" - they validate REQUIREMENTS quality, not implementation. The implement skill gates on checklist completion.
+
+### TDD Support (Testify)
+
+The `/speckit-05-testify` skill generates test specifications from requirements before implementation:
+
+- **When mandatory**: If the constitution contains TDD requirements (e.g., "test-first MUST be used"), testify is required before implementation
+- **When optional**: If no TDD requirements exist, testify can be skipped
+- **What it produces**: A `tests/test-specs.md` file with acceptance, contract, and validation test specifications derived from spec.md, plan.md, and data-model.md
+
+Test specifications serve as acceptance criteria for implementation. The implement skill warns against modifying test assertions to match buggy code.
 
 ### Cross-Agent Support
 
