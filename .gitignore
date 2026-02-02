@@ -1,3 +1,7 @@
+# Project-specific artifacts (created by users, not part of framework)
+.specify/memory/constitution.md
+.specify/context.json
+
 # Test directories (regenerate using TEST-GUIDE.md)
 test-vanilla-*/
 test-skills-*/

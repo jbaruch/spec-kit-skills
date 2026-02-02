@@ -23,7 +23,7 @@ This project uses specification-driven development. The phases are:
 
 **Never skip phases.** Each `/speckit-*` command validates its prerequisites.
 
-Read `.specify/memory/constitution.md` for this project's governing principles.
+Read `FRAMEWORK-PRINCIPLES.md` for this framework's development principles.
 
 ## Project Structure
 
@@ -98,7 +98,9 @@ chmod +x .specify/scripts/bash/*.sh
 
 ### Constitution
 
-The constitution (`.specify/memory/constitution.md`) defines project governance principles. All skills load and validate against it. Critical gate skills (plan, analyze, implement) halt on violations.
+The constitution (`.specify/memory/constitution.md`) is a **project artifact** created by `/speckit-00-constitution` when users adopt the framework. It defines project-specific governance principles. All skills load and validate against it. Critical gate skills (plan, analyze, implement) halt on violations.
+
+**Note**: The framework's own development principles are in `FRAMEWORK-PRINCIPLES.md`.
 
 ### Self-Validating Skills
 
