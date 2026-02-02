@@ -60,12 +60,12 @@ Before ANY action, load and internalize the project constitution:
 
    **Unix/macOS/Linux:**
    ```bash
-   .specify/scripts/bash/setup-plan.sh --json
+   .tessl/tiles/tessl-labs/spec-kit/scripts/bash/setup-plan.sh --json
    ```
 
    **Windows (PowerShell):**
    ```powershell
-   pwsh .specify/scripts/powershell/setup-plan.ps1 -Json
+   pwsh .tessl/tiles/tessl-labs/spec-kit/scripts/powershell/setup-plan.ps1 -Json
    ```
 
 2. Parse JSON for:
@@ -325,12 +325,12 @@ List all available skills from installed tiles:
 
    **Unix/macOS/Linux:**
    ```bash
-   .specify/scripts/bash/update-agent-context.sh claude
+   .tessl/tiles/tessl-labs/spec-kit/scripts/bash/update-agent-context.sh claude
    ```
 
    **Windows (PowerShell):**
    ```powershell
-   pwsh .specify/scripts/powershell/update-agent-context.ps1 -AgentType claude
+   pwsh .tessl/tiles/tessl-labs/spec-kit/scripts/powershell/update-agent-context.ps1 -AgentType claude
    ```
 
    This updates CLAUDE.md with the new technology stack.

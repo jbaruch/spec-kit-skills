@@ -41,7 +41,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 2. If constitution doesn't exist, copy from template:
    ```bash
-   cp .specify/templates/constitution-template.md .specify/memory/constitution.md
+   cp .tessl/tiles/tessl-labs/spec-kit/templates/constitution-template.md .specify/memory/constitution.md
    ```
 
 ## Execution Flow
@@ -68,9 +68,9 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Ensure Governance section lists amendment procedure, versioning policy, and compliance review expectations
 
 4. **Consistency propagation** (validate against templates if they exist):
-   - Check `.specify/templates/plan-template.md` for constitution alignment
-   - Check `.specify/templates/spec-template.md` for scope/requirements alignment
-   - Check `.specify/templates/tasks-template.md` for task categorization alignment
+   - Check `.tessl/tiles/tessl-labs/spec-kit/templates/plan-template.md` for constitution alignment
+   - Check `.tessl/tiles/tessl-labs/spec-kit/templates/spec-template.md` for scope/requirements alignment
+   - Check `.tessl/tiles/tessl-labs/spec-kit/templates/tasks-template.md` for task categorization alignment
 
 5. **Produce a Sync Impact Report** (prepend as HTML comment at top of constitution file):
    - Version change: old -> new

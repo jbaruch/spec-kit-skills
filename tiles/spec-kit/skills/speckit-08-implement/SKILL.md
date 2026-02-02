@@ -47,7 +47,7 @@ Before ANY action, load and internalize the project constitution:
 
 1. Run prerequisites check:
    ```bash
-   .specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
+   .tessl/tiles/tessl-labs/spec-kit/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
    ```
 
 2. Parse JSON for `FEATURE_DIR` and `AVAILABLE_DOCS`.
@@ -99,7 +99,7 @@ Report: Artifacts complete, Spec coverage %, Plan alignment, Constitution compli
 ### 2. TDD Support Check
 
 If `tests/test-specs.md` exists:
-- Verify assertion integrity using `.specify/scripts/bash/testify-tdd.sh comprehensive-check`
+- Verify assertion integrity using `.tessl/tiles/tessl-labs/spec-kit/scripts/bash/testify-tdd.sh comprehensive-check`
 - **BLOCKED** if assertions were tampered → halt with remediation steps
 - Display circular verification warning: fix code to pass tests, don't modify assertions
 
