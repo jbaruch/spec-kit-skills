@@ -251,12 +251,9 @@ Output:
 
 ## Next Steps
 
-After creating and resolving checklists:
+After creating and resolving checklists, determine next step based on constitution:
 
-1. **If gaps remain**: Run `/speckit-04-checklist` again to continue gap resolution
-2. **When all gaps resolved**: Run `/speckit-06-tasks` to generate the task breakdown
-
-Suggest to user:
+**If TDD is MANDATORY in constitution:**
 ```
 Checklist complete!
 
@@ -265,7 +262,21 @@ Gaps remaining: Y
 
 Next steps:
 - /speckit-04-checklist - (If gaps remain) Continue resolving requirement gaps
-- /speckit-06-tasks - Generate task breakdown from plan
+- /speckit-05-testify - (REQUIRED by constitution) Generate test specifications
+- /speckit-06-tasks - Generate task breakdown
+```
+
+**If TDD is optional or not mentioned:**
+```
+Checklist complete!
+
+Gaps resolved: X (added to spec)
+Gaps remaining: Y
+
+Next steps:
+- /speckit-04-checklist - (If gaps remain) Continue resolving requirement gaps
+- /speckit-05-testify - (Optional) Generate test specifications for TDD
+- /speckit-06-tasks - Generate task breakdown
 ```
 
 **Note:** `/speckit-08-implement` requires all checklists to be 100% complete (no `[ ]` items).

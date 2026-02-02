@@ -478,18 +478,22 @@ Recommend re-running:
 
 ## Next Steps
 
-After completing the plan:
+After completing the plan, determine next step based on constitution:
 
-1. **Recommended**: Run `/speckit-04-checklist` to create domain-specific quality checklists
-   - Generates "unit tests for English" to validate requirements quality
-   - Helps catch requirement gaps before implementation
-   - Required to reach 100% before `/speckit-08-implement`
-
-2. **Required**: Run `/speckit-06-tasks` to generate the task breakdown
-
-Suggest to user:
+**If TDD is MANDATORY in constitution:**
 ```
 Plan complete! Next steps:
-- /speckit-04-checklist - (Recommended) Generate quality checklists for requirements validation
-- /speckit-06-tasks - Generate task breakdown from plan
+1. /speckit-04-checklist - (Recommended) Generate quality checklists
+2. /speckit-05-testify - (REQUIRED by constitution) Generate test specifications
+3. /speckit-06-tasks - Generate task breakdown
 ```
+
+**If TDD is optional or not mentioned:**
+```
+Plan complete! Next steps:
+1. /speckit-04-checklist - (Recommended) Generate quality checklists
+2. /speckit-05-testify - (Optional) Generate test specifications for TDD
+3. /speckit-06-tasks - Generate task breakdown
+```
+
+**IMPORTANT**: Do NOT suggest `/speckit-08-implement` here - it requires tasks.md to exist first.
