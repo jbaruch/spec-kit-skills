@@ -115,8 +115,8 @@ get_highest_from_branches() {
         while IFS= read -r branch; do
             clean_branch=$(echo "$branch" | sed 's/^[* ]*//; s|^remotes/[^/]*/||')
 
-            if echo "$clean_branch" | grep -q '^[0-9]\{3\}-'; then
-                number=$(echo "$clean_branch" | grep -o '^[0-9]\{3\}' || echo "0")
+            if echo "$clean_branch" | grep -q '^[0-9]\+-'; then
+                number=$(echo "$clean_branch" | grep -o '^[0-9]\+' || echo "0")
                 number=$((10#$number))
                 if [ "$number" -gt "$highest" ]; then
                     highest=$number

@@ -280,7 +280,7 @@ validate_tasks() {
 
     if [[ ! -f "$tasks_file" ]]; then
         echo "ERROR: tasks.md not found at $tasks_file" >&2
-        echo "Run /speckit-05-tasks first to create the task list." >&2
+        echo "Run /speckit-06-tasks first to create the task list." >&2
         return 1
     fi
 

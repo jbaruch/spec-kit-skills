@@ -200,10 +200,19 @@ Cannot proceed without test specifications.
 **Deterministic verification (REQUIRED):**
 
 After running tests, verify execution with:
+
+**Unix/macOS/Linux:**
 ```bash
 .claude/skills/speckit-core/scripts/bash/verify-test-execution.sh verify \
     "FEATURE_DIR/tests/test-specs.md" \
     "$(cat test-output.log)"
+```
+
+**Windows (PowerShell):**
+```powershell
+pwsh .claude/skills/speckit-core/scripts/powershell/verify-test-execution.ps1 verify `
+    "FEATURE_DIR/tests/test-specs.md" `
+    (Get-Content test-output.log -Raw)
 ```
 
 The script returns JSON with status:

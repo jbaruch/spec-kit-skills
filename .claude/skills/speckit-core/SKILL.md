@@ -43,8 +43,15 @@ Initialize spec-kit in the current directory.
    ```
 
 3. **Initialize Git (if needed)**:
+
+   **Unix/macOS/Linux:**
    ```bash
    .claude/skills/speckit-core/scripts/bash/init-project.sh --json
+   ```
+
+   **Windows (PowerShell):**
+   ```powershell
+   pwsh .claude/skills/speckit-core/scripts/powershell/init-project.ps1 -Json
    ```
 
 4. **Report**:
@@ -77,8 +84,15 @@ Show the current project and feature status.
 ### Execution Flow
 
 1. **Get paths and status**:
+
+   **Unix/macOS/Linux:**
    ```bash
    .claude/skills/speckit-core/scripts/bash/check-prerequisites.sh --json --paths-only
+   ```
+
+   **Windows (PowerShell):**
+   ```powershell
+   pwsh .claude/skills/speckit-core/scripts/powershell/check-prerequisites.ps1 -Json -PathsOnly
    ```
 
 2. **Check constitution**:
