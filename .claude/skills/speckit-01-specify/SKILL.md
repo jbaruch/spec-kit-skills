@@ -101,7 +101,7 @@ Parse the JSON output for `BRANCH_NAME`, `SPEC_FILE`, and `FEATURE_NUM`.
 
 ### 3. Load Spec Template
 
-Read `.claude/skills/speckit-core/templates/spec-template.md` to understand required sections.
+Read [spec-template.md](.claude/skills/speckit-core/templates/spec-template.md) to understand required sections.
 
 ### 4. Generate Specification
 

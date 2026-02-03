@@ -143,7 +143,7 @@ Each item should follow this pattern:
 
 ### 4. Checklist Format
 
-Read `.claude/skills/speckit-core/templates/checklist-template.md` for the standard structure.
+Read [checklist-template.md](.claude/skills/speckit-core/templates/checklist-template.md) for the standard structure.
 
 Use template structure:
 

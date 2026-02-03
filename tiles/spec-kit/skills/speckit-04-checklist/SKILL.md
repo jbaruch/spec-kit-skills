@@ -143,7 +143,7 @@ Each item should follow this pattern:
 
 ### 4. Checklist Format
 
-Read `.tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/templates/checklist-template.md` for the standard structure.
+Read [checklist-template.md](../speckit-core/templates/checklist-template.md) for the standard structure.
 
 Use template structure:
 

@@ -301,7 +301,7 @@ Output a clear report showing what was generated:
 
 ## Output Format
 
-Read `.tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/templates/testspec-template.md` for the standard structure.
+Read [testspec-template.md](../speckit-core/templates/testspec-template.md) for the standard structure.
 
 The generated `tests/test-specs.md` follows this template:
 

@@ -68,9 +68,9 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Ensure Governance section lists amendment procedure, versioning policy, and compliance review expectations
 
 4. **Consistency propagation** (validate against templates if they exist):
-   - Check `.claude/skills/speckit-core/templates/plan-template.md` for constitution alignment
-   - Check `.claude/skills/speckit-core/templates/spec-template.md` for scope/requirements alignment
-   - Check `.claude/skills/speckit-core/templates/tasks-template.md` for task categorization alignment
+   - Check [plan-template.md](.claude/skills/speckit-core/templates/plan-template.md) for constitution alignment
+   - Check [spec-template.md](.claude/skills/speckit-core/templates/spec-template.md) for scope/requirements alignment
+   - Check [tasks-template.md](.claude/skills/speckit-core/templates/tasks-template.md) for task categorization alignment
 
 5. **Produce a Sync Impact Report** (prepend as HTML comment at top of constitution file):
    - Version change: old -> new

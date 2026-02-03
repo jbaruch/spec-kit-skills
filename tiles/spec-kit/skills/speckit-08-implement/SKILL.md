@@ -114,13 +114,13 @@ If TDD is **mandatory** in constitution but test-specs.md missing → ERROR
 
 ### 3. Tessl Integration
 
-If Tessl installed, use tiles for library documentation. See `references/tessl-integration.md` for detailed patterns.
+If Tessl installed, use tiles for library documentation. See [tessl-integration.md](references/tessl-integration.md) for detailed patterns.
 
 **Key rule**: Before implementing code using a tile's library, query `mcp__tessl__query_library_docs`.
 
 ### 4. Project Setup
 
-Create/verify ignore files based on tech stack. See `references/ignore-patterns.md` for patterns by technology.
+Create/verify ignore files based on tech stack. See [ignore-patterns.md](references/ignore-patterns.md) for patterns by technology.
 
 ### 5. Parse and Execute Tasks
 
