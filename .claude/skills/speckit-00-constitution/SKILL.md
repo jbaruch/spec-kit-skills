@@ -39,7 +39,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    cat .specify/memory/constitution.md 2>/dev/null || echo "NO_CONSTITUTION"
    ```
 
-2. If constitution doesn't exist, copy from template:
+2. If constitution doesn't exist, copy from [constitution-template.md](.claude/skills/speckit-core/templates/constitution-template.md):
    ```bash
    cp .claude/skills/speckit-core/templates/constitution-template.md .specify/memory/constitution.md
    ```

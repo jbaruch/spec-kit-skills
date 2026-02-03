@@ -333,7 +333,7 @@ List all available skills from installed tiles:
    pwsh .claude/skills/speckit-core/scripts/powershell/update-agent-context.ps1 -AgentType claude
    ```
 
-   This updates CLAUDE.md with the new technology stack.
+   This updates CLAUDE.md with the new technology stack using the [agent-file-template.md](.claude/skills/speckit-core/templates/agent-file-template.md).
 
 **Output**: `data-model.md`, `/contracts/*`, `quickstart.md`, updated agent file
 
