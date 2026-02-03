@@ -80,19 +80,19 @@ Before creating a feature branch, check context and ask user:
 **Unix/macOS/Linux:**
 ```bash
 # With branch creation (default):
-bash ../speckit-core/scripts/bash/create-new-feature.sh --json "$ARGUMENTS" --short-name "your-short-name"
+bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/bash/create-new-feature.sh --json "$ARGUMENTS" --short-name "your-short-name"
 
 # Without branch creation (if user declined):
-bash ../speckit-core/scripts/bash/create-new-feature.sh --json --skip-branch "$ARGUMENTS" --short-name "your-short-name"
+bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/bash/create-new-feature.sh --json --skip-branch "$ARGUMENTS" --short-name "your-short-name"
 ```
 
 **Windows (PowerShell):**
 ```powershell
 # With branch creation (default):
-pwsh ../speckit-core/scripts/powershell/create-new-feature.ps1 -Json "$ARGUMENTS" -ShortName "your-short-name"
+pwsh .tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/powershell/create-new-feature.ps1 -Json "$ARGUMENTS" -ShortName "your-short-name"
 
 # Without branch creation (if user declined):
-pwsh ../speckit-core/scripts/powershell/create-new-feature.ps1 -Json -SkipBranch "$ARGUMENTS" -ShortName "your-short-name"
+pwsh .tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/powershell/create-new-feature.ps1 -Json -SkipBranch "$ARGUMENTS" -ShortName "your-short-name"
 ```
 
 Parse the JSON output for `BRANCH_NAME`, `SPEC_FILE`, and `FEATURE_NUM`.
@@ -170,15 +170,15 @@ Before finalizing, scan the draft specification for implementation details that 
 **If violations found:**
 ```
 ╭─────────────────────────────────────────────────────────────────╮
-│  PHASE SEPARATION VIOLATION DETECTED                            │
+│  PHASE SEPARATION VIOLATION DETECTED                           │
 ├─────────────────────────────────────────────────────────────────┤
-│  Specification contains implementation details:                 │
-│  - [list each violation]                                        │
+│  Specification contains implementation details:                │
+│  - [list each violation]                                       │
 │                                                                 │
-│  Implementation decisions belong in /speckit-03-plan.           │
-│  Specification defines WHAT users need, not HOW to build it.    │
+│  Implementation decisions belong in /speckit-03-plan.          │
+│  Specification defines WHAT users need, not HOW to build it.   │
 ├─────────────────────────────────────────────────────────────────┤
-│  ACTION: Removing implementation details...                     │
+│  ACTION: Removing implementation details...                    │
 ╰─────────────────────────────────────────────────────────────────╯
 ```
 
@@ -328,9 +328,9 @@ test -f "$SPEC_FILE" && echo "EXISTING_SPEC_FOUND"
    │    - Removed: None                                  │
    ├─────────────────────────────────────────────────────┤
    │  DOWNSTREAM IMPACT:                                 │
-   │  ⚠ plan.md may need updates (new requirements)      │
-   │  ⚠ tasks.md may need regeneration                   │
-   │  ⚠ checklists may be invalidated                    │
+   │  ⚠ plan.md may need updates (new requirements)     │
+   │  ⚠ tasks.md may need regeneration                  │
+   │  ⚠ checklists may be invalidated                   │
    ╰─────────────────────────────────────────────────────╯
    ```
 

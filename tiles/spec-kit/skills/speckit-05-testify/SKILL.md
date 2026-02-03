@@ -56,12 +56,12 @@ Before ANY action, load and analyze the project constitution for TDD requirement
 4. **Output TDD Assessment**:
    ```
    ╭─────────────────────────────────────────────────────╮
-   │  TDD ASSESSMENT                                     │
+   │  TDD ASSESSMENT                                      │
    ├─────────────────────────────────────────────────────┤
-   │  Determination: [mandatory | optional | forbidden]  │
-   │  Confidence:    [high | medium | low]               │
-   │  Evidence:      "[quoted constitutional text]"      │
-   │  Reasoning:     [explanation]                       │
+   │  Determination: [mandatory | optional | forbidden]   │
+   │  Confidence:    [high | medium | low]                │
+   │  Evidence:      "[quoted constitutional text]"       │
+   │  Reasoning:     [explanation]                        │
    ╰─────────────────────────────────────────────────────╯
    ```
 
@@ -79,7 +79,7 @@ Before ANY action, load and analyze the project constitution for TDD requirement
 
 1. Run prerequisites check:
    ```bash
-   ../speckit-core/scripts/bash/check-prerequisites.sh --json
+   bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/bash/check-prerequisites.sh --json
    ```
 
 2. Parse JSON for `FEATURE_DIR` and `AVAILABLE_DOCS`.
@@ -227,11 +227,11 @@ If `tests/test-specs.md` already exists:
 Output semantic diff:
 ```
 ╭─────────────────────────────────────────────────────╮
-│  TEST SPEC UPDATE                                   │
+│  TEST SPEC UPDATE                                    │
 ├─────────────────────────────────────────────────────┤
-│  Preserved: X tests (unchanged requirements)        │
-│  Added:     Y tests (new requirements)              │
-│  Removed:   Z tests (requirements removed)          │
+│  Preserved: X tests (unchanged requirements)         │
+│  Added:     Y tests (new requirements)               │
+│  Removed:   Z tests (requirements removed)           │
 ╰─────────────────────────────────────────────────────╯
 ```
 
@@ -251,19 +251,19 @@ mkdir -p FEATURE_DIR/tests
 **Unix/macOS/Linux:**
 ```bash
 # Store in context.json (primary)
-../speckit-core/scripts/bash/testify-tdd.sh store-hash "FEATURE_DIR/tests/test-specs.md" ".specify/context.json"
+bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/bash/testify-tdd.sh store-hash "FEATURE_DIR/tests/test-specs.md" ".specify/context.json"
 
 # Store as git note (tamper-resistant backup)
-../speckit-core/scripts/bash/testify-tdd.sh store-git-note "FEATURE_DIR/tests/test-specs.md"
+bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/bash/testify-tdd.sh store-git-note "FEATURE_DIR/tests/test-specs.md"
 ```
 
 **Windows (PowerShell):**
 ```powershell
 # Store in context.json (primary)
-pwsh ../speckit-core/scripts/powershell/testify-tdd.ps1 store-hash "FEATURE_DIR/tests/test-specs.md" ".specify/context.json"
+pwsh .tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/powershell/testify-tdd.ps1 store-hash "FEATURE_DIR/tests/test-specs.md" ".specify/context.json"
 
 # Store as git note (tamper-resistant backup)
-pwsh ../speckit-core/scripts/powershell/testify-tdd.ps1 store-git-note "FEATURE_DIR/tests/test-specs.md"
+pwsh .tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/powershell/testify-tdd.ps1 store-git-note "FEATURE_DIR/tests/test-specs.md"
 ```
 
 This stores a SHA256 hash of all Given/When/Then assertion lines in two locations:
@@ -278,22 +278,22 @@ Output a clear report showing what was generated:
 
 ```
 ╭─────────────────────────────────────────────────────╮
-│  TESTIFY COMPLETE                                   │
+│  TESTIFY COMPLETE                                    │
 ├─────────────────────────────────────────────────────┤
-│  TDD Assessment: [mandatory | optional]             │
-│                                                     │
-│  Test Specifications Generated:                     │
-│    From spec.md:       X acceptance tests           │
-│    From plan.md:       Y contract tests             │
-│    From data-model.md: Z validation tests           │
-│    ─────────────────────────────────                │
-│    Total:              N test specifications        │
-│                                                     │
-│  Output: FEATURE_DIR/tests/test-specs.md            │
-│                                                     │
-│  Assertion Integrity:                               │
-│    Hash: [first 12 chars of hash]...                │
-│    Status: LOCKED                                   │
+│  TDD Assessment: [mandatory | optional]              │
+│                                                      │
+│  Test Specifications Generated:                      │
+│    From spec.md:       X acceptance tests            │
+│    From plan.md:       Y contract tests              │
+│    From data-model.md: Z validation tests            │
+│    ─────────────────────────────────                 │
+│    Total:              N test specifications         │
+│                                                      │
+│  Output: FEATURE_DIR/tests/test-specs.md             │
+│                                                      │
+│  Assertion Integrity:                                │
+│    Hash: [first 12 chars of hash]...                 │
+│    Status: LOCKED                                    │
 ╰─────────────────────────────────────────────────────╯
 ```
 
@@ -370,14 +370,12 @@ DO NOT MODIFY TEST ASSERTIONS
 
 After generating test specifications:
 
-1. **Required**: Run `/speckit-06-tasks` to generate tasks that reference the test specs
-2. **Optional**: Run `/speckit-07-analyze` to validate cross-artifact consistency
+**Required**: Run `/speckit-06-tasks` to generate tasks that reference the test specs
 
 Suggest to user:
 ```
-Test specifications generated! Next steps:
-- /speckit-06-tasks - Generate task breakdown (tasks can now reference test specs)
-- /speckit-07-analyze - (Optional) Validate consistency
+Test specifications generated! Next step:
+- /speckit-06-tasks - Generate task breakdown (tasks will reference test specs)
 ```
 
-**Note**: When TDD is mandatory, `/speckit-08-implement` will verify test specs exist before proceeding.
+**Note**: `/speckit-07-analyze` requires tasks.md - run it after `/speckit-06-tasks`.

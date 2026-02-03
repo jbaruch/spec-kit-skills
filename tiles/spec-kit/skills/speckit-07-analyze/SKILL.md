@@ -44,7 +44,7 @@ Before ANY action, load the project constitution:
 
 1. Run prerequisites check:
    ```bash
-   bash .tessl/tiles/tessl-labs/spec-kit/skills/../speckit-core/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
+   bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
    ```
 
 2. Parse JSON for `FEATURE_DIR` and `AVAILABLE_DOCS`.

@@ -47,7 +47,7 @@ Before ANY action, load and internalize the project constitution:
 
 1. Run prerequisites check:
    ```bash
-   ../speckit-core/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
+   .claude/skills/speckit-core/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
    ```
 
 2. Parse JSON for `FEATURE_DIR` and `AVAILABLE_DOCS`.
@@ -102,7 +102,7 @@ If `tests/test-specs.md` exists, perform assertion integrity verification:
 
 **Step 1: Run comprehensive integrity check**
 ```bash
-../speckit-core/scripts/bash/testify-tdd.sh comprehensive-check \
+.claude/skills/speckit-core/scripts/bash/testify-tdd.sh comprehensive-check \
     "FEATURE_DIR/tests/test-specs.md" \
     ".specify/context.json" \
     ".specify/memory/constitution.md"
@@ -201,7 +201,7 @@ Cannot proceed without test specifications.
 
 After running tests, verify execution with:
 ```bash
-../speckit-core/scripts/bash/verify-test-execution.sh verify \
+.claude/skills/speckit-core/scripts/bash/verify-test-execution.sh verify \
     "FEATURE_DIR/tests/test-specs.md" \
     "$(cat test-output.log)"
 ```

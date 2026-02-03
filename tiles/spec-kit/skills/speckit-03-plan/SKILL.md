@@ -60,12 +60,12 @@ Before ANY action, load and internalize the project constitution:
 
    **Unix/macOS/Linux:**
    ```bash
-   ../speckit-core/scripts/bash/setup-plan.sh --json
+   bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/bash/setup-plan.sh --json
    ```
 
    **Windows (PowerShell):**
    ```powershell
-   pwsh ../speckit-core/scripts/powershell/setup-plan.ps1 -Json
+   pwsh .tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/powershell/setup-plan.ps1 -Json
    ```
 
 2. Parse JSON for:
@@ -325,12 +325,12 @@ List all available skills from installed tiles:
 
    **Unix/macOS/Linux:**
    ```bash
-   ../speckit-core/scripts/bash/update-agent-context.sh claude
+   bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/bash/update-agent-context.sh claude
    ```
 
    **Windows (PowerShell):**
    ```powershell
-   pwsh ../speckit-core/scripts/powershell/update-agent-context.ps1 -AgentType claude
+   pwsh .tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/powershell/update-agent-context.ps1 -AgentType claude
    ```
 
    This updates CLAUDE.md with the new technology stack using the [agent-file-template.md](../speckit-core/templates/agent-file-template.md).
@@ -373,15 +373,15 @@ Before finalizing, scan the draft plan for governance content that belongs in `/
 **If violations found:**
 ```
 ╭─────────────────────────────────────────────────────────────────╮
-│  PHASE SEPARATION VIOLATION DETECTED                            │
+│  PHASE SEPARATION VIOLATION DETECTED                           │
 ├─────────────────────────────────────────────────────────────────┤
-│  Plan contains governance content:                              │
-│  - [list each violation]                                        │
+│  Plan contains governance content:                             │
+│  - [list each violation]                                       │
 │                                                                 │
-│  Governance principles belong in /speckit-00-constitution.      │
-│  Plan defines HOW to implement THIS feature, not project laws.  │
+│  Governance principles belong in /speckit-00-constitution.     │
+│  Plan defines HOW to implement THIS feature, not project laws. │
 ├─────────────────────────────────────────────────────────────────┤
-│  ACTION: Moving governance content to constitution reference... │
+│  ACTION: Moving governance content to constitution reference...│
 ╰─────────────────────────────────────────────────────────────────╯
 ```
 
@@ -455,9 +455,9 @@ If plan.md exists and has Technical Context filled in:
    │    + Added: Event sourcing pattern                  │
    ├─────────────────────────────────────────────────────┤
    │  DOWNSTREAM IMPACT:                                 │
-   │  ⚠ tasks.md MUST be regenerated (arch change)       │
-   │  ⚠ contracts/ need updates (API change)             │
-   │  ⚠ data-model.md may need updates                   │
+   │  ⚠ tasks.md MUST be regenerated (architecture change)│
+   │  ⚠ contracts/ need updates (API change)            │
+   │  ⚠ data-model.md may need updates                  │
    ╰─────────────────────────────────────────────────────╯
    ```
 
@@ -478,18 +478,22 @@ Recommend re-running:
 
 ## Next Steps
 
-After completing the plan:
+After completing the plan, determine next step based on constitution:
 
-1. **Recommended**: Run `/speckit-04-checklist` to create domain-specific quality checklists
-   - Generates "unit tests for English" to validate requirements quality
-   - Helps catch requirement gaps before implementation
-   - Required to reach 100% before `/speckit-08-implement`
-
-2. **Required**: Run `/speckit-06-tasks` to generate the task breakdown
-
-Suggest to user:
+**If TDD is MANDATORY in constitution:**
 ```
 Plan complete! Next steps:
-- /speckit-04-checklist - (Recommended) Generate quality checklists for requirements validation
-- /speckit-06-tasks - Generate task breakdown from plan
+1. /speckit-04-checklist - (Recommended) Generate quality checklists
+2. /speckit-05-testify - (REQUIRED by constitution) Generate test specifications
+3. /speckit-06-tasks - Generate task breakdown
 ```
+
+**If TDD is optional or not mentioned:**
+```
+Plan complete! Next steps:
+1. /speckit-04-checklist - (Recommended) Generate quality checklists
+2. /speckit-05-testify - (Optional) Generate test specifications for TDD
+3. /speckit-06-tasks - Generate task breakdown
+```
+
+**IMPORTANT**: Do NOT suggest `/speckit-08-implement` here - it requires tasks.md to exist first.
