@@ -373,15 +373,15 @@ Before finalizing, scan the draft plan for governance content that belongs in `/
 **If violations found:**
 ```
 ╭─────────────────────────────────────────────────────────────────╮
-│  PHASE SEPARATION VIOLATION DETECTED                           │
+│  PHASE SEPARATION VIOLATION DETECTED                            │
 ├─────────────────────────────────────────────────────────────────┤
-│  Plan contains governance content:                             │
-│  - [list each violation]                                       │
+│  Plan contains governance content:                              │
+│  - [list each violation]                                        │
 │                                                                 │
-│  Governance principles belong in /speckit-00-constitution.     │
-│  Plan defines HOW to implement THIS feature, not project laws. │
+│  Governance principles belong in /speckit-00-constitution.      │
+│  Plan defines HOW to implement THIS feature, not project laws.  │
 ├─────────────────────────────────────────────────────────────────┤
-│  ACTION: Moving governance content to constitution reference...│
+│  ACTION: Moving governance content to constitution reference... │
 ╰─────────────────────────────────────────────────────────────────╯
 ```
 
@@ -455,9 +455,9 @@ If plan.md exists and has Technical Context filled in:
    │    + Added: Event sourcing pattern                  │
    ├─────────────────────────────────────────────────────┤
    │  DOWNSTREAM IMPACT:                                 │
-   │  ⚠ tasks.md MUST be regenerated (architecture change)│
-   │  ⚠ contracts/ need updates (API change)            │
-   │  ⚠ data-model.md may need updates                  │
+   │  ⚠ tasks.md MUST be regenerated (arch change)       │
+   │  ⚠ contracts/ need updates (API change)             │
+   │  ⚠ data-model.md may need updates                   │
    ╰─────────────────────────────────────────────────────╯
    ```
 

@@ -142,7 +142,7 @@ Display the complete workflow reference.
 │                                                                     │
 │  Phase 0: Foundation                                                │
 │  ─────────────────────                                              │
-│  /speckit-core init      Initialize spec-kit in a project          │
+│  /speckit-core init      Initialize spec-kit in a project           │
 │  /speckit-00-constitution Define project governance principles      │
 │                                                                     │
 │  Phase 1: Specification                                             │

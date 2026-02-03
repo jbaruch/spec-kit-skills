@@ -56,12 +56,12 @@ Before ANY action, load and analyze the project constitution for TDD requirement
 4. **Output TDD Assessment**:
    ```
    ╭─────────────────────────────────────────────────────╮
-   │  TDD ASSESSMENT                                      │
+   │  TDD ASSESSMENT                                     │
    ├─────────────────────────────────────────────────────┤
-   │  Determination: [mandatory | optional | forbidden]   │
-   │  Confidence:    [high | medium | low]                │
-   │  Evidence:      "[quoted constitutional text]"       │
-   │  Reasoning:     [explanation]                        │
+   │  Determination: [mandatory | optional | forbidden]  │
+   │  Confidence:    [high | medium | low]               │
+   │  Evidence:      "[quoted constitutional text]"      │
+   │  Reasoning:     [explanation]                       │
    ╰─────────────────────────────────────────────────────╯
    ```
 
@@ -227,11 +227,11 @@ If `tests/test-specs.md` already exists:
 Output semantic diff:
 ```
 ╭─────────────────────────────────────────────────────╮
-│  TEST SPEC UPDATE                                    │
+│  TEST SPEC UPDATE                                   │
 ├─────────────────────────────────────────────────────┤
-│  Preserved: X tests (unchanged requirements)         │
-│  Added:     Y tests (new requirements)               │
-│  Removed:   Z tests (requirements removed)           │
+│  Preserved: X tests (unchanged requirements)        │
+│  Added:     Y tests (new requirements)              │
+│  Removed:   Z tests (requirements removed)          │
 ╰─────────────────────────────────────────────────────╯
 ```
 
@@ -278,22 +278,22 @@ Output a clear report showing what was generated:
 
 ```
 ╭─────────────────────────────────────────────────────╮
-│  TESTIFY COMPLETE                                    │
+│  TESTIFY COMPLETE                                   │
 ├─────────────────────────────────────────────────────┤
-│  TDD Assessment: [mandatory | optional]              │
-│                                                      │
-│  Test Specifications Generated:                      │
-│    From spec.md:       X acceptance tests            │
-│    From plan.md:       Y contract tests              │
-│    From data-model.md: Z validation tests            │
-│    ─────────────────────────────────                 │
-│    Total:              N test specifications         │
-│                                                      │
-│  Output: FEATURE_DIR/tests/test-specs.md             │
-│                                                      │
-│  Assertion Integrity:                                │
-│    Hash: [first 12 chars of hash]...                 │
-│    Status: LOCKED                                    │
+│  TDD Assessment: [mandatory | optional]             │
+│                                                     │
+│  Test Specifications Generated:                     │
+│    From spec.md:       X acceptance tests           │
+│    From plan.md:       Y contract tests             │
+│    From data-model.md: Z validation tests           │
+│    ─────────────────────────────────                │
+│    Total:              N test specifications        │
+│                                                     │
+│  Output: FEATURE_DIR/tests/test-specs.md            │
+│                                                     │
+│  Assertion Integrity:                               │
+│    Hash: [first 12 chars of hash]...                │
+│    Status: LOCKED                                   │
 ╰─────────────────────────────────────────────────────╯
 ```
 
