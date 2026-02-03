@@ -582,6 +582,44 @@ test_all_documentation_template_refs() {
     fi
 }
 
+test_all_templates_are_referenced() {
+    log_section "All Templates Are Referenced"
+    local templates_dir=".claude/skills/speckit-core/templates"
+    local skills_dir=".claude/skills"
+    local scripts_dir=".claude/skills/speckit-core/scripts"
+
+    # Get all template files
+    for template in "$templates_dir"/*.md; do
+        [[ ! -f "$template" ]] && continue
+        local template_name=$(basename "$template")
+        ((TESTS_RUN++))
+
+        # Check if referenced in SKILL.md files OR in scripts
+        local found=false
+
+        # Check SKILL.md files
+        if grep -rq "$template_name" "$skills_dir"/speckit-*/SKILL.md 2>/dev/null; then
+            found=true
+        fi
+
+        # Check bash scripts
+        if grep -rq "$template_name" "$scripts_dir/bash"/*.sh 2>/dev/null; then
+            found=true
+        fi
+
+        # Check PowerShell scripts
+        if grep -rq "$template_name" "$scripts_dir/powershell"/*.ps1 2>/dev/null; then
+            found=true
+        fi
+
+        if [[ "$found" == "true" ]]; then
+            log_pass "$template_name is referenced"
+        else
+            log_fail "$template_name exists but is NOT referenced anywhere"
+        fi
+    done
+}
+
 test_tiles_script_inner_template_refs() {
     log_section "Tiles Script Inner Template References"
     local base="tiles/spec-kit/skills/speckit-core/scripts"
@@ -650,6 +688,7 @@ main() {
     test_skill_template_references
     test_tiles_skill_template_references
     test_all_documentation_template_refs
+    test_all_templates_are_referenced
     test_tiles_script_inner_template_refs
 
     log_section "Summary"

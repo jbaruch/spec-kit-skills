@@ -1,6 +1,6 @@
 {
   "name": "tessl-labs/spec-kit",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "summary": "Specification-driven development workflow skills for AI coding assistants",
   "description": "A complete 10-phase specification-driven development workflow. Guides AI assistants through constitution, specification, clarification, planning, checklists, TDD test specs, task breakdown, analysis, implementation, and GitHub issue export.",
   "private": false,
