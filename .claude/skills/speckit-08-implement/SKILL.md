@@ -98,12 +98,121 @@ Report: Artifacts complete, Spec coverage %, Plan alignment, Constitution compli
 
 ### 2. TDD Support Check
 
-If `tests/test-specs.md` exists:
-- Verify assertion integrity using `.claude/skills/speckit-core/scripts/bash/testify-tdd.sh comprehensive-check`
-- **BLOCKED** if assertions were tampered → halt with remediation steps
-- Display circular verification warning: fix code to pass tests, don't modify assertions
+If `tests/test-specs.md` exists, perform assertion integrity verification:
 
-If TDD is **mandatory** in constitution but test-specs.md missing → ERROR
+**Step 1: Run comprehensive integrity check**
+```bash
+.claude/skills/speckit-core/scripts/bash/testify-tdd.sh comprehensive-check \
+    "FEATURE_DIR/tests/test-specs.md" \
+    ".specify/context.json" \
+    ".specify/memory/constitution.md"
+```
+
+**Step 2: Parse the JSON response**
+```json
+{
+    "overall_status": "PASS|BLOCKED|WARN",
+    "block_reason": "...",
+    "tdd_determination": "mandatory|optional|forbidden",
+    "checks": {
+        "context_hash": "valid|invalid|missing",
+        "git_note": "valid|invalid|missing",
+        "git_diff": "clean|modified|untracked"
+    }
+}
+```
+
+**Step 3: Act on results**
+
+| overall_status | Action |
+|----------------|--------|
+| `PASS` | Proceed with implementation |
+| `BLOCKED` | **HALT** - Display block_reason, require remediation |
+| `WARN` | Display warning, proceed with caution |
+
+**BLOCKED remediation:**
+```
+ASSERTION INTEGRITY CHECK FAILED
+
+Status: BLOCKED
+Reason: [block_reason from JSON]
+
+The test assertions have been modified since testify ran.
+This violates TDD principles - tests define expected behavior BEFORE implementation.
+
+Remediation options:
+1. Revert assertion changes: git checkout -- FEATURE_DIR/tests/test-specs.md
+2. Re-run testify to regenerate test-specs: /speckit-05-testify
+3. If legitimate spec changes occurred, update spec.md first, then re-run testify
+
+Cannot proceed until assertion integrity is restored.
+```
+
+**Display circular verification warning:**
+```
+⚠️  TDD INTEGRITY ACTIVE
+
+Test assertions are locked. During implementation:
+- Fix CODE to pass tests, never modify assertions
+- If a test seems wrong, re-run /speckit-05-testify from updated spec
+- Assertion tampering will block future implementation runs
+```
+
+If TDD is **mandatory** in constitution but test-specs.md missing → ERROR:
+```
+ERROR: TDD is MANDATORY per constitution but tests/test-specs.md not found.
+
+Run: /speckit-05-testify
+
+Cannot proceed without test specifications.
+```
+
+### 2.1 Test Execution Enforcement (CRITICAL)
+
+**Tests MUST be run, not just written.** Writing tests without executing them defeats TDD.
+
+**Mandatory rules:**
+1. **After writing any test file**: Run the test immediately to verify it fails (red phase)
+2. **After implementing code**: Run tests again to verify they pass (green phase)
+3. **Before marking ANY test-related task complete**: Tests MUST have been executed with visible output
+4. **"Run test suite" tasks**: Execute ALL tests (unit, integration, e2e) and verify pass/fail status
+
+**What counts as "tests run":**
+- Actual execution output showing test results (PASS/FAIL counts)
+- NOT just "tests written" or "test file created"
+- NOT assuming tests pass without running them
+
+**Blocking conditions:**
+- Cannot mark implementation complete if tests haven't been run
+- Cannot mark "run tests" task as `[x]` without actual execution output
+- If any tests fail, fix code (not tests) before proceeding
+
+**Test execution commands by stack:**
+| Stack | Command |
+|-------|---------|
+| Node/TypeScript | `npm test` or `npx vitest` or `npx jest` |
+| Python | `pytest` or `python -m pytest` |
+| Go | `go test ./...` |
+| Rust | `cargo test` |
+| E2E (Playwright) | `npx playwright test` |
+| E2E (Cypress) | `npx cypress run` |
+
+**Deterministic verification (REQUIRED):**
+
+After running tests, verify execution with:
+```bash
+.claude/skills/speckit-core/scripts/bash/verify-test-execution.sh verify \
+    "FEATURE_DIR/tests/test-specs.md" \
+    "$(cat test-output.log)"
+```
+
+The script returns JSON with status:
+- `PASS` - All tests ran and passed
+- `TESTS_FAILING` - Tests ran but some failed → fix code
+- `INCOMPLETE` - Fewer tests ran than expected in test-specs.md
+- `NO_TESTS_RUN` - Could not detect test execution → tests weren't run
+
+**Block on any status other than `PASS`.**
 
 ### 3. Tessl Integration
 
@@ -112,6 +221,13 @@ If Tessl installed, use tiles for library documentation. See [tessl-integration.
 **Key rule**: Before implementing code using a tile's library, query `mcp__tessl__query_library_docs`.
 
 ### 4. Project Setup
+
+**Scaffolding in existing directories**: When using project scaffolding tools (e.g., `create-next-app`, `create-vite`, `cargo init`, `go mod init`) in a directory with existing spec-kit artifacts, use force/overwrite flags to prevent conflicts:
+- `npx create-next-app . --force`
+- `npm create vite . -- --force`
+- `cargo init --name project` (works in non-empty dirs)
+
+The spec-kit files (`.specify/`, `.claude/`, `AGENTS.md`, etc.) won't be overwritten by these tools.
 
 Create/verify ignore files based on tech stack. See [ignore-patterns.md](references/ignore-patterns.md) for patterns by technology.
 
@@ -125,7 +241,9 @@ Extract from tasks.md:
 **Execution rules**:
 - Query Tessl tiles before implementing library code
 - Tests before code if TDD
-- Mark completed tasks as `[x]`
+- **Run tests after writing them** - verify red/green cycle
+- **Never mark test tasks complete without execution output**
+- Mark completed tasks as `[x]` only after verification
 
 ### 6. Output Validation (REQUIRED)
 
@@ -142,10 +260,17 @@ Before writing ANY file:
 
 ### 8. Completion
 
-- Verify all tasks completed
-- Validate features match spec
-- Confirm tests pass
-- Report Tessl tile usage if applicable
+**Pre-completion checklist:**
+- [ ] All tasks marked `[x]` in tasks.md
+- [ ] Features validated against spec requirements
+- [ ] **ALL tests executed** (not just written) with passing results
+- [ ] Test output shown/logged as evidence
+- [ ] Report Tessl tile usage if applicable
+
+**CANNOT declare completion if:**
+- Tests exist but were never run
+- Test execution shows failures
+- "Run test suite" task marked complete without actual execution
 
 ## Error Handling
 
@@ -156,6 +281,8 @@ Before writing ANY file:
 | Constitution violation | STOP, explain, suggest alternative |
 | Checklist incomplete | Ask user, STOP if declined |
 | Task fails | Report error, halt sequential |
+| Tests written but not run | STOP: Execute tests before marking complete |
+| Tests failing | STOP: Fix code (not tests), re-run until green |
 
 ## Next Steps
 
