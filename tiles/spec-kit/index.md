@@ -10,6 +10,7 @@ Spec-Kit provides skills that guide AI assistants through a structured developme
 
 | Phase | Skill | Purpose |
 |-------|-------|---------|
+| Utility | `/speckit-core` | Initialize project, check status, show help |
 | 0 | `/speckit-00-constitution` | Define project governance principles |
 | 1 | `/speckit-01-specify` | Create feature specification from natural language |
 | 2 | `/speckit-02-clarify` | Resolve ambiguities (max 5 questions) |

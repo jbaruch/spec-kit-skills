@@ -105,12 +105,16 @@ validating its execution context.
 
 This project uses its own specification-driven workflow. Features MUST follow:
 
-1. Constitution (if governance changes needed)
-2. Specification (requirements and acceptance criteria)
-3. Clarification (resolve ambiguities)
-4. Planning (technical approach)
-5. Task breakdown (actionable items)
-6. Implementation (code changes)
+0. Constitution (if governance changes needed)
+1. Specification (requirements and acceptance criteria)
+2. Clarification (resolve ambiguities)
+3. Planning (technical approach)
+4. Checklist (quality validation)
+5. Testify (test specifications for TDD, if constitutionally required)
+6. Task breakdown (actionable items)
+7. Analyze (cross-artifact consistency)
+8. Implementation (code changes)
+9. Tasks to Issues (GitHub export, optional)
 
 Skipping phases is NOT permitted without explicit justification.
 

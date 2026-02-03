@@ -10,16 +10,18 @@ This project contains an AI coding assistant skills bundle that replicates GitHu
 
 This project uses specification-driven development. The phases are:
 
-1. `/speckit-00-constitution` - Define project governance principles
-2. `/speckit-01-specify` - Create feature specification from natural language
-3. `/speckit-02-clarify` - Resolve ambiguities (max 5 questions)
-4. `/speckit-03-plan` - Create technical implementation plan
-5. `/speckit-04-checklist` - Generate domain-specific quality checklists
-6. `/speckit-05-testify` - Generate test specifications (TDD support, optional unless constitutionally required)
-7. `/speckit-06-tasks` - Generate task breakdown
-8. `/speckit-07-analyze` - Validate cross-artifact consistency
-9. `/speckit-08-implement` - Execute implementation
-10. `/speckit-09-taskstoissues` - Export tasks to GitHub Issues
+**Utility:** `/speckit-core` - Initialize project, check status, show help (run `init` before starting)
+
+0. `/speckit-00-constitution` - Define project governance principles
+1. `/speckit-01-specify` - Create feature specification from natural language
+2. `/speckit-02-clarify` - Resolve ambiguities (max 5 questions)
+3. `/speckit-03-plan` - Create technical implementation plan
+4. `/speckit-04-checklist` - Generate domain-specific quality checklists
+5. `/speckit-05-testify` - Generate test specifications (TDD support, optional unless constitutionally required)
+6. `/speckit-06-tasks` - Generate task breakdown
+7. `/speckit-07-analyze` - Validate cross-artifact consistency
+8. `/speckit-08-implement` - Execute implementation
+9. `/speckit-09-taskstoissues` - Export tasks to GitHub Issues
 
 **Never skip phases.** Each `/speckit-*` command validates its prerequisites.
 

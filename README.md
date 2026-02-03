@@ -45,16 +45,18 @@ The workflow follows strict phase ordering. Each phase builds on the previous:
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
-│  1. /speckit-00-constitution  →  Define project governance principles      │
-│  2. /speckit-01-specify       →  Create feature specification              │
-│  3. /speckit-02-clarify       →  Resolve ambiguities (optional)            │
-│  4. /speckit-03-plan          →  Create technical implementation plan      │
-│  5. /speckit-04-checklist     →  Generate quality checklists (optional)    │
-│  6. /speckit-05-testify       →  Generate test specifications (TDD)        │
-│  7. /speckit-06-tasks         →  Generate task breakdown                   │
-│  8. /speckit-07-analyze       →  Validate consistency (optional)           │
-│  9. /speckit-08-implement     →  Execute implementation                    │
-│ 10. /speckit-09-taskstoissues →  Export to GitHub Issues (optional)        │
+│  Utility: /speckit-core       →  Initialize project, status, help          │
+├────────────────────────────────────────────────────────────────────────────┤
+│  0. /speckit-00-constitution  →  Define project governance principles      │
+│  1. /speckit-01-specify       →  Create feature specification              │
+│  2. /speckit-02-clarify       →  Resolve ambiguities (optional)            │
+│  3. /speckit-03-plan          →  Create technical implementation plan      │
+│  4. /speckit-04-checklist     →  Generate quality checklists (optional)    │
+│  5. /speckit-05-testify       →  Generate test specifications (TDD)        │
+│  6. /speckit-06-tasks         →  Generate task breakdown                   │
+│  7. /speckit-07-analyze       →  Validate consistency (optional)           │
+│  8. /speckit-08-implement     →  Execute implementation                    │
+│  9. /speckit-09-taskstoissues →  Export to GitHub Issues (optional)        │
 └────────────────────────────────────────────────────────────────────────────┘
 ```
 
