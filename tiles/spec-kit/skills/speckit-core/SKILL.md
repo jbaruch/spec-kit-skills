@@ -44,7 +44,7 @@ Initialize spec-kit in the current directory.
 
 3. **Initialize Git (if needed)**:
    ```bash
-   .claude/skills/speckit-core/scripts/bash/init-project.sh --json
+   speckit-core/scripts/bash/init-project.sh --json
    ```
 
 4. **Report**:
@@ -78,7 +78,7 @@ Show the current project and feature status.
 
 1. **Get paths and status**:
    ```bash
-   .claude/skills/speckit-core/scripts/bash/check-prerequisites.sh --json --paths-only
+   speckit-core/scripts/bash/check-prerequisites.sh --json --paths-only
    ```
 
 2. **Check constitution**:
@@ -142,7 +142,7 @@ Display the complete workflow reference.
 │                                                                     │
 │  Phase 0: Foundation                                                │
 │  ─────────────────────                                              │
-│  /speckit-core init      Initialize spec-kit in a project          │
+│  /speckit-core init      Initialize spec-kit in a project           │
 │  /speckit-00-constitution Define project governance principles      │
 │                                                                     │
 │  Phase 1: Specification                                             │
