@@ -81,14 +81,29 @@ teardown() {
 }
 
 test_scripts_exist() {
-    log_section "Scripts Exist"
-    local base=".tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/bash"
+    log_section "Bash Scripts Exist"
+    local bash_base=".tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/bash"
 
-    run_test "check-prerequisites.sh exists" "[[ -f '$base/check-prerequisites.sh' ]]"
-    run_test "create-new-feature.sh exists" "[[ -f '$base/create-new-feature.sh' ]]"
-    run_test "setup-plan.sh exists" "[[ -f '$base/setup-plan.sh' ]]"
-    run_test "testify-tdd.sh exists" "[[ -f '$base/testify-tdd.sh' ]]"
-    run_test "common.sh exists" "[[ -f '$base/common.sh' ]]"
+    run_test "check-prerequisites.sh exists" "[[ -f '$bash_base/check-prerequisites.sh' ]]"
+    run_test "create-new-feature.sh exists" "[[ -f '$bash_base/create-new-feature.sh' ]]"
+    run_test "setup-plan.sh exists" "[[ -f '$bash_base/setup-plan.sh' ]]"
+    run_test "testify-tdd.sh exists" "[[ -f '$bash_base/testify-tdd.sh' ]]"
+    run_test "common.sh exists" "[[ -f '$bash_base/common.sh' ]]"
+    run_test "update-agent-context.sh exists" "[[ -f '$bash_base/update-agent-context.sh' ]]"
+}
+
+test_powershell_scripts_exist() {
+    log_section "PowerShell Scripts Exist"
+    local ps_base=".tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/powershell"
+
+    run_test "check-prerequisites.ps1 exists" "[[ -f '$ps_base/check-prerequisites.ps1' ]]"
+    run_test "create-new-feature.ps1 exists" "[[ -f '$ps_base/create-new-feature.ps1' ]]"
+    run_test "setup-plan.ps1 exists" "[[ -f '$ps_base/setup-plan.ps1' ]]"
+    run_test "testify-tdd.ps1 exists" "[[ -f '$ps_base/testify-tdd.ps1' ]]"
+    run_test "common.ps1 exists" "[[ -f '$ps_base/common.ps1' ]]"
+    run_test "update-agent-context.ps1 exists" "[[ -f '$ps_base/update-agent-context.ps1' ]]"
+    run_test "init-project.ps1 exists" "[[ -f '$ps_base/init-project.ps1' ]]"
+    run_test "setup-windows-links.ps1 exists" "[[ -f '$ps_base/setup-windows-links.ps1' ]]"
 }
 
 test_scripts_executable() {
@@ -668,6 +683,382 @@ test_skill_template_references() {
     fi
 }
 
+test_skill_script_references() {
+    log_section "Skill Script References (Bash)"
+    local base=".tessl/tiles/tessl-labs/spec-kit/skills"
+
+    # CRITICAL: Verify all SKILL.md files reference scripts at speckit-core/scripts/
+    # This catches the bug where skills referenced speckit-01-specify/scripts/ instead
+
+    # Check that script paths point to speckit-core, not individual skill directories
+    ((TESTS_RUN++))
+    local wrong_script_refs
+    wrong_script_refs=$(grep -rh "speckit-0[0-9]-[a-z]*/scripts/" "$base"/*/SKILL.md 2>/dev/null | wc -l)
+    if [[ "$wrong_script_refs" -eq 0 ]]; then
+        log_pass "no skills reference scripts in wrong skill directory"
+    else
+        log_fail "found $wrong_script_refs references to scripts in wrong directory (should be speckit-core/scripts/)"
+        grep -rn "speckit-0[0-9]-[a-z]*/scripts/" "$base"/*/SKILL.md 2>/dev/null | head -5
+    fi
+
+    # Verify scripts are referenced at speckit-core/scripts/bash/
+    ((TESTS_RUN++))
+    local skills_with_script_refs=0
+    local skills_with_correct_refs=0
+    for skill in "$base"/speckit-*/SKILL.md; do
+        if grep -q "scripts/bash/" "$skill" 2>/dev/null; then
+            ((skills_with_script_refs++))
+            if grep -q "speckit-core/scripts/bash/" "$skill" 2>/dev/null; then
+                ((skills_with_correct_refs++))
+            fi
+        fi
+    done
+    if [[ "$skills_with_script_refs" -eq "$skills_with_correct_refs" ]]; then
+        log_pass "all bash script references use speckit-core/scripts/bash/"
+    else
+        log_fail "bash script path mismatch: $skills_with_correct_refs/$skills_with_script_refs use correct path"
+    fi
+
+    # Check specific critical scripts are referenced correctly
+    local critical_scripts=(
+        "check-prerequisites.sh"
+        "create-new-feature.sh"
+        "setup-plan.sh"
+        "testify-tdd.sh"
+    )
+
+    for script in "${critical_scripts[@]}"; do
+        ((TESTS_RUN++))
+        local wrong_refs
+        wrong_refs=$(grep -rh "$script" "$base"/*/SKILL.md 2>/dev/null | grep -v "speckit-core/scripts" | grep "scripts/bash" | wc -l)
+        if [[ "$wrong_refs" -eq 0 ]]; then
+            log_pass "$script references are correct"
+        else
+            log_fail "$script has $wrong_refs wrong path references"
+        fi
+    done
+}
+
+test_powershell_script_references() {
+    log_section "Skill Script References (PowerShell)"
+    local base=".tessl/tiles/tessl-labs/spec-kit/skills"
+
+    # Check that PowerShell script paths point to speckit-core, not individual skill directories
+    ((TESTS_RUN++))
+    local wrong_ps_refs
+    wrong_ps_refs=$(grep -rh "speckit-0[0-9]-[a-z]*/scripts/powershell" "$base"/*/SKILL.md 2>/dev/null | wc -l)
+    if [[ "$wrong_ps_refs" -eq 0 ]]; then
+        log_pass "no skills reference PowerShell scripts in wrong directory"
+    else
+        log_fail "found $wrong_ps_refs PowerShell references in wrong directory"
+        grep -rn "speckit-0[0-9]-[a-z]*/scripts/powershell" "$base"/*/SKILL.md 2>/dev/null | head -5
+    fi
+
+    # Verify PowerShell scripts are referenced at speckit-core/scripts/powershell/
+    ((TESTS_RUN++))
+    local skills_with_ps_refs=0
+    local skills_with_correct_ps_refs=0
+    for skill in "$base"/speckit-*/SKILL.md; do
+        if grep -q "scripts/powershell/" "$skill" 2>/dev/null; then
+            ((skills_with_ps_refs++))
+            if grep -q "speckit-core/scripts/powershell/" "$skill" 2>/dev/null; then
+                ((skills_with_correct_ps_refs++))
+            fi
+        fi
+    done
+    if [[ "$skills_with_ps_refs" -eq "$skills_with_correct_ps_refs" ]]; then
+        log_pass "all PowerShell script references use speckit-core/scripts/powershell/"
+    else
+        log_fail "PowerShell path mismatch: $skills_with_correct_ps_refs/$skills_with_ps_refs use correct path"
+    fi
+
+    # Check specific critical PowerShell scripts are referenced correctly
+    local critical_ps_scripts=(
+        "check-prerequisites.ps1"
+        "create-new-feature.ps1"
+        "setup-plan.ps1"
+        "testify-tdd.ps1"
+    )
+
+    for script in "${critical_ps_scripts[@]}"; do
+        ((TESTS_RUN++))
+        local wrong_refs
+        wrong_refs=$(grep -rh "$script" "$base"/*/SKILL.md 2>/dev/null | grep -v "speckit-core/scripts" | grep "scripts/powershell" | wc -l)
+        if [[ "$wrong_refs" -eq 0 ]]; then
+            log_pass "$script references are correct"
+        else
+            log_fail "$script has $wrong_refs wrong path references"
+        fi
+    done
+}
+
+test_documentation_path_consistency() {
+    log_section "Documentation Path Consistency"
+    local tile_root=".tessl/tiles/tessl-labs/spec-kit"
+
+    # Check that documented paths actually exist
+    # Extract paths from SKILL.md files and verify they resolve
+
+    # Test 1: All referenced .sh scripts should exist
+    ((TESTS_RUN++))
+    local missing_scripts=0
+    while IFS= read -r script_ref; do
+        # Extract the path after .tessl/tiles/tessl-labs/spec-kit/
+        local rel_path
+        rel_path=$(echo "$script_ref" | grep -oE 'skills/[^"'"'"' ]+\.sh' | head -1)
+        if [[ -n "$rel_path" && ! -f "$tile_root/$rel_path" ]]; then
+            ((missing_scripts++))
+            log_info "Missing script: $rel_path"
+        fi
+    done < <(grep -rh "\.tessl.*\.sh" "$tile_root/skills"/*/SKILL.md 2>/dev/null)
+
+    if [[ "$missing_scripts" -eq 0 ]]; then
+        log_pass "all referenced scripts exist"
+    else
+        log_fail "$missing_scripts referenced scripts are missing"
+    fi
+
+    # Test 2: All referenced .md templates should exist
+    ((TESTS_RUN++))
+    local missing_templates=0
+    while IFS= read -r template_ref; do
+        local rel_path
+        rel_path=$(echo "$template_ref" | grep -oE 'skills/[^"'"'"' ]+\.md' | head -1)
+        if [[ -n "$rel_path" && "$rel_path" == *"templates/"* && ! -f "$tile_root/$rel_path" ]]; then
+            ((missing_templates++))
+            log_info "Missing template: $rel_path"
+        fi
+    done < <(grep -rh "\.tessl.*templates.*\.md" "$tile_root/skills"/*/SKILL.md 2>/dev/null)
+
+    if [[ "$missing_templates" -eq 0 ]]; then
+        log_pass "all referenced templates exist"
+    else
+        log_fail "$missing_templates referenced templates are missing"
+    fi
+
+    # Test 3: No references to .specify/scripts/ (old location)
+    ((TESTS_RUN++))
+    if grep -rq "\.specify/scripts/" "$tile_root/skills"/*/SKILL.md 2>/dev/null; then
+        log_fail "found references to old .specify/scripts/ location"
+        grep -rn "\.specify/scripts/" "$tile_root/skills"/*/SKILL.md 2>/dev/null | head -3
+    else
+        log_pass "no references to old .specify/scripts/ location"
+    fi
+
+    # Test 4: No references to .specify/templates/ (old location)
+    ((TESTS_RUN++))
+    if grep -rq "\.specify/templates/" "$tile_root/skills"/*/SKILL.md 2>/dev/null; then
+        log_fail "found references to old .specify/templates/ location"
+    else
+        log_pass "no references to old .specify/templates/ location"
+    fi
+}
+
+test_readme_path_consistency() {
+    log_section "README/Doc Path Consistency"
+    local tile_root=".tessl/tiles/tessl-labs/spec-kit"
+
+    # Check index.md and any README files for path consistency
+    local doc_files=("$tile_root/index.md")
+    [[ -f "$tile_root/README.md" ]] && doc_files+=("$tile_root/README.md")
+
+    for doc in "${doc_files[@]}"; do
+        [[ ! -f "$doc" ]] && continue
+
+        # Test: No references to .specify/scripts/
+        ((TESTS_RUN++))
+        if grep -q "\.specify/scripts/" "$doc" 2>/dev/null; then
+            log_fail "$(basename $doc) references old .specify/scripts/ path"
+        else
+            log_pass "$(basename $doc) has no old .specify/scripts/ references"
+        fi
+
+        # Test: No references to .specify/templates/
+        ((TESTS_RUN++))
+        if grep -q "\.specify/templates/" "$doc" 2>/dev/null; then
+            log_fail "$(basename $doc) references old .specify/templates/ path"
+        else
+            log_pass "$(basename $doc) has no old .specify/templates/ references"
+        fi
+    done
+}
+
+test_bash_script_inner_template_refs() {
+    log_section "Bash Script Inner Template References"
+    local base=".tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/bash"
+    local templates_dir=".tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/templates"
+
+    # Scripts that reference templates - verify they use relative ../../templates/ path
+    local scripts_with_templates=(
+        "create-new-feature.sh:spec-template.md"
+        "setup-plan.sh:plan-template.md"
+        "update-agent-context.sh:agent-file-template.md"
+    )
+
+    for entry in "${scripts_with_templates[@]}"; do
+        local script="${entry%%:*}"
+        local template="${entry##*:}"
+        ((TESTS_RUN++))
+
+        if [[ ! -f "$base/$script" ]]; then
+            log_fail "bash script not found: $script"
+            continue
+        fi
+
+        # Check that script references the template via relative path
+        if grep -q '../../templates/'"$template" "$base/$script" 2>/dev/null; then
+            log_pass "$script references $template correctly"
+        else
+            log_fail "$script doesn't use relative ../../templates/$template path"
+        fi
+
+        # Verify the referenced template exists
+        ((TESTS_RUN++))
+        if [[ -f "$templates_dir/$template" ]]; then
+            log_pass "$template exists for $script"
+        else
+            log_fail "$template missing (referenced by $script)"
+        fi
+    done
+
+    # No deprecated .specify/templates/ references in bash scripts
+    ((TESTS_RUN++))
+    if grep -rq "\.specify/templates/" "$base"/*.sh 2>/dev/null; then
+        log_fail "bash scripts reference deprecated .specify/templates/"
+    else
+        log_pass "no bash scripts reference deprecated .specify/templates/"
+    fi
+}
+
+test_powershell_script_inner_template_refs() {
+    log_section "PowerShell Script Inner Template References"
+    local base=".tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/powershell"
+    local templates_dir=".tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/templates"
+
+    # Scripts that reference templates
+    local scripts_with_templates=(
+        "create-new-feature.ps1:spec-template.md"
+        "setup-plan.ps1:plan-template.md"
+        "update-agent-context.ps1:agent-file-template.md"
+    )
+
+    for entry in "${scripts_with_templates[@]}"; do
+        local script="${entry%%:*}"
+        local template="${entry##*:}"
+        ((TESTS_RUN++))
+
+        if [[ ! -f "$base/$script" ]]; then
+            log_fail "powershell script not found: $script"
+            continue
+        fi
+
+        # Check that script references the template via relative path (PowerShell uses backslashes)
+        if grep -qE '\.\.\\\.\.\\templates\\'"$template|"'\.\.\/\.\.\/templates\/'"$template" "$base/$script" 2>/dev/null; then
+            log_pass "$script references $template correctly"
+        else
+            log_fail "$script doesn't use relative ..\\..\\templates\\$template path"
+        fi
+
+        # Verify the referenced template exists
+        ((TESTS_RUN++))
+        if [[ -f "$templates_dir/$template" ]]; then
+            log_pass "$template exists for $script"
+        else
+            log_fail "$template missing (referenced by $script)"
+        fi
+    done
+
+    # No deprecated .specify/templates/ references in PowerShell scripts
+    ((TESTS_RUN++))
+    if grep -rq "\.specify[/\\]templates" "$base"/*.ps1 2>/dev/null; then
+        log_fail "powershell scripts reference deprecated .specify/templates/"
+    else
+        log_pass "no powershell scripts reference deprecated .specify/templates/"
+    fi
+}
+
+test_all_skill_template_refs() {
+    log_section "All SKILL.md Template References"
+    local base=".tessl/tiles/tessl-labs/spec-kit/skills"
+
+    # All template references should use speckit-core/templates/
+    ((TESTS_RUN++))
+    local wrong_template_refs
+    wrong_template_refs=$(grep -rh "speckit-0[0-9]-[a-z]*/templates/" "$base"/speckit-*/SKILL.md 2>/dev/null | wc -l)
+    if [[ "$wrong_template_refs" -eq 0 ]]; then
+        log_pass "no skills reference templates in wrong directory"
+    else
+        log_fail "found $wrong_template_refs wrong template path references"
+        grep -rn "speckit-0[0-9]-[a-z]*/templates/" "$base"/speckit-*/SKILL.md 2>/dev/null | head -5
+    fi
+
+    # Count correct template references
+    ((TESTS_RUN++))
+    local correct_refs
+    correct_refs=$(grep -rh "speckit-core/templates/" "$base"/speckit-*/SKILL.md 2>/dev/null | wc -l)
+    if [[ "$correct_refs" -gt 0 ]]; then
+        log_pass "skills use speckit-core/templates/ ($correct_refs refs)"
+    else
+        log_warn "no template references found in skills (may be OK)"
+    fi
+}
+
+test_skill_numbering_consistency() {
+    log_section "Skill Numbering Consistency"
+    local base=".tessl/tiles/tessl-labs/spec-kit/skills"
+
+    # Verify skill directories match expected numbering
+    local expected_skills=(
+        "speckit-00-constitution"
+        "speckit-01-specify"
+        "speckit-02-clarify"
+        "speckit-03-plan"
+        "speckit-04-checklist"
+        "speckit-05-testify"
+        "speckit-06-tasks"
+        "speckit-07-analyze"
+        "speckit-08-implement"
+        "speckit-09-taskstoissues"
+    )
+
+    for skill in "${expected_skills[@]}"; do
+        ((TESTS_RUN++))
+        if [[ -d "$base/$skill" ]]; then
+            log_pass "skill directory exists: $skill"
+        else
+            log_fail "skill directory missing: $skill"
+        fi
+    done
+
+    # Verify SKILL.md "Next Steps" sections reference correct skill numbers
+    # E.g., speckit-03-plan should suggest speckit-06-tasks, not speckit-05-tasks
+    ((TESTS_RUN++))
+    local wrong_numbering=0
+
+    # Plan (03) should NOT suggest implement (08) directly
+    if grep -A20 "## Next Steps" "$base/speckit-03-plan/SKILL.md" 2>/dev/null | grep -qE "/speckit-08-implement[^-]"; then
+        # Check if it's in a conditional block (OK) or direct suggestion (BAD)
+        if grep -A20 "## Next Steps" "$base/speckit-03-plan/SKILL.md" 2>/dev/null | grep -B2 "/speckit-08-implement" | grep -qiE "if|when|after|require"; then
+            : # Conditional reference is OK
+        else
+            ((wrong_numbering++))
+            log_info "plan directly suggests implement"
+        fi
+    fi
+
+    # Tasks (06) should suggest analyze (07) and implement (08)
+    if ! grep -A15 "## Next Steps" "$base/speckit-06-tasks/SKILL.md" 2>/dev/null | grep -q "/speckit-07-analyze"; then
+        ((wrong_numbering++))
+        log_info "tasks doesn't suggest analyze (07)"
+    fi
+
+    if [[ "$wrong_numbering" -eq 0 ]]; then
+        log_pass "skill numbering in next steps is consistent"
+    else
+        log_fail "found $wrong_numbering skill numbering issues in next steps"
+    fi
+}
+
 main() {
     ORIGINAL_DIR=$(pwd)
 
@@ -688,6 +1079,7 @@ main() {
 
     setup
     test_scripts_exist
+    test_powershell_scripts_exist
     test_scripts_executable
     test_templates_exist
     test_skills_exist
@@ -706,6 +1098,14 @@ main() {
     test_update_agent_context_script
     test_template_paths_resolve
     test_skill_template_references
+    test_skill_script_references
+    test_powershell_script_references
+    test_bash_script_inner_template_refs
+    test_powershell_script_inner_template_refs
+    test_all_skill_template_refs
+    test_documentation_path_consistency
+    test_readme_path_consistency
+    test_skill_numbering_consistency
 
     log_section "Summary"
     echo "  Total:  $TESTS_RUN"

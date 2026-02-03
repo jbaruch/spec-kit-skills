@@ -41,7 +41,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 2. If constitution doesn't exist, copy from template:
    ```bash
-   cp .tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/templates/constitution-template.md .specify/memory/constitution.md
+   cp .claude/skills/speckit-core/templates/constitution-template.md .specify/memory/constitution.md
    ```
 
 ## Execution Flow
@@ -68,9 +68,9 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Ensure Governance section lists amendment procedure, versioning policy, and compliance review expectations
 
 4. **Consistency propagation** (validate against templates if they exist):
-   - Check `.tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/templates/plan-template.md` for constitution alignment
-   - Check `.tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/templates/spec-template.md` for scope/requirements alignment
-   - Check `.tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/templates/tasks-template.md` for task categorization alignment
+   - Check `.claude/skills/speckit-core/templates/plan-template.md` for constitution alignment
+   - Check `.claude/skills/speckit-core/templates/spec-template.md` for scope/requirements alignment
+   - Check `.claude/skills/speckit-core/templates/tasks-template.md` for task categorization alignment
 
 5. **Produce a Sync Impact Report** (prepend as HTML comment at top of constitution file):
    - Version change: old -> new

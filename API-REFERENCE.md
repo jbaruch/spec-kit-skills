@@ -449,7 +449,7 @@ All skills support both Unix/macOS/Linux and Windows:
 
 | Component | Unix/macOS | Windows |
 |-----------|------------|---------|
-| Scripts | `.specify/scripts/bash/*.sh` | `.specify/scripts/powershell/*.ps1` |
+| Scripts | `.claude/skills/speckit-core/scripts/bash/*.sh` | `.claude/skills/speckit-core/scripts/powershell/*.ps1` |
 | Detection | `command -v` | `Get-Command` |
 | Tessl | `tessl` CLI | `tessl` CLI |
 | GitHub | `gh` CLI | `gh` CLI |

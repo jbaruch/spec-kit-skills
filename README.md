@@ -429,11 +429,8 @@ After running the full workflow:
 your-project/
 ├── .tessl/                         # Tessl installation (tiles, rules)
 ├── .specify/
-│   ├── memory/                     # Project artifacts (created by skills)
-│   │   └── constitution.md         # Created by /speckit-00-constitution
-│   ├── scripts/bash/               # Workflow scripts (Linux/macOS)
-│   ├── scripts/powershell/         # Workflow scripts (Windows)
-│   └── templates/                  # Framework templates
+│   └── memory/                     # Project artifacts (created by skills)
+│       └── constitution.md         # Created by /speckit-00-constitution
 ├── specs/
 │   └── NNN-feature-name/
 │       ├── spec.md                 # Feature specification
@@ -464,7 +461,7 @@ The skills use scripts to enforce proper workflow (available in both Bash and Po
 | `update-agent-context` | Updates AGENTS.md with tech stack |
 | `common` | Shared utility functions |
 
-Scripts are located in `.specify/scripts/bash/` (Linux/macOS) and `.specify/scripts/powershell/` (Windows).
+Scripts are located in `.claude/skills/speckit-core/scripts/bash/` (Linux/macOS) and `.claude/skills/speckit-core/scripts/powershell/` (Windows).
 
 ### Prerequisite Checking
 
@@ -514,7 +511,7 @@ tessl install tessl-labs/spec-kit
 ### Scripts not executable (Linux/macOS)
 
 ```bash
-chmod +x .specify/scripts/bash/*.sh
+chmod +x .claude/skills/speckit-core/scripts/bash/*.sh
 ```
 
 ### Prerequisites failing
@@ -523,12 +520,12 @@ Check the current feature context:
 
 **Bash:**
 ```bash
-.specify/scripts/bash/check-prerequisites.sh --json
+.claude/skills/speckit-core/scripts/bash/check-prerequisites.sh --json
 ```
 
 **PowerShell:**
 ```powershell
-.\.specify\scripts\powershell\check-prerequisites.ps1 -Json
+.\.claude\skills\speckit-core\scripts\powershell\check-prerequisites.ps1 -Json
 ```
 
 ### Phase Separation Violations

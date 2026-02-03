@@ -47,7 +47,7 @@ Before ANY action, load and internalize the project constitution:
 
 1. Run prerequisites check:
    ```bash
-   bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
+   bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
    ```
 
 2. Parse JSON for `FEATURE_DIR` and `AVAILABLE_DOCS`.
@@ -101,7 +101,7 @@ Report: Artifacts complete, Spec coverage %, Plan alignment, Constitution compli
 If `tests/test-specs.md` exists in FEATURE_DIR:
 
 ```bash
-bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-01-specify/scripts/bash/testify-tdd.sh comprehensive-check "FEATURE_DIR/tests/test-specs.md" ".specify/context.json" ".specify/memory/constitution.md"
+bash .tessl/tiles/tessl-labs/spec-kit/skills/speckit-core/scripts/bash/testify-tdd.sh comprehensive-check "FEATURE_DIR/tests/test-specs.md" ".specify/context.json" ".specify/memory/constitution.md"
 ```
 
 Replace `FEATURE_DIR` with the actual path from prerequisites check.

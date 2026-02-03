@@ -36,23 +36,23 @@ Verify that the validation functions in `common.sh` and `common.ps1` work correc
 ```bash
 # Test without constitution
 rm -f .specify/memory/constitution.md
-./.specify/scripts/bash/setup-plan.sh --json
+./.claude/skills/speckit-core/scripts/bash/setup-plan.sh --json
 # Expected: ERROR: Constitution not found...
 
 # Test without spec
 echo "# Constitution" > .specify/memory/constitution.md
-./.specify/scripts/bash/setup-plan.sh --json
+./.claude/skills/speckit-core/scripts/bash/setup-plan.sh --json
 # Expected: ERROR: spec.md not found...
 
 # Test invalid spec structure
 echo "# Bad Spec\nNo sections" > specs/001-test/spec.md
-./.specify/scripts/bash/setup-plan.sh --json
+./.claude/skills/speckit-core/scripts/bash/setup-plan.sh --json
 # Expected: ERROR: spec.md missing 'Requirements' section
 ```
 
 #### PowerShell Commands
 ```bash
-~/powershell/pwsh -Command '& "./.specify/scripts/powershell/setup-plan.ps1" -Json'
+~/powershell/pwsh -Command '& "./.claude/skills/speckit-core/scripts/powershell/setup-plan.ps1" -Json'
 # Same expected results as bash
 ```
 
@@ -69,7 +69,7 @@ mkdir -p test-skills-v6-bash test-vanilla-v6-bash
 # Copy .specify to both
 for dir in test-skills-v6-bash test-vanilla-v6-bash; do
   cp -R .specify $dir/
-  chmod +x $dir/.specify/scripts/bash/*.sh
+  chmod +x $dir/.claude/skills/speckit-core/scripts/bash/*.sh
 done
 
 # Setup skills version
@@ -107,9 +107,9 @@ status (pending/done).
 | 3 | /speckit-02-clarify | /speckit.clarify |
 | 4 | /speckit-03-plan | /speckit.plan |
 | 5 | /speckit-04-checklist | /speckit.checklist |
-| 6 | /speckit-05-tasks | /speckit.tasks |
-| 7 | /speckit-06-analyze | /speckit.analyze |
-| 8 | /speckit-07-implement | /speckit.implement |
+| 6 | /speckit-06-tasks | /speckit.tasks |
+| 7 | /speckit-07-analyze | /speckit.analyze |
+| 8 | /speckit-08-implement | /speckit.implement |
 
 ### 3. Expected "Skills Advantage" Reports
 
@@ -132,7 +132,7 @@ The Skills version should display these reports that Vanilla doesn't show:
 ╰─────────────────────────────────────────────╯
 ```
 
-#### PLAN READINESS REPORT (after /speckit-05-tasks)
+#### PLAN READINESS REPORT (after /speckit-06-tasks)
 ```
 ╭─────────────────────────────────────────────╮
 │  PLAN READINESS REPORT (Skills Advantage)   │
@@ -147,7 +147,7 @@ The Skills version should display these reports that Vanilla doesn't show:
 ╰─────────────────────────────────────────────╯
 ```
 
-#### DEPENDENCY GRAPH ANALYSIS (after /speckit-05-tasks)
+#### DEPENDENCY GRAPH ANALYSIS (after /speckit-06-tasks)
 ```
 ╭─────────────────────────────────────────────╮
 │  DEPENDENCY GRAPH ANALYSIS                  │
@@ -164,7 +164,7 @@ The Skills version should display these reports that Vanilla doesn't show:
 ╰─────────────────────────────────────────────╯
 ```
 
-#### IMPLEMENTATION READINESS (before /speckit-07-implement)
+#### IMPLEMENTATION READINESS (before /speckit-08-implement)
 ```
 ╭─────────────────────────────────────────────────────╮
 │  IMPLEMENTATION READINESS (Skills Advantage)        │
@@ -270,8 +270,8 @@ Skills version generated **51 tests** vs vanilla's **21 tests** - a **2.4x impro
 ### 2. Visual Reports
 Skills displays formatted box reports at key workflow stages:
 - After /speckit-03-plan: SPEC QUALITY REPORT
-- After /speckit-05-tasks: PLAN READINESS + DEPENDENCY GRAPH
-- Before /speckit-07-implement: IMPLEMENTATION READINESS + CONSTITUTION GATE
+- After /speckit-06-tasks: PLAN READINESS + DEPENDENCY GRAPH
+- Before /speckit-08-implement: IMPLEMENTATION READINESS + CONSTITUTION GATE
 
 ### 3. Earlier Error Detection
 Skills catches missing prerequisites at script level:

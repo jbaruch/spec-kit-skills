@@ -45,8 +45,8 @@ into a specific tool.
 
 Every script MUST have equivalent implementations for both Unix and Windows.
 
-- Bash scripts in `.specify/scripts/bash/`
-- PowerShell scripts in `.specify/scripts/powershell/`
+- Bash scripts in `.claude/skills/speckit-core/scripts/bash/`
+- PowerShell scripts in `.claude/skills/speckit-core/scripts/powershell/`
 - Both MUST produce identical outputs for identical inputs
 - Skills MUST include platform detection and call appropriate script variant
 - New script functionality MUST NOT be merged without both implementations
