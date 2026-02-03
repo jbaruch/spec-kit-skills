@@ -1,7 +1,7 @@
 # Test Specifications: [Feature Name]
 
 **Generated**: [timestamp]
-**Feature**: [spec.md](./spec.md) | **Plan**: [plan.md](./plan.md)
+**Feature**: `spec.md` | **Plan**: `plan.md`
 
 ## TDD Assessment
 
